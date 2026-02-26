@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+  <!--Announcements-->
+  <announce delay="1000" type="Event" message="ferumbras minions are working on his return to the World." />
+  <announce delay="20000" type="Event" message="ferumbras is about to make his way into the mortal realm. Run for your lives!" />
+  <announce delay="60000" type="Event" message="ferumbras has been summoned from hell to plague the lands of mortals once again." />
+  <!--Single Spawns-->
+  <singlespawn delay="60000" name="ferumbras" x="33003" y="31587" z="4" />
+  <!--Area Spawns-->
+</raid>

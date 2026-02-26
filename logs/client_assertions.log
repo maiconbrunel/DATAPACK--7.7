@@ -1,0 +1,264 @@
+----- 13/4/2016 23:42:37 - Test (189.101.53.236) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 100 010 100 020 010 000 000 000 000 000
+Last Packet: 039 007 010 150 060 000 016 050 000 000 100 220 127 146 123 007
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = 100), reason:
+Communication.cpp 1460: exception occurred (PlayerX = 32732) (PlayerY = 31634), reason:
+Communication.cpp 1437: exception occurred (xmin = 0) (ymin = 0), reason:
+Communication.cpp 1416: exception occurred (Type = 4597) (OldType = 0), reason:
+Objects.cpp 270: exception occurred (Type = 4597) (Flag = 5), reason:
+Objects.cpp 267: assertion failed (Type = 4597) (ObjectProperties->high() = 3134), reason:
+In(Type,ObjectProperties->low(),ObjectProperties->high())
+Wed Apr 13 23:40:13 2016
+Debug Assertion 7.72 Objects.cpp 267
+
+----- 1/1/2018 19:45:33 - Account Manager (192.168.0.8) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 109 131 106 180 109 030 109 103 109 102
+Last Packet: 187 000 109 127 126 046 124 007 001 126 126 046 124 007 104 153
+Player Position: [32383,31790,7]
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = 109), reason:
+Communication.cpp 1895: exception occurred, reason:
+Communication.cpp 1879: MoveCreature has been received for a coordinate where there is no creature anymore [bug0000017] (870, 0), reason:
+ sx: 8 sy: 6 sz: 0
+ Position: 1
+ zx: 7 zy: 6 zz: 0
+ dx: -1 dy: 0 dz: 0
+ abs_sx: 32383 abs_sy: 31790 abs_sz: 7
+ abs_zx: 32382 abs_zy: 31790 abs_zz: 7
+ Start Cylinder (1):  (100,0) (870,0) (99,268451021)
+ Start Cylinder (2):  (100,0) (870,0) (99,268451021)(-)(-)(-)(-)(-)(-)(-)
+ Destination Cylinder (1):  (870,0)
+ Destination Cylinder (2):  (870,0)(-)(-)(-)(-)(-)(-)(-)(-)(-)
+Mon Jan 01 19:45:18 2018
+Debug Assertion 7.72 Communication.cpp 1879
+
+----- 13/1/2018 15:32:38 - GM Bruno (192.168.0.8) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 105 109 030 109 109 108 163 180 106 106
+Last Packet: 096 001 109 113 126 218 125 007 001 112 126 218 125 007 105 113
+Player Position: [32369,32216,7]
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = 105), reason:
+Communication.cpp 1546: exception occurred (rx = 8) (ry = 8), reason:
+Communication.cpp 1416: exception occurred (Type = 0) (OldType = 98), reason:
+Communication.cpp 1401: client recieved field with type 0 (8,8,0)
+Thu Jan 11 19:03:09 2018
+Debug Assertion 7.72 Communication.cpp 1401
+
+----- 4/7/2018 23:34:21 - GM Bruno (177.193.119.125) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 142 180 030 106 108 030 109 102 109 102
+Last Packet: 027 000 180 016 012 000 047 110 101 119 116 121 112 101 032 051
+Player Position: [32363,32215,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 104), reason:
+MapWindow.cpp 1062: exception occurred (posx = 192) (posy = 128), reason:
+MapWindow.cpp 927: exception occurred, reason:
+Objects.cpp 484: exception occurred (Number = 300) (Flag = 24), reason:
+Container.h 178: index out of range (original i: 300, i: 299, min: 1, d: 254)
+Wed Jul 04 23:15:06 2018
+Debug Assertion 7.72 Container.h 178
+
+----- 4/7/2018 23:37:1 - GM Bruno (177.193.119.125) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 142 180 030 109 109 109 170 160 133 131
+Last Packet: 027 000 180 016 012 000 047 110 101 119 116 121 112 101 032 050
+Player Position: [32363,32215,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 104), reason:
+MapWindow.cpp 1062: exception occurred (posx = 224) (posy = 160), reason:
+MapWindow.cpp 987: exception occurred (i = 0) (Creatures[i]->OutfitType = 200), reason:
+MapWindow.cpp 1129: exception occurred (posx = 224) (posy = 160), reason:
+Objects.cpp 594: exception occurred (Number = 200), reason:
+Objects.cpp 241: assertion failed (PatternX = 3) (Entry.PatternWidth = 1), reason:
+In(PatternX,1,Entry.PatternWidth)
+Wed Jul 04 23:35:28 2018
+Debug Assertion 7.72 Objects.cpp 241
+
+----- 4/7/2018 23:39:55 - GM Bruno (177.193.119.125) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 142 180 109 109 142 180 109 030 142 180
+Last Packet: 039 000 109 114 126 220 125 007 002 113 126 220 125 007 180 016
+Player Position: [32364,32215,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 104), reason:
+MapWindow.cpp 1062: exception occurred (posx = 224) (posy = 160), reason:
+MapWindow.cpp 987: exception occurred (i = 0) (Creatures[i]->OutfitType = 143), reason:
+MapWindow.cpp 1129: exception occurred (posx = 224) (posy = 160), reason:
+Objects.cpp 594: exception occurred (Number = 143), reason:
+Objects.cpp 241: assertion failed (PatternX = 3) (Entry.PatternWidth = 1), reason:
+In(PatternX,1,Entry.PatternWidth)
+Wed Jul 04 23:38:30 2018
+Debug Assertion 7.72 Objects.cpp 241
+
+----- 4/7/2018 23:47:34 - Account Manager (177.193.119.125) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 142 180 030 109 109 109 106 109 030 109
+Last Packet: 027 000 180 016 012 000 047 110 101 119 116 121 112 101 032 050
+Player Position: [32362,32213,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 4515), reason:
+MapWindow.cpp 1062: exception occurred (posx = 224) (posy = 160), reason:
+MapWindow.cpp 987: exception occurred (i = 0) (Creatures[i]->OutfitType = 229), reason:
+MapWindow.cpp 1129: exception occurred (posx = 224) (posy = 160), reason:
+Objects.cpp 594: exception occurred (Number = 229), reason:
+Objects.cpp 241: assertion failed (PatternX = 3) (Entry.PatternWidth = 1), reason:
+In(PatternX,1,Entry.PatternWidth)
+Wed Jul 04 23:43:04 2018
+Debug Assertion 7.72 Objects.cpp 241
+
+----- 17/7/2018 17:24:12 - GM Bruno (192.168.0.8) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 109 109 109 181 109 170 181 109 131 160
+Last Packet: 012 000 109 097 125 218 125 007 001 096 125 218 125 007 051 051
+Player Position: [32097,32219,7]
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = -1), reason:
+Network.cpp 423: exception occurred, reason:
+Network.cpp 410: exception occurred, reason:
+Network.cpp 391: packet size does not fit to symmetric encryption (PacketSize = 10)
+Tue Jul 17 17:16:27 2018
+Debug Assertion 7.72 Network.cpp 391
+
+----- 18/7/2018 15:19:45 - Account Manager (192.168.0.8) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 000 000 000 000 000 000 000 000 000 000
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = -1), reason:
+Network.cpp 423: exception occurred, reason:
+Network.cpp 410: exception occurred, reason:
+Network.cpp 391: packet size does not fit to symmetric encryption (PacketSize = 10)
+Wed Jul 18 11:25:56 2018
+Debug Assertion 7.72 Network.cpp 391
+
+----- 18/7/2018 23:23:54 - Account Manager (177.193.119.125) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 106 109 109 030 109 109 109 109 109 030
+Last Packet: 038 000 106 096 126 049 124 007 097 000 000 000 000 000 126 004
+Player Position: [32360,31787,7]
+Player.cpp 383: exception occurred, reason:
+Network.cpp 885: exception occurred (ErrorCode = 0), reason:
+Control.cpp 1280: exception occurred (Type = -1), reason:
+Network.cpp 423: exception occurred, reason:
+Network.cpp 410: exception occurred, reason:
+Network.cpp 391: packet size does not fit to symmetric encryption (PacketSize = 10)
+Wed Jul 18 15:21:19 2018
+Debug Assertion 7.72 Network.cpp 391
+
+----- 15/8/2018 12:7:16 - Account Manager (177.193.119.125) -----
+
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 131 180 180 210 210 210 210 162 141 130
+Last Packet: 212 005 010 154 060 000 016 050 000 000 100 227 126 016 124 007
+Player Position: [32483,31760,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 4515), reason:
+MapWindow.cpp 1062: exception occurred (posx = 192) (posy = 128), reason:
+MapWindow.cpp 927: exception occurred, reason:
+Objects.cpp 484: exception occurred (Number = 65409) (Flag = 24), reason:
+Container.h 178: index out of range (original i: 65409, i: 65408, min: 1, d: 254)
+Wed Aug 15 12:05:57 2018
+Debug Assertion 7.72 Container.h 178
+
+----- 15/8/2018 12:8:23 - Account Manager (177.193.119.125) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 200 162 109 109 109 160 131 180 180 210
+Last Packet: 013 000 162 000 200 018 000 078 068 039 076 011 001 018 001 051
+Player Position: [32095,32218,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 16), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+DialogElements.cpp 911: exception occurred (Surface = 1), reason:
+graphics.cpp 1137: exception occurred (Surface = 1), reason:
+Objects.cpp 550: exception occurred (Number = 267), reason:
+Container.h 178: index out of range (original i: 267, i: 266, min: 1, d: 254)
+Wed Aug 15 12:07:54 2018
+Debug Assertion 7.72 Container.h 178
+
+----- 15/8/2018 12:12:43 - GM Bruno (177.193.119.125) -----
+Comment: 
+Windows Version: 6.2 build 9200 on 2
+Graphic Engine: 2
+Last Packet Types: 131 180 180 210 210 210 210 162 141 130
+Last Packet: 212 005 010 153 060 000 016 050 000 000 100 227 126 016 124 007
+Player Position: [32483,31760,7]
+Player.cpp 383: exception occurred, reason:
+Player.cpp 456: exception occurred, reason:
+Control.cpp 1560: exception occurred (Type = 0), reason:
+Control.cpp 366: exception occurred (Force?1:0 = 0), reason:
+MainWindow.cpp 127: exception occurred (Surface = 1), reason:
+GUI.cpp 1408: exception occurred (Surface = 1), reason:
+MapWindow.cpp 834: exception occurred (Surface = 1), reason:
+MapWindow.cpp 527: exception occurred (Obj = 4515), reason:
+MapWindow.cpp 1062: exception occurred (posx = 192) (posy = 128), reason:
+MapWindow.cpp 927: exception occurred, reason:
+Objects.cpp 484: exception occurred (Number = 65409) (Flag = 24), reason:
+Container.h 178: index out of range (original i: 65409, i: 65408, min: 1, d: 254)
+Wed Aug 15 12:12:07 2018
+Debug Assertion 7.72 Container.h 178
+

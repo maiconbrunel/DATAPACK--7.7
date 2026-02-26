@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creaturescripts>
+
+	<!-- Player Login -->
+	<event type="login" name="PlayerLogin" event="script" value="login.lua"/>
+
+	<!-- Player Death -->
+	<event type="death" name="mori" event="script" value="playerdeath.lua"/>
+
+	<!-- Player Advancement -->
+	<event type="advance" name="AdvanceSave" event="script" value="advancesave.lua"/>
+
+	<!-- Think-based Events -->
+	<event type="think" name="Idle" event="script" value="idle.lua"/>
+	<event type="think" name="SkullCheck" event="script" value="skullcheck.lua"/>
+
+	<!-- Guild & Channels -->
+	<event type="channeljoin" name="GuildEvents" event="script" value="guild.lua"/>
+
+	<!-- Mail System -->
+	<event type="mailreceive" name="Mail" event="script" value="mail.lua"/>
+
+	<!-- Bug Reports -->
+	<event type="reportbug" name="ReportBug" event="script" value="reportbug.lua"/>
+
+</creaturescripts>
