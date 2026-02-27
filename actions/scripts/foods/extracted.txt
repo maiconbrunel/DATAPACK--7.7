@@ -1,0 +1,60 @@
+===== FILE_START: banana_chocolate_shake.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+function onUse(player, item, fromPosition, target, toPosition)
+	doRemoveItem(item.uid, 1)
+	doCreatureSay(player, "You don't really know what this did to you, but suddenly you feel very happy.", TALKTYPE_MONSTER)
+	doSendMagicEffect(getThingPos(player), CONST_ME_HEARTS)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: blessed_steak.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	doCreatureAddMana(player, getCreatureMaxMana(player) - getCreatureMana(player))
+	doRemoveItem(item.uid, 1)
+
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: carrot_cake.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+local condition = createConditionObject(CONDITION_ATTRIBUTES)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 60 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_SKILL_DISTANCE, 10)
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	if(not doAddCondition(player, condition)) then
+		return true
+	end
+
+	doRemoveItem(item.uid, 1)
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+

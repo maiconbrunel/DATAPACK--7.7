@@ -1,0 +1,119 @@
+===== FILE_START: coconut_shrimp_bake.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+local HOTD = {5461, 12541}
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	local helmet = getPlayerSlotItem(player, CONST_SLOT_HEAD)
+	if(not isInArray(HOTD, helmet.itemid) or not isUnderWater(player)) then
+		player:sendTextMessage, MESSAGE_STATUS_SMALL, "You should only eat this dish when wearing a helmet of the deep and walking underwater.")
+		return true
+	end
+
+	local itemInfo = getItemInfo(HOTD[2])
+	if(helmet.itemid ~= HOTD[2]) then
+		doTransformItem(helmet.uid, HOTD[2])
+		doChangeSpeed(player, itemInfo.abilities.speed)
+	end
+
+	doItemSetAttribute(helmet.uid, "duration", itemInfo.decayTime * 1000)
+	doRemoveItem(item.uid, 1)
+
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: demonic_candy_ball.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+local condition = {}
+
+local conditions = {
+	CONDITION_ATTRIBUTES,
+	CONDITION_HASTE,
+	CONDITION_LIGHT,
+	CONDITION_INVISIBLE
+}
+
+local attributes = {
+	CONDITION_PARAM_SKILL_SHIELD,
+	CONDITION_PARAM_SKILL_DISTANCE,
+	CONDITION_PARAM_SKILL_MELEE,
+	CONDITION_PARAM_STAT_MAGICLEVEL
+}
+
+condition[CONDITION_HASTE] = createConditionObject(CONDITION_HASTE)
+setConditionParam(condition[CONDITION_HASTE], CONDITION_PARAM_TICKS, 60 * 60 * 1000)
+setConditionParam(condition[CONDITION_HASTE], CONDITION_PARAM_SUBID, 2)
+setConditionParam(condition[CONDITION_HASTE], CONDITION_PARAM_SPEED, 60)
+
+condition[CONDITION_ATTRIBUTES] = createConditionObject(CONDITION_ATTRIBUTES)
+setConditionParam(condition[CONDITION_ATTRIBUTES], CONDITION_PARAM_TICKS, 60 * 60 * 1000)
+
+condition[CONDITION_LIGHT] = createConditionObject(CONDITION_LIGHT)
+setConditionParam(condition[CONDITION_LIGHT], CONDITION_PARAM_LIGHT_LEVEL, 9)
+setConditionParam(condition[CONDITION_LIGHT], CONDITION_PARAM_LIGHT_COLOR, 215)
+setConditionParam(condition[CONDITION_LIGHT], CONDITION_PARAM_TICKS, 60 * 60 * 1000)
+
+condition[CONDITION_INVISIBLE] = createConditionObject(CONDITION_INVISIBLE)
+setConditionParam(condition[CONDITION_INVISIBLE], CONDITION_PARAM_TICKS, 10 * 60 * 1000)
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	local random_condition = conditions[math.random(#conditions)]
+	if(random_condition == CONDITION_ATTRIBUTES) then
+		setConditionParam(condition[CONDITION_ATTRIBUTES], attributes[math.random(#attributes)], math.random(3, 15))
+	end
+
+	if(not doAddCondition(player, condition[random_condition])) then
+		return true
+	end
+
+	doRemoveItem(item.uid, 1)
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: filled_jalapeno_peppers.lua =====
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+local condition = createConditionObject(CONDITION_HASTE)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 60 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_SPEED, 40)
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	if(not doAddCondition(player, condition)) then
+		return true
+	end
+
+	doRemoveItem(item.uid, 1)
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+
