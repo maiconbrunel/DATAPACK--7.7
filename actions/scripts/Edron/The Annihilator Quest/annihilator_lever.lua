@@ -1,131 +1,133 @@
--- Annihilator by Shawak v2.1
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Annihilator Switch (full party check + summon + teleport)
+-- Notes: Fully fixed, rewritten for TFS 1.5
 
-        -- CONFIG --
+local room = {
+        fromX = 33219, fromY = 31657, fromZ = 13,
+        toX   = 33222, toY   = 31661, toZ   = 13
+}
 
-        local room = {     -- room with demons
-        fromX = 33219,
-        fromY = 31657,
-        fromZ = 13,
-        --------------
-        toX = 33222,
-        toY = 31661,
-        toZ = 13
-        }
+local monsterPositions = {
+        {pos = Position(33219,31657,13), monster = "Demon"},
+        {pos = Position(33221,31657,13), monster = "Demon"},
+        {pos = Position(33220,31661,13), monster = "Demon"},
+        {pos = Position(33222,31661,13), monster = "Demon"},
+        {pos = Position(33223,31659,13), monster = "Demon"},
+        {pos = Position(33224,31659,13), monster = "Demon"}
+}
 
-        local monster_pos = {
-        [1] = {pos = {33219, 31657, 13}, monster = "Demon"},
-        [2] = {pos = {33221, 31657, 13}, monster = "Demon"},
-        [3] = {pos = {33220, 31661, 13}, monster = "Demon"},
-        [4] = {pos = {33222, 31661, 13}, monster = "Demon"},
-        [5] = {pos = {33223, 31659, 13}, monster = "Demon"},
-        [6] = {pos = {33224, 31659, 13}, monster = "Demon"}
-        }
+local playersPositions = {
+        Position(33222,31671,13),
+        Position(33223,31671,13),
+        Position(33224,31671,13),
+        Position(33225,31671,13)
+}
 
-        local players_pos = {
-        {x = 33222, y =31671, z = 13, stackpos = 253},
-        {x = 33223, y =31671, z = 13, stackpos = 253},
-        {x = 33224, y =31671, z = 13, stackpos = 253},
-        {x = 33225, y =31671, z = 13, stackpos = 253}
-        }
+local newPositions = {
+        Position(33219,31659,13),
+        Position(33220,31659,13),
+        Position(33221,31659,13),
+        Position(33222,31659,13)
+}
 
-        local new_player_pos = {
-        {x = 33219, y = 31659, z = 13},
-        {x = 33220, y = 31659, z = 13},
-        {x = 33221, y = 31659, z = 13},
-        {x = 33222, y = 31659, z = 13}
-        }
+local requiredLevel = 100
 
-        local playersOnly = "yes"
-        local questLevel = 100
-
-        ------------------------------------------------------
-        --- CONFIG END ---------------------------------------
-        ------------------------------------------------------
-
-function onUse(cid, item, fromPosition, itemEx, toPosition)
-	local all_ready, monsters, player, level = 0, 0, {}, 0
-	if item.uid == 10009 then
-        if item.itemid == 1945 then
-                for i = 1, #players_pos do
-                        table.insert(player, 0)
-                end
-                for i = 1, #players_pos do
-                        player[i] = getThingfromPos(players_pos[i])
-                        if player[i].itemid > 0 then
-                                if string.lower(playersOnly) == "yes" then
-                                        if isPlayer(player[i].uid) == TRUE then
-                                                all_ready = all_ready+1
-                                        else
-                                                monsters = monsters+1
-                                        end
-                                else
-                                        all_ready = all_ready+1
-                                end
-                        end
-                end
-                if all_ready == #players_pos then
-                        for i = 1, #players_pos do
-                                player[i] = getThingfromPos(players_pos[i])
-                                if isPlayer(player[i].uid) == TRUE then
-                                        if getPlayerLevel(player[i].uid) >= questLevel then
-                                                level = level+1
-                                        end
-                                else
-                                        level = level+1
-                                end
-                        end
-                        if level == #players_pos then
-                                if string.lower(playersOnly) == "yes" and monsters == 0 or string.lower(playersOnly) == "no" then
-                                        for _, area in pairs(monster_pos) do
-                                                        doSummonCreature(area.monster,{x=area.pos[1],y=area.pos[2],z=area.pos[3]})
-                                        end
-                                        for i = 1, #players_pos do
-                                                doSendMagicEffect(players_pos[i], CONST_ME_POFF)
-                                                doTeleportThing(player[i].uid, new_player_pos[i])
-                                                doSendMagicEffect(new_player_pos[i], CONST_ME_ENERGYAREA)
-                                                doTransformItem(item.uid,1946)
-                                        end
-                                else
-                                        doPlayerSendTextMessage(cid,19,"Only players can do this quest.")
-                                end
-                        else
-                                doPlayerSendTextMessage(cid,19,"All Players have to be level "..questLevel.." to do this quest.")
-                        end
-                else
-                        doPlayerSendCancel(cid,"You need "..table.getn(players_pos).." players to do this quest.")
-                end
-        elseif item.itemid == 1946 then
-                local player_room = 0
-                for x = room.fromX, room.toX do
-                        for y = room.fromY, room.toY do
-                                for z = room.fromZ, room.toZ do
-                                        local pos = {x=x, y=y, z=z,stackpos = 253}
-                                        local thing = getThingfromPos(pos)
-                                        if thing.itemid > 0 then
-                                                if isPlayer(thing.uid) == TRUE then
-                                                        player_room = player_room+1
-                                                end
-                                        end
-                                end
-                        end
-                end
-                if player_room >= 1 then
-                        doPlayerSendTextMessage(cid,19,"There is already a team in the quest room.")          
-                elseif player_room == 0 then
-                        for x = room.fromX, room.toX do
-                                for y = room.fromY, room.toY do
-                                        for z = room.fromZ, room.toZ do
-                                                local pos = {x=x, y=y, z=z,stackpos = 253}
-                                                local thing = getThingfromPos(pos)
-                                                if thing.itemid > 0 then
-                                                        doRemoveCreature(thing.uid)
-                                                end
-                                        end
-                                end
-                        end
-                        doTransformItem(item.uid,1945)
-                end
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10009 then
+        return true
         end
-	end	
-        return TRUE
-end
+
+        ---------------------------------------------------------------------
+        -- LEVER FORWARD (1945) → START QUEST
+        ---------------------------------------------------------------------
+        if item.itemid == 1945 then
+                local party = {}
+
+                -- Check players on tiles
+                for i = 1, #playersPositions do
+                        local tile = Tile(playersPositions[i])
+                        local creature = tile and tile:getTopCreature()
+                        if creature and creature:isPlayer() then
+                                table.insert(party, creature)
+                                end
+                                end
+
+                                if #party < #playersPositions then
+                                        player:sendCancelMessage("You need 4 players to start the quest.")
+                                        return true
+                                        end
+
+                                        -- Check levels
+                                        for _, p in ipairs(party) do
+                                                if p:getLevel() < requiredLevel then
+                                                        player:sendCancelMessage("All players must be level " .. requiredLevel .. " or higher.")
+                                                        return true
+                                                        end
+                                                        end
+
+                                                        -- Summon demons
+                                                        for _, entry in ipairs(monsterPositions) do
+                                                                Game.createMonster(entry.monster, entry.pos)
+                                                                end
+
+                                                                -- Teleport players
+                                                                for i = 1, #party do
+                                                                        party[i]:getPosition():sendMagicEffect(CONST_ME_POFF)
+                                                                        party[i]:teleportTo(newPositions[i], true)
+                                                                        newPositions[i]:sendMagicEffect(CONST_ME_ENERGYAREA)
+                                                                        end
+
+                                                                        item:transform(1946)
+                                                                        return true
+                                                                        end
+
+                                                                        ---------------------------------------------------------------------
+                                                                        -- LEVER BACKWARD (1946) → RESET ROOM
+                                                                        ---------------------------------------------------------------------
+                                                                        if item.itemid == 1946 then
+                                                                                local hasPlayersInside = false
+
+                                                                                -- Scan room
+                                                                                for x = room.fromX, room.toX do
+                                                                                        for y = room.fromY, room.toY do
+                                                                                                for z = room.fromZ, room.toZ do
+                                                                                                        local tile = Tile(Position(x,y,z))
+                                                                                                        if tile then
+                                                                                                                local creature = tile:getTopCreature()
+                                                                                                                if creature and creature:isPlayer() then
+                                                                                                                        hasPlayersInside = true
+                                                                                                                        break
+                                                                                                                        end
+                                                                                                                        end
+                                                                                                                        end
+                                                                                                                        if hasPlayersInside then break end
+                                                                                                                                end
+                                                                                                                                if hasPlayersInside then break end
+                                                                                                                                        end
+
+                                                                                                                                        if hasPlayersInside then
+                                                                                                                                                player:sendTextMessage(MESSAGE_INFO_DESCR, "There is already a team in the quest room.")
+                                                                                                                                                return true
+                                                                                                                                                end
+
+                                                                                                                                                -- Clean room (monsters only)
+                                                                                                                                                for x = room.fromX, room.toX do
+                                                                                                                                                        for y = room.fromY, room.toY do
+                                                                                                                                                                for z = room.fromZ, room.toZ do
+                                                                                                                                                                        local tile = Tile(Position(x,y,z))
+                                                                                                                                                                        if tile then
+                                                                                                                                                                                local creature = tile:getTopCreature()
+                                                                                                                                                                                if creature and creature:isMonster() then
+                                                                                                                                                                                        creature:remove()
+                                                                                                                                                                                        end
+                                                                                                                                                                                        end
+                                                                                                                                                                                        end
+                                                                                                                                                                                        end
+                                                                                                                                                                                        end
+
+                                                                                                                                                                                        item:transform(1945)
+                                                                                                                                                                                        return true
+                                                                                                                                                                                        end
+
+                                                                                                                                                                                        return true
+                                                                                                                                                                                        end

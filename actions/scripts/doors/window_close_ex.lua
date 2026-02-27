@@ -1,11 +1,16 @@
--- By Ricky Mesny
--- http://otfans.net/showthread.php?t=96955
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Window close (house check)
+-- Notes: Fixed syntax, API, and fromPosition usage
 
-function onUse(cid, item, frompos, item2, topos)
-	if not(House.getHouseByPos(frompos)) then
-		return FALSE
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate house position
+local house = House.getHouseByPos(fromPosition)
+if not house then
+	return false
 	end
 
-	doTransformItem(item.uid, item.itemid-1145)
-	return TRUE
-end
+	-- Transform window to closed state
+	item:transform(item.itemid - 1145)
+
+	return true
+	end

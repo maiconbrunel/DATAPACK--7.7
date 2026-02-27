@@ -1,18 +1,26 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 10007 then
-  queststatus = getPlayerStorageValue(cid,10007)
-  if queststatus == -1 and getPlayerAccess(cid) == 0 then
-   doPlayerSendTextMessage(cid,22,"You have found a silver amulet.")
-   doPlayerAddItem(cid, 2170, 1)
-   setPlayerStorageValue(cid,10007,1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Chest reward (silver amulet)
+-- Notes: Minimal conversion + syntax fixes
 
-  else
-   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10007 then
+  return false
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- Validate first-time reward
+  local storage = 10007
+  if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    -- Give reward message
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a silver amulet.")
+
+    -- Give reward
+    player:addItem(2170, 1)
+
+    -- Mark quest as completed
+    player:setStorageValue(storage, 1)
+    else
+      player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+      end
+
+      return true
+      end

@@ -1,18 +1,25 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 1015 then
-  queststatus = getPlayerStorageValue(cid,1015)
-  if queststatus == -1 and getPlayerAccess(cid) == 0 then
-   doPlayerSendTextMessage(cid,22,"You have found a triple ultimate healing rune.")
-   doPlayerAddItem(cid, 2273, 3)
-   setPlayerStorageValue(cid,1015,1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Chest reward (Triple UH)
+-- Notes: Fixed broken syntax and modernized
 
-  else
-   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 1015 then
+  return false
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- Validate first-time reward
+  local storage = 1015
+  if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a triple ultimate healing rune.")
+
+    -- Give reward
+    player:addItem(2273, 3)
+
+    -- Mark quest as completed
+    player:setStorageValue(storage, 1)
+    else
+      player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+      end
+
+      return true
+      end

@@ -1,17 +1,30 @@
-function onUse(cid, item, frompos, item2, topos)
-	-- Are we on pz?
-	local isPz = (getTilePzInfo(frompos) == 1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Door/Window interaction
+-- Notes: Auto-corrected and fixed
 
-	-- Get the tile to move the things on the door to
-	local nextTile = {x=frompos.x, y=frompos.y+1, z=frompos.z}
-	if(isPz and getTilePzInfo(nextTile) == 0) then
-		nextTile.y = frompos.y-1
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate tile
+local tile = fromPosition:getTile()
+if not tile then
+	return true
 	end
 
-	-- Move all moveable things to the next tile
-	doRelocate(frompos, nextTile)
+	-- Are we on PZ?
+	local isPz = tile:hasFlag(TILESTATE_PROTECTIONZONE)
 
-	-- Transform the door
-	doTransformItem(item.uid, item.itemid-1)
-	return TRUE
-end
+	-- Compute next tile
+	local nextTile = Position(fromPosition.x, fromPosition.y + 1, fromPosition.z)
+
+	-- Check PZ for movement direction
+	if isPz and not nextTile:getTile():hasFlag(TILESTATE_PROTECTIONZONE) then
+		nextTile = Position(fromPosition.x, fromPosition.y - 1, fromPosition.z)
+		end
+
+		-- Move all movable things
+		fromPosition:relocateTo(nextTile)
+
+		-- Transform the door
+		item:transform(item.itemid - 1)
+
+		return true
+		end

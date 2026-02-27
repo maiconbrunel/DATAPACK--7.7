@@ -1,18 +1,25 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 10017 then
-  queststatus = getPlayerStorageValue(cid,10017)
-  if queststatus == -1 and getPlayerAccess(cid) == 0 then
-   doPlayerSendTextMessage(cid,22,"You have found a guardian halberd.")
-   doPlayerAddItem(cid, 2427, 1)
-   setPlayerStorageValue(cid,10017,1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Guardian Halberd chest
+-- Notes: Minimal conversion
 
-  else
-   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10017 then
+  return false
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- First-time reward check
+  local storage = 10017
+  if player:getStorageValue(storage) < 1 and player:getGroup():getAccess() == false then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a guardian halberd.")
+
+    -- Give reward
+    player:addItem(2427, 1)
+
+    -- Mark quest as completed
+    player:setStorageValue(storage, 1)
+    else
+      player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+      end
+
+      return true
+      end

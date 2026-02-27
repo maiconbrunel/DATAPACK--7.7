@@ -1,24 +1,41 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Gate + teleport lever
+-- Notes: Cleaned structure, fixed nesting, corrected logic
 
-local gatepos = {x=33314, y=31592, z=15, stackpos=1}
-local telepos = {x=33316, y=31591, z=15, stackpos=1}
-local gopos = {x=33321, y=31591, z=14, stackpos=1}
+function onUse(player, item, fromPosition, target, toPosition)
+-- Gate / teleport positions
+local gatePos = Position(33314, 31592, 15)
+local telePos = Position(33316, 31591, 15)
+local goPos   = Position(33321, 31591, 14)
 
-local getgate = getThingfromPos(gatepos)
-local gettele = getThingfromPos(telepos)
+-- Fetch items
+local gateItem = Tile(gatePos):getItemById(1355)
+local teleportItem = Tile(telePos):getItemById(1387)
 
-    if item.uid == 10002 and item.itemid == 1945 and getgate.itemid == 1355 then
-        doRemoveItem(getgate.uid,1)
-        doTransformItem(item.uid,item.itemid+1)
-        doCreateTeleport(1387, gopos, telepos)
-    elseif item.uid == 10002 and item.itemid == 1946 and getgate.itemid == 0 then
-        doCreateItem(1355,1,gatepos)
-        doTransformItem(item.uid,item.itemid-1)
-        doRemoveItem(gettele.uid,1)
-    else
-        doPlayerSendCancel(cid,"Sorry, not possible.")
-    end
-    
-return TRUE
-end
+-- Lever ON (open gate + create teleport)
+if item.uid == 10002 and item.itemid == 1945 then
+    if gateItem then
+        gateItem:remove(1)
+        end
+        item:transform(1946)
+        Game.createTeleport(1387, goPos, telePos)
+        return true
+        end
+
+        -- Lever OFF (restore gate + remove teleport)
+        if item.uid == 10002 and item.itemid == 1946 then
+            if not gateItem then
+                Game.createItem(1355, 1, gatePos)
+                end
+                item:transform(1945)
+
+                if teleportItem then
+                    teleportItem:remove()
+                    end
+                    return true
+                    end
+
+                    -- Invalid state
+                    player:sendCancelMessage("Sorry, not possible.")
+                    return true
+                    end

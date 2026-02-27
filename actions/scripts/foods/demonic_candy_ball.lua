@@ -1,3 +1,7 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
 local condition = {}
 
 local conditions = {
@@ -30,7 +34,7 @@ setConditionParam(condition[CONDITION_LIGHT], CONDITION_PARAM_TICKS, 60 * 60 * 1
 condition[CONDITION_INVISIBLE] = createConditionObject(CONDITION_INVISIBLE)
 setConditionParam(condition[CONDITION_INVISIBLE], CONDITION_PARAM_TICKS, 10 * 60 * 1000)
 
-function onUse(cid, item, fromPosition, itemEx, toPosition)
+function onUse(player, item, fromPosition, target, toPosition)
 	local food = SPECIAL_FOODS[item.itemid]
 	if(food == nil) then
 		return false
@@ -41,11 +45,11 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		setConditionParam(condition[CONDITION_ATTRIBUTES], attributes[math.random(#attributes)], math.random(3, 15))
 	end
 
-	if(not doAddCondition(cid, condition[random_condition])) then
+	if(not doAddCondition(player, condition[random_condition])) then
 		return true
 	end
 
 	doRemoveItem(item.uid, 1)
-	doCreatureSay(cid, food, TALKTYPE_MONSTER)
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
 	return true
 end

@@ -1,18 +1,25 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 10004 then
-  queststatus = getPlayerStorageValue(cid,10004)
-  if queststatus == -1 and getPlayerAccess(cid) == 0 then
-   doPlayerSendTextMessage(cid,22,"You have found a demon shield.")
-   item_uid = doPlayerAddItem(cid,2520,1)
-   setPlayerStorageValue(cid,10004,1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Demon Shield chest
+-- Notes: Fixed broken API calls, corrected message syntax, modernized storage
 
-  else
-   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10004 then
+  return false
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- Validate first-time reward
+  local storage = 10004
+  if player:getStorageValue(storage) < 1 and player:getGroup():getAccess() == false then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a demon shield.")
+
+    -- Give reward
+    player:addItem(2520, 1)
+
+    -- Mark quest as completed
+    player:setStorageValue(storage, 1)
+    else
+      player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+      end
+
+      return true
+      end

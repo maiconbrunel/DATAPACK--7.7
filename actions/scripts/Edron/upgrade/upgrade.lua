@@ -1,263 +1,80 @@
--- Script by BomaN^
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Tiered reward platform based on crystal coins
+-- Notes: Heavy optimization + API modernization
 
-local newpos = {x=33223, y=31807, z=8, stackpos=255}
-local plats = {x=33223, y=31804, z=8, stackpos=255}
+local newPos = Position(33223, 31807, 8)
+local oldPos = Position(33223, 31809, 8)
+local plats  = Position(33223, 31804, 8)
 
-local pos1 = {x=33222, y=31807, z=8, stackpos=255}
-local pos2 = {x=33224, y=31807, z=8, stackpos=255}
-local pos3 = {x=33222, y=31806, z=8, stackpos=255}
-local pos4 = {x=33224, y=31806, z=8, stackpos=255}
-local pos5 = {x=33222, y=31805, z=8, stackpos=255}
-local pos6 = {x=33224, y=31805, z=8, stackpos=255}
-local pos7 = {x=33223, y=31804, z=8, stackpos=255}
+local effects = {
+	Position(33222, 31807, 8),
+	Position(33224, 31807, 8),
+	Position(33222, 31806, 8),
+	Position(33224, 31806, 8),
+	Position(33222, 31805, 8),
+	Position(33224, 31805, 8),
+	Position(33223, 31804, 8)
+}
 
-local oldpos = {x=33223, y=31809, z=8, stackpos=255}
+-- reward table (minCoins = {itemId})
+local rewards = {
+	{1000, 2431},
+	{900, 2432},
+	{800, 2433},
+	{700, 2432},
+	{600, 2432},
+	{500, 2432},
+	{400, 2432},
+	{350, 2432},
+	{300, 2432},
+	{250, 2415},
+	{200, 2432},
+	{150, 2432},
+	{100, 2432},
+	{70, 2432},
+	{60, 2432},
+	{50, 2418},
+	{40, 2406},
+	{30, 2407},
+	{20, 2408},
+	{10, 2409},
+	{1, 2411},
+}
 
+local function sendEffects()
+for _, pos in ipairs(effects) do
+	pos:sendMagicEffect(15)
+	end
+	end
 
+	function onUse(player, item, fromPosition, target, toPosition)
+	if item.uid ~= 10024 then
+		return false
+		end
 
+		local coins = player:getItemCount(2157)
+		if coins < 1 then
+			player:teleportTo(oldPos)
+			oldPos:sendMagicEffect(2)
+			return true
+			end
 
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 10024 then
-  if getPlayerItemCount(cid,2157) >= 1000 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,1000)
-		doCreateItem(2431,1,plats)		
-		doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)	
-		doSendMagicEffect(pos3,15)		
-		doSendMagicEffect(pos4,15)		
-		doSendMagicEffect(pos5,15)		
-		doSendMagicEffect(pos6,15)		
-		doSendMagicEffect(pos7,15)
-		elseif getPlayerItemCount(cid,2157) >= 900 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,900)
-		doCreateItem(2432,1,plats)
-				doSendMagicEffect(pos1,15)
-				doSendMagicEffect(pos2,15)
-				doSendMagicEffect(pos3,15)
-				doSendMagicEffect(pos4,15)
-				doSendMagicEffect(pos5,15)
-				doSendMagicEffect(pos6,15)
-				doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 800 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,800)
-	   doCreateItem(2433,1,plats)	
-			doSendMagicEffect(pos1,15)
-			doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 700 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,700)
-	   doCreateItem(2432,1,plats)
-			doSendMagicEffect(pos1,15)
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 600 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,600)
-	   doCreateItem(2432,1,plats)
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 500 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,500)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 400 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,400)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 350 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,350)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 300 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,300)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 250 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,250)
-	   		doCreateItem(2415,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 200 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,200)
-	   doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 150 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,150)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)	
-			doSendMagicEffect(pos3,15)		
-			doSendMagicEffect(pos4,15)		
-			doSendMagicEffect(pos5,15)		
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 100 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,100)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)		
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)		
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 70 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,70)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 60 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,60)
-	   		doCreateItem(2432,1,plats)	
-			doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)	
-			doSendMagicEffect(pos3,15)		
-			doSendMagicEffect(pos4,15)		
-			doSendMagicEffect(pos5,15)		
-			doSendMagicEffect(pos6,15)		
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 50 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,50)
-	   		doCreateItem(2418,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 40 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,40)
-	   		doCreateItem(2406,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 30 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,30)
-	   		doCreateItem(2407,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 20 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,20)
-	   		doCreateItem(2408,1,plats)	
-			doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)		
-			doSendMagicEffect(pos4,15)		
-			doSendMagicEffect(pos5,15)		
-			doSendMagicEffect(pos6,15)		
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 10 then
-				doTeleportThing(cid,newpos)
-				doPlayerRemoveItem(cid,2157,10)
-	   		doCreateItem(2409,1,plats)		
-			doSendMagicEffect(pos1,15)		
-		doSendMagicEffect(pos2,15)	
-			doSendMagicEffect(pos3,15)		
-			doSendMagicEffect(pos4,15)		
-			doSendMagicEffect(pos5,15)		
-			doSendMagicEffect(pos6,15)		
-			doSendMagicEffect(pos7,15)
-	   	elseif getPlayerItemCount(cid,2157) >= 1 then
-		doTeleportThing(cid,newpos)
-		doPlayerRemoveItem(cid,2157,1)
-	   		doCreateItem(2411,1,plats)	
-			doSendMagicEffect(pos1,15)	
-		doSendMagicEffect(pos2,15)
-			doSendMagicEffect(pos3,15)	
-			doSendMagicEffect(pos4,15)	
-			doSendMagicEffect(pos5,15)	
-			doSendMagicEffect(pos6,15)	
-			doSendMagicEffect(pos7,15)
+			for _, data in ipairs(rewards) do
+				local requiredCoins = data[1]
+				local rewardItem = data[2]
 
-			
-  else
-   doTeleportThing(cid,oldpos)
-   doSendMagicEffect(oldpos,2)
-  end
-else
-  return 0
-end
-return 1
-end
+				if coins >= requiredCoins then
+					player:removeItem(2157, requiredCoins)
 
+					player:teleportTo(newPos)
+					newPos:sendMagicEffect(CONST_ME_TELEPORT)
+
+					Game.createItem(rewardItem, 1, plats)
+					sendEffects()
+
+					return true
+					end
+					end
+
+					return true
+					end

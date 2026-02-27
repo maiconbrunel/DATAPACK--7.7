@@ -1,3 +1,7 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
 local FOODS, MAX_FOOD = {
 	[2328] = {84, "Gulp."},  [2362] = {48, "Yum."}, [2666] = {180, "Munch."}, [2667] = {144, "Munch."},
 	[2668] = {120, "Mmmm."}, [2669] = {204, "Munch."}, [2670] = {48, "Gulp."}, [2671] = {360, "Chomp."},
@@ -12,21 +16,21 @@ local FOODS, MAX_FOOD = {
 	[2796] = {300, "Crunch."}
 }, 1200
 
-function onUse(cid, item, fromPosition, itemEx, toPosition)
+function onUse(player, item, fromPosition, target, toPosition)
 	local food = FOODS[item.itemid]
 	if(food == nil) then
 		return false
 	end
 
 	local size = food[1]
-	if(getPlayerFood(cid) + size > MAX_FOOD) then
-		doPlayerSendCancel(cid, "You are full.")
+	if(getPlayerFood(player) + size > MAX_FOOD) then
+		doPlayerSendCancel(player, "You are full.")
 		return true
 	end
 
-	doPlayerFeed(cid, size)
+	doPlayerFeed(player, size)
 	doRemoveItem(item.uid, 1)
 
-	doCreatureSay(cid, food[2], TALKTYPE_MONSTER)
+	doCreatureSay(player, food[2], TALKTYPE_MONSTER)
 	return true
 end

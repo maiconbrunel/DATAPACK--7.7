@@ -1,18 +1,24 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-if item.uid == 9025 then
-  queststatus = getPlayerStorageValue(cid,9025)
-  if queststatus == -1 then
-   doPlayerSendTextMessage(cid,22,"You have found a family brooch.")
-   item_uid = doPlayerAddItem(cid,2318,1)
-   setPlayerStorageValue(cid,9025,1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Quest chest - family brooch
+-- Notes: Storage check, reward, message
 
-  else
-   doPlayerSendTextMessage(cid,22,"The coffin is empty.")
+local UNIQUE_ID = 9025
+local STORAGE = 9025
+local REWARD_ITEM = 2318 -- family brooch
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= UNIQUE_ID then
+  return true
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- Validate storage
+  if player:getStorageValue(STORAGE) <= 0 then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a family brooch.")
+    player:addItem(REWARD_ITEM, 1) -- Give reward
+    player:setStorageValue(STORAGE, 1) -- Mark quest as completed
+    else
+      player:sendTextMessage(MESSAGE_INFO_DESCR, "The coffin is empty.")
+      end
+
+      return true
+      end

@@ -1,25 +1,41 @@
--- Player with storage value of the item's actionid set to 1 can open
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Door/Window interaction
+-- Notes: Auto-converted and fixed
 
-function onUse(cid, item, frompos, item2, topos)
-	if(item.actionid == 0) then
-		-- Make it a normal door
-		doTransformItem(item.uid, item.itemid+1)
-		return TRUE
+function onUse(player, item, fromPosition, target, toPosition)
+-- Make it a normal door if actionid is 0
+if item.actionid == 0 then
+	-- Transform to the next door state
+	item:transform(item.itemid + 1)
+	return true
 	end
 
-	local canEnter = (getPlayerStorageValue(cid, item.actionid) == 1)
-	if not(canEnter) then
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "The door is sealed against unwanted intruders.")
-		return TRUE
-	end
+	-- Validate player storage
+	local storageValue = player:getStorageValue(item.actionid)
+	local canEnter = (storageValue == 1)
 
-	doTransformItem(item.uid, item.itemid+1)
-	local canGo = (queryTileAddThing(cid, frompos, bit.bor(2, 4)) == RETURNVALUE_NOERROR) --Veryfies if the player can go, ignoring blocking things
-	if not(canGo) then
-		return FALSE
-	end
+	if not canEnter then
+		player:sendTextMessage(MESSAGE_INFO_DESCR, "The door is sealed against unwanted intruders.")
+		return true
+		end
 
-	local dir = getDirectionTo(getPlayerPosition(cid), frompos)
-	doMoveCreature(cid, dir)
-	return TRUE
-end
+		-- Open door
+		item:transform(item.itemid + 1)
+
+		-- Validate if player can move to door tile
+		local tile = Tile(fromPosition)
+		if not tile then
+			return false
+			end
+
+			-- Validate walkability
+			if tile:queryAdd(player) ~= RETURNVALUE_NOERROR then
+				return false
+				end
+
+				-- Move player
+				local dir = player:getPosition():getDirectionTo(fromPosition)
+				player:move(dir)
+
+				return true
+				end

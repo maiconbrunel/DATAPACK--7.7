@@ -1,48 +1,69 @@
--- ActionIDs:
--- 1001~1999: Level doors(level is actionID-1000)
--- 2001~2008: Vocation doors(voc is ActionID-2000. 1:Sorcerer, 2:Druid, 3:Paladin, 4:Knight, 5:MS, 6:ED, 7:RP, 8:EK)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Door/Window interaction (level & vocation doors)
+-- Notes: Fully corrected and modernized
 
-function onUse(cid, item, frompos, item2, topos)
-    reqlevel = item.actionid - 1000
-	local isLevelDoor = (item.actionid >= 1001 and item.actionid <= 1999)
-	local isVocationDoor = (item.actionid >= 2001 and item.actionid <= 2008)
+function onUse(player, item, fromPosition, target, toPosition)
+local action = item.actionid
 
-	if not(isLevelDoor or isVocationDoor) then
-		-- Make it a normal door
-		doTransformItem(item.uid, item.itemid+1)
-		return TRUE
+-- Identify door type
+local isLevelDoor = (action >= 1001 and action <= 1999)
+local isVocationDoor = (action >= 2001 and action <= 2008)
+
+-- Not a special door → normal door behavior
+if not (isLevelDoor or isVocationDoor) then
+	item:transform(item.itemid + 1)
+	return true
 	end
 
 	local canEnter = true
-	if(isLevelDoor and getPlayerLevel(cid) < (item.actionid-1000)) then
-		canEnter = false
-	end
 
-	if(isVocationDoor) then
-		local doorVoc = item.actionid-2000
-		if (doorVoc == 1 and not(isSorcerer(cid))) or
-		   (doorVoc == 2 and not(isDruid(cid)))    or
-		   (doorVoc == 3 and not(isPaladin(cid)))  or
-		   (doorVoc == 4 and not(isKnight(cid)))   or
-		   (doorVoc ~= getPlayerVocation(cid))     then
+	----------------------------------------------------------------------
+	-- Level Door
+	----------------------------------------------------------------------
+	if isLevelDoor then
+		local reqLevel = action - 1000
+		if player:getLevel() < reqLevel then
 			canEnter = false
-		end
-	end
+			end
+			end
 
-	if not(canEnter) then
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Only the worthy may pass.")
-		return TRUE
-	end
-    
-	if getPlayerLevel(cid) >= reqlevel then
-	doTransformItem(item.uid, item.itemid+1)
-	local canGo = (queryTileAddThing(cid, frompos, bit.bor(2, 4)) == RETURNVALUE_NOERROR) --Veryfies if the player can go, ignoring blocking things
-	if not(canGo) then
-		return FALSE
-	end
+			----------------------------------------------------------------------
+			-- Vocation Door
+			----------------------------------------------------------------------
+			if isVocationDoor then
+				local reqVoc = action - 2000
+				local voc = player:getVocation():getId()
 
-	local dir = getDirectionTo(getPlayerPosition(cid), frompos)
-	doMoveCreature(cid, dir)
-	return TRUE
-end
-end
+				-- Valid vocs: 1-8 (Sorcerer/Druid/Paladin/Knight/MS/ED/RP/EK)
+				if voc ~= reqVoc then
+					canEnter = false
+					end
+					end
+
+					----------------------------------------------------------------------
+					-- Denied
+					----------------------------------------------------------------------
+					if not canEnter then
+						player:sendTextMessage(MESSAGE_INFO_DESCR, "Only the worthy may pass.")
+						return true
+						end
+
+						----------------------------------------------------------------------
+						-- Open door and move player through
+						----------------------------------------------------------------------
+						item:transform(item.itemid + 1)
+
+						local tile = fromPosition:getTile()
+						if not tile then
+							return false
+							end
+
+							-- Check if player can enter the tile
+							if tile:queryAdd(player) ~= RETURNVALUE_NOERROR then
+								return false
+								end
+
+								local dir = getDirectionTo(player:getPosition(), fromPosition)
+								player:move(dir)
+								return true
+								end

@@ -1,17 +1,22 @@
-function onUse(cid, item, frompos, item2, topos)
-	-- Are we on pz?
-	local isPz = (getTilePzInfo(frompos) == 1)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Horizontal door (open)
+-- Notes: Fixed API, variables and logic
 
-	-- Get the tile to move the things on the door to
-	local nextTile = {x=frompos.x+1, y=frompos.y, z=frompos.z}
-	if(isPz and getTilePzInfo(nextTile) == 0) then
-		nextTile.x = frompos.x-1
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate PZ
+local isPz = fromPosition:getTile():hasFlag(TILESTATE_PROTECTIONZONE)
+
+-- Next tile calculation
+local nextTile = Position(fromPosition.x + 1, fromPosition.y, fromPosition.z)
+if isPz and not nextTile:getTile():hasFlag(TILESTATE_PROTECTIONZONE) then
+	nextTile = Position(fromPosition.x - 1, fromPosition.y, fromPosition.z)
 	end
 
-	-- Move all moveable things to the next tile
-	doRelocate(frompos, nextTile)
+	-- Move all creatures/items on the tile
+	fromPosition:relocateTo(nextTile)
 
-	-- Transform the door
-	doTransformItem(item.uid, item.itemid-1)
-	return TRUE
-end
+	-- Transform door
+	item:transform(item.itemid - 1)
+
+	return true
+	end

@@ -1,43 +1,66 @@
--- Script by Nottinghster
-function onUse(cid, item, frompos, item2, topos)
-gatepos1 = {x=33295, y=31677, z=15, stackpos=1}
-gatepos2 = {x=33296, y=31677, z=15, stackpos=1}
-gatepos3 = {x=33297, y=31677, z=15, stackpos=1}
-gatepos4 = {x=33298, y=31677, z=15, stackpos=1}
-gatepos5 = {x=33299, y=31677, z=15, stackpos=1}
-getgate1 = getThingfromPos(gatepos1)
-getgate2 = getThingfromPos(gatepos2)
-getgate3 = getThingfromPos(gatepos3)
-getgate4 = getThingfromPos(gatepos4)
-getgate5 = getThingfromPos(gatepos5)
-if item.uid == 10014 and 
-item.itemid == 1945 and 
-getgate1.itemid == 1304 and 
-getgate2.itemid == 1304 and 
-getgate3.itemid == 1304 and
-getgate4.itemid == 1304 and
-getgate5.itemid == 1304 then
- doRemoveItem(getgate1.uid,1)
- doRemoveItem(getgate2.uid,1)
- doRemoveItem(getgate3.uid,1)
- doRemoveItem(getgate4.uid,1)
- doRemoveItem(getgate5.uid,1)
- doTransformItem(item.uid,item.itemid+1)
-elseif item.uid == 10014 and 
-item.itemid == 1946 and 
-getgate1.itemid == 0 and 
-getgate2.itemid == 0 and 
-getgate3.itemid == 0 and
-getgate4.itemid == 0 and
-getgate5.itemid == 0 then
- doCreateItem(1304,1,gatepos1)
- doCreateItem(1304,1,gatepos2)
- doCreateItem(1304,1,gatepos3)
- doCreateItem(1304,1,gatepos4)
- doCreateItem(1304,1,gatepos5)
- doTransformItem(item.uid,item.itemid-1)
-else
- doPlayerSendCancel(cid,"It is not possible.")
-end
-return TRUE
-end
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Lever opens/closes 5 gates
+-- Notes: Rewritten for full compatibility
+
+function onUse(player, item, fromPosition, target, toPosition)
+-- Gate positions
+local gatePositions = {
+    Position(33295, 31677, 15),
+    Position(33296, 31677, 15),
+    Position(33297, 31677, 15),
+    Position(33298, 31677, 15),
+    Position(33299, 31677, 15)
+}
+
+-- Retrieve gate items
+local gates = {}
+for i = 1, #gatePositions do
+    gates[i] = Tile(gatePositions[i]):getItemById(1304)
+    end
+
+    -- OPEN GATES
+    if item.uid == 10014 and item.itemid == 1945 then
+        local allPresent = true
+        for i = 1, #gates do
+            if not gates[i] then
+                allPresent = false
+                break
+                end
+                end
+
+                if allPresent then
+                    -- Remove gates
+                    for i = 1, #gates do
+                        gates[i]:remove()
+                        end
+
+                        -- Switch lever
+                        item:transform(1946)
+                        return true
+                        end
+                        end
+
+                        -- CLOSE GATES
+                        if item.uid == 10014 and item.itemid == 1946 then
+                            local allEmpty = true
+                            for i = 1, #gatePositions do
+                                if Tile(gatePositions[i]):getItemById(1304) then
+                                    allEmpty = false
+                                    break
+                                    end
+                                    end
+
+                                    if allEmpty then
+                                        for i = 1, #gatePositions do
+                                            Game.createItem(1304, 1, gatePositions[i])
+                                            end
+
+                                            item:transform(1945)
+                                            return true
+                                            end
+                                            end
+
+                                            -- Default
+                                            player:sendCancelMessage("It is not possible.")
+                                            return true
+                                            end

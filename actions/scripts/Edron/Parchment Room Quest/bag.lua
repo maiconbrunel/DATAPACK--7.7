@@ -1,34 +1,43 @@
-function onUse(cid, item, frompos, item2, topos)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Demon Summon Chest
+-- Notes: Clean rewrite + API modernizada + correção de bugs críticos
 
-demonpos1 = {x=33061, y=31622, z=15}
-demonpos2 = {x=33065, y=31622, z=15}
-demonpos3 = {x=33061, y=31628, z=15}
-demonpos4 = {x=33065, y=31628, z=15}
-
-
-if item.uid == 10023 then
-  queststatus = getPlayerStorageValue(cid,10023)
-  if queststatus == -1 then
-   doPlayerSendTextMessage(cid,22,"You have found a bag.")
-   bag = doPlayerAddItem(cid,1987,1)
-   doAddContainerItem(bag,2165,1)
-   doAddContainerItem(bag,2151,2)
-   doAddContainerItem(bag,2230,1)
-   doAddContainerItem(bag,2229,1)
-   doAddContainerItem(bag,1948,1)
-   item_uid = doAddContainerItem(bag,2091,1)
-   doSetItemActionId(item_uid,1505)
-   setPlayerStorageValue(cid,10023,1)
-  doSummonCreature("Demon", demonpos1)  
-  doSummonCreature("Demon", demonpos2)  
-  doSummonCreature("Demon", demonpos3)  
-  doSummonCreature("Demon", demonpos4)
-  else
-   doPlayerSendTextMessage(cid,22,"The wooden coffin is empty.")
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10023 then
+  return false
   end
-else
-  return 0
-end
-return 1
-end
 
+  -- Validate first-time reward
+  local storage = 10023
+  if player:getStorageValue(storage) < 1 then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a bag.")
+
+    -- Give reward
+    local bag = player:addItem(1987, 1)
+    if bag then
+      bag:addItem(2165, 1)
+      bag:addItem(2151, 2)
+      bag:addItem(2230, 1)
+      bag:addItem(2229, 1)
+      bag:addItem(1948, 1)
+
+      local key = bag:addItem(2091, 1)
+      if key then
+        key:setActionId(1505)
+        end
+        end
+
+        -- Mark quest completed
+        player:setStorageValue(storage, 1)
+
+        -- Summon demons
+        Game.createMonster("Demon", Position(33061, 31622, 15))
+        Game.createMonster("Demon", Position(33065, 31622, 15))
+        Game.createMonster("Demon", Position(33061, 31628, 15))
+        Game.createMonster("Demon", Position(33065, 31628, 15))
+        else
+          player:sendTextMessage(MESSAGE_INFO_DESCR, "The wooden coffin is empty.")
+          end
+
+          return true
+          end
