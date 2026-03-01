@@ -1,9 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="A Sweaty Cyclops" script="data/npc/scripts/A Sweaty Cyclops.lua" walkinterval="2000" floorchange="0">
-<health now="100" max="100"/>
-<look type="22" head="0" body="0" legs="0" feet="0" addons="0"/>
-<parameters>
-        <parameter key="message_greet" value="Hum Humm! Welcume lil' Player.."/>
-        <parameter key="message_farewell" value="Good bye lil' one."/>
-    </parameters>
-</npc>
+-- [PROJECT 7.7 TFS 1.5] Converted NPC
+-- Purpose: A Sweaty Cyclops basic NPC
+-- Notes: Converted from XML, TFS 1.5/7.7 ready, no shop or keywords
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+npcHandler:setMessage(MESSAGE_GREET, "Hum Humm! Welcume lil' Player..")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Good bye lil' one.")
+
+function onCreatureAppear(cid)         npcHandler:onCreatureAppear(cid)        end
+function onCreatureDisappear(cid)      npcHandler:onCreatureDisappear(cid)     end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                      npcHandler:onThink()                     end
+function onPlayerEndTrade(cid)         npcHandler:onPlayerEndTrade(cid)        end
+function onPlayerCloseChannel(cid)     npcHandler:onPlayerCloseChannel(cid)    end
+
+npc = {
+    name = "A Sweaty Cyclops",
+    script = "data/npc/scripts/A Sweaty Cyclops.lua",
+    walkInterval = 2000,
+    floorChange = 0,
+    health = {current = 100, max = 100},
+    look = {type = 22, head = 0, body = 0, legs = 0, feet = 0, addons = 0}
+}
+
+npcHandler:addModule(FocusModule:new())
