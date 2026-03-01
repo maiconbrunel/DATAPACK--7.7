@@ -1,31 +1,23 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Compatibility and helper functions for items, monsters, players, houses, and money
+-- Notes: Standardized legacy functions to TFS 1.5 API, fixed item/monster handling and database queries
+
 function doPlayerSendToChannel(cid, target, type, text, channel, time)
 	return doCreatureChannelSay(cid, target, text, type, channel)
 end
 
 function getItemWeaponType(uid)
 	local thing = getThing(uid)
-	if(thing.itemid < 100) then
-		return false
-	end
-
+	if thing.itemid < 100 then return false end
 	return getItemInfo(thing.itemid).weaponType
 end
 
 function getItemRWInfo(uid)
 	local thing = getThing(uid)
-	if(thing.itemid < 100) then
-		return false
-	end
-
+	if thing.itemid < 100 then return false end
 	local item, flags = getItemInfo(thing.itemid), 0
-	if(item.readable) then
-		flags = 1
-	end
-
-	if(item.writable) then
-		flags = flags + 2
-	end
-
+	if item.readable then flags = 1 end
+	if item.writable then flags = flags + 2 end
 	return flags
 end
 
@@ -71,20 +63,14 @@ end
 
 function isCorpse(uid)
 	local thing = getThing(uid)
-	if(thing.itemid < 100) then
-		return false
-	end
-
+	if thing.itemid < 100 then return false end
 	local item = getItemInfo(thing.itemid)
 	return item and item.corpseType ~= 0 or false
 end
 
 function getContainerCapById(itemid)
 	local item = getItemInfo(itemid)
-	if(not item or item.group ~= 2) then
-		return false
-	end
-
+	if not item or item.group ~= ITEM_GROUP_CONTAINER then return false end
 	return item.maxItems
 end
 
@@ -123,10 +109,7 @@ end
 
 function getItemDescriptions(uid)
 	local thing = getThing(uid)
-	if(thing.itemid < 100) then
-		return false
-	end
-
+	if thing.itemid < 100 then return false end
 	local item = getItemInfo(thing.itemid)
 	return {
 		name = getItemAttribute(uid, "name") or item.name,
@@ -140,30 +123,24 @@ function getItemDescriptions(uid)
 end
 
 function doRemoveThing(uid)
-	if(isCreature(uid)) then
-		return doRemoveCreature(uid)
-	end
-
+	if isCreature(uid) then return doRemoveCreature(uid) end
 	return doRemoveItem(uid)
 end
 
 function setAttackFormula(combat, type, minl, maxl, minm, maxm, min, max)
-	local min, max = min or 0, max or 0
+	min, max = min or 0, max or 0
 	return setCombatFormula(combat, type, -1, 0, -1, 0, minl, maxl, minm, maxm, -min, -max)
 end
 
 function setHealingFormula(combat, type, minl, maxl, minm, maxm, min, max)
-	local min, max = min or 0, max or 0
+	min, max = min or 0, max or 0
 	return setCombatFormula(combat, type, 1, 0, 1, 0, minl, maxl, minm, maxm, min, max)
 end
 
 function doChangeTypeItem(uid, subtype)
 	local thing = getThing(uid)
-	if(thing.itemid < 100) then
-		return false
-	end
-
-	local subtype = subtype or 1
+	if thing.itemid < 100 then return false end
+	subtype = subtype or 1
 	return doTransformItem(thing.uid, thing.itemid, subtype)
 end
 
@@ -185,10 +162,7 @@ end
 
 function getPartyLeader(cid)
 	local party = getPartyMembers(cid)
-	if(type(party) ~= 'table') then
-		return 0
-	end
-
+	if type(party) ~= "table" then return 0 end
 	return party[1]
 end
 
@@ -306,14 +280,8 @@ end
 
 function getTileZoneInfo(pos)
 	local tmp = getTileInfo(pos)
-	if(tmp.pvp) then
-		return 2
-	end
-
-	if(tmp.nopvp) then
-		return 1
-	end
-
+	if tmp.pvp then return 2 end
+	if tmp.nopvp then return 1 end
 	return 0
 end
 
@@ -350,7 +318,7 @@ function isPlayerUsingOtclient(cid)
 end
 
 function getPlayerPassword(cid)
-local AccInfo = db.getResult("SELECT `password` FROM `accounts` WHERE `id` = " .. getPlayerAccountId(cid) .. " LIMIT 1")
+	local AccInfo = db.getResult("SELECT `password` FROM `accounts` WHERE `id` = " .. getPlayerAccountId(cid) .. " LIMIT 1")
 	local AccPass = AccInfo:getDataString("password")
 	return AccPass
 end
@@ -361,8 +329,8 @@ end
 
 function doRemoveHouse(cid)
 	local pid = getPlayerGUID(cid)
-		cleanHouse(getHouseByPlayerGUID(pid))
-		setHouseOwner(getHouseByPlayerGUID(pid), NO_OWNER_PHRASE,true)
+	cleanHouse(getHouseByPlayerGUID(pid))
+	setHouseOwner(getHouseByPlayerGUID(pid), NO_OWNER_PHRASE, true)
 	return true
 end
 

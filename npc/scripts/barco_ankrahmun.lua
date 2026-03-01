@@ -17,8 +17,8 @@ function onThink()                         npcHandler:onThink() end
 ---------------------------------------MENSAGES CONFIG-------------------------------------------- 
 local HelloText = 'Hello |PLAYERNAME|. Welcome to my Boat!' 
 local HelpText = 'Do you need help?I can tell you some {destinations}.' 
-local DestinationText = 'I can take you to {Venore}, {Edron}, {Darashia} and {Port Hope}.'            
-local CitysText = 'I can take you to {Venore}, {Edron}, {Darashia} and {Port Hope}.'  
+local DestinationText = 'I can take you to {Venore}, {Gengia}, {Edron}, {Darashia} and {Port Hope}.'            
+local CitysText = 'I can take you to {Venore}, {Edron}, {Gengia}, {Darashia} and {Port Hope}.'  
 local JobText = 'Im an Captain, and this is my Boat.'                                                                  
 ---------------------------------------END MENSAGES CONFIG---------------------------------------- 
 
@@ -26,23 +26,29 @@ local JobText = 'Im an Captain, and this is my Boat.'
 
 ---------------------------------------CARLIN CONFIG---------------------------------------------- 
 local CarlinPosition = {x=32388, y=31821, z=6}              ----> Destination from Carlin Boat <---- 
-local CarlinCost = 130                          ----> Cost to Travel for Carlin    <---- 
+local CarlinCost = 0                          ----> Cost to Travel for Carlin    <---- 
 carlin = true                                         ---->TRUE:Working/FALSE:Not Working<---- 
 ---------------------------------------END CARLIN CONFIG------------------------------------------ 
 
 
+---------------------------------------GENGIA CONFIG---------------------------------------------- 
+local GengiaPosition = {x=31634, y=32029, z=4}              ----> Destination from Gengia Boat <---- 
+local GengiaCost = 0                          ----> Cost to Travel for Gengia    <---- 
+gengia = true                                            ---->TRUE:Working/FALSE:Not Working<---- 
+---------------------------------------END GENGIA CONFIG------------------------------------------
+
 
 ---------------------------------------AB'DENDRIEL CONFIG----------------------------------------- 
 local AbDendrielPosition = {x=32734, y=31669, z=6}     ----> Destination from Ab'Dendriel Boat <---- 
-local AbDendrielCost = 90                     ----> Cost to Travel for Ab'Dendriel    <---- 
-AbDendriel = false                                 ----> TRUE:Working/FALSE:Not Working    <---- 
+local AbDendrielCost = 0                     ----> Cost to Travel for Ab'Dendriel    <---- 
+AbDendriel = true                                 ----> TRUE:Working/FALSE:Not Working    <---- 
 ---------------------------------------END AB'DENDRIEL CONFIG------------------------------------- 
 
 
 
 ---------------------------------------VENORE CONFIG---------------------------------------------- 
 local VenorePosition = {x=32954, y=32022, z=6}              ----> Destination from Venore Boat <---- 
-local VenoreCost = 150                        ----> Cost to Travel for Venore    <---- 
+local VenoreCost = 0                        ----> Cost to Travel for Venore    <---- 
 Venore = true                                          ----> TRUE:Working/FALSE:Not Working<--- 
 ---------------------------------------END VENORE CONFIG------------------------------------------ 
 
@@ -50,21 +56,21 @@ Venore = true                                          ----> TRUE:Working/FALSE:
 
 ---------------------------------------THAIS CONFIG----------------------------------------------- 
 local ThaisPosition = {x=32310, y=32210, z=6}                ----> Destination from Thais Boat <---- 
-local ThaisCost = 170                           ----> Cost to Travel for Thais    <---- 
-Thais = false                                      ---->TRUE:Working/FALSE:Not Working<--- 
+local ThaisCost = 0                           ----> Cost to Travel for Thais    <---- 
+Thais = true                                      ---->TRUE:Working/FALSE:Not Working<--- 
 ---------------------------------------END THAIS CONFIG------------------------------------------- 
 
 
 ---------------------------------------EDRON CONFIG----------------------------------------------- 
 local EdronPosition = {x=33176, y=31764, z=6}                ----> Destination from Edron Boat <---- 
-local EdronCost = 150                                     ----> Cost to Travel for Edron    <---- 
+local EdronCost = 0                                     ----> Cost to Travel for Edron    <---- 
 Edron = true                                           ----> TRUE:Working/FALSE:Not Working<-- 
 ---------------------------------------END EDRON CONFIG------------------------------------------- 
 
 
 ---------------------------------------DARASHIA CONFIG-------------------------------------------- 
 local DarashiaPosition = {x=33290, y=32481, z=6}          ----> Destination from Darashia Boat <---- 
-local DarashiaCost = 100
+local DarashiaCost = 0
 
                     ----> Cost to Travel for Darashia    <---- 
 Darashia = true                                        ----> TRUE:Working/FALSE:Not Working <---- 
@@ -73,24 +79,24 @@ Darashia = true                                        ----> TRUE:Working/FALSE:
 
 ---------------------------------------PORT HOPE CONFIG------------------------------------------- 
 local PortHopePosition = {x=32530, y=32784, z=6}         ----> Destination from Port Hope Boat <---- 
-local PortHopeCost = 80                                     ----> Cost to Travel for Port Hope    <---- 
+local PortHopeCost = 0                                     ----> Cost to Travel for Port Hope    <---- 
 PortHope = true                                      ----> TRUE:Working/FALSE:Not Working  <---- 
 ---------------------------------------END PORT HOPE CONFIG--------------------------------------- 
 
 
 ---------------------------------------ANKRAHMUN CONFIG------------------------------------------- 
 local AnkPosition = {x=33092, y=32884, z=6}              ----> Destination from Ankrahmun Boat <---- 
-local AnkCost = 150                                  ----> Cost to Travel for Ankrahmun    <---- 
-Ank = false                                  ----> TRUE:Working/FALSE:Not Working  <---- 
+local AnkCost = 0                                  ----> Cost to Travel for Ankrahmun    <---- 
+Ank = true                                  ----> TRUE:Working/FALSE:Not Working  <---- 
 ---------------------------------------END ANKRAHMUN CONFIG--------------------------------------- 
 
 
 ---CARLIN----------------------------------------------------------------------------------------------------------------------------------------- 
-local CarlinText = 'Do you want to Travel to Carlin for 130 gold coins?' 
+local CarlinText = 'Do you want to Travel to Carlin for 0 gold coins?' 
 local CarlinTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local CarlinLvl = 8 
-local Carlinpremium = false --True/false 
+local CarlinPremium = true --True/false 
 
 --Carlin-- 
 if carlin == true then 
@@ -109,11 +115,11 @@ end
 
 
 ---Venore----------------------------------------------------------------------------------------------------------------------------------------- 
-local VenoreText = 'Do you want to Travel to Venore for 150 gold coins?' 
+local VenoreText = 'Do you want to Travel to Venore for 0 gold coins?' 
 local VenoreTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local VenoreLvl = 8 
-local Venorepremium = false --True/false 
+local VenorePremium = true --True/false 
 
 --Venore-- 
 if Venore == true then 
@@ -131,7 +137,7 @@ end
 
 
 ---Kazordoon----------------------------------------------------------------------------------------------------------------------------------------- 
-local KazordoonText = 'Do you want to Travel to Kazordoon for 10 gold coins?' 
+local KazordoonText = 'Do you want to Travel to Kazordoon for 0 gold coins?' 
 local KazordoonTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local KazordoonLvl = 8 
@@ -153,11 +159,11 @@ end
 
 
 ---Thais----------------------------------------------------------------------------------------------------------------------------------------- 
-local ThaisText = 'Do you want to Travel to Kazordoon for 170 gold coins?' 
+local ThaisText = 'Do you want to Travel to Kazordoon for 0 gold coins?' 
 local ThaisTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local ThaisLvl = 8 
-local Thaispremium = false --True/false 
+local ThaisPremium = true --True/false 
 
 --Thais-- 
 if Thais == true then 
@@ -175,11 +181,11 @@ end
 
 
 ---AbDendriel----------------------------------------------------------------------------------------------------------------------------------------- 
-local AbDendrielText = 'Do you want to Travel to AbDendriel for 90 gold coins?' 
+local AbDendrielText = 'Do you want to Travel to AbDendriel for 0 gold coins?' 
 local AbDendrielTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local AbDendrielLvl = 8 
-local AbDendrielpremium = false --True/false 
+local AbDendrielPremium = true --True/false 
 
 --AbDendriel-- 
 if AbDendriel == true then 
@@ -197,11 +203,11 @@ end
 
 
 ---Edron----------------------------------------------------------------------------------------------------------------------------------------- 
-local EdronText = 'Do you want to Travel to Edron for 150 gold coins?' 
+local EdronText = 'Do you want to Travel to Edron for 0 gold coins?' 
 local EdronTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local EdronLvl = 8 
-local Edronpremium = false --True/false 
+local EdronPremium = true --True/false 
 
 --Edron-- 
 if Edron == true then 
@@ -219,11 +225,11 @@ end
 
 
 ---Darashia----------------------------------------------------------------------------------------------------------------------------------------- 
-local DarashiaText = 'Do you want to Travel to Darashia for 100 gold coins?' 
+local DarashiaText = 'Do you want to Travel to Darashia for 0 gold coins?' 
 local DarashiaTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local DarashiaLvl = 8 
-local Darashiapremium = false --True/false 
+local DarashiaPremium = true --True/false 
 
 --Darashia-- 
 if Darashia == true then 
@@ -241,11 +247,11 @@ end
 
 
 ---Port Hope----------------------------------------------------------------------------------------------------------------------------------------- 
-local PortHopeText = 'Do you want to Travel to Port Hope for 80 gold coins?' 
+local PortHopeText = 'Do you want to Travel to Port Hope for 0 gold coins?' 
 local PortHopeTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local PortHopeLvl = 8 
-local PortHopepremium = false --True/false 
+local PortHopePremium = true --True/false 
 
 --Port Hope-- 
 if PortHope == true then 
@@ -263,11 +269,11 @@ end
 
 
 ---Liberty Bay----------------------------------------------------------------------------------------------------------------------------------------- 
-local LibertyBayText = 'Do you want to Travel to Liberty Bay for 10 gold coins?' 
+local LibertyBayText = 'Do you want to Travel to Liberty Bay for 0 gold coins?' 
 local LibertyBayTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local LibertyBayLvl = 8 
-local LibertyBaypremium = false --True/false 
+local LibertyBayPremium = true --True/false 
 
 --Liberty Bay-- 
 if LibertyBay == true then 
@@ -285,11 +291,11 @@ end
 
 
 ---Ankrahmun----------------------------------------------------------------------------------------------------------------------------------------- 
-local AnkText = 'Do you want to Travel to Ankrahmun for 10 gold coins?' 
+local AnkText = 'Do you want to Travel to Ankrahmun for 0 gold coins?' 
 local AnkTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local AnkLvl = 8 
-local Ankpremium = false --True/false 
+local AnkPremium = true --True/false 
 
 --Ankrahmun-- 
 if Ank == true then 
@@ -307,11 +313,11 @@ end
 
 
 ---Svargrond----------------------------------------------------------------------------------------------------------------------------------------- 
-local SvargrondText = 'Do you want to Travel to Svargrond for 10 gold coins?' 
+local SvargrondText = 'Do you want to Travel to Svargrond for 0 gold coins?' 
 local SvargrondTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local SvargrondCost = 10 
-local Svargrondpremium = false --True/false 
+local SvargrondPremium = true --True/false 
 
 --Svargrond-- 
 if Svargrond == true then 

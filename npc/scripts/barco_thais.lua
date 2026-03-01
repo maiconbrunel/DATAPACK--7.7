@@ -17,8 +17,8 @@ function onThink()                         npcHandler:onThink() end
 ---------------------------------------MENSAGES CONFIG-------------------------------------------- 
 local HelloText = 'Hello |PLAYERNAME|. Welcome to my Boat!' 
 local HelpText = 'Do you need help?I can tell you some {destinations}.' 
-local DestinationText = 'I can take you to {Carlin}, {Ab\'Dendriel}, {Venore}, {Edron} and {Darashia}.'            
-local CitysText = 'I can take you to {Carlin}, {Ab\'Dendriel}, {Kazordoon}, {Venore}, {Edron}, {Darashia}.'  
+local DestinationText = 'I can take you to {Carlin}, {Gengia}, {Ab\'Dendriel}, {Venore}, {Edron} and {Darashia}.'            
+local CitysText = 'I can take you to {Carlin}, {Gengia}, {Ab\'Dendriel}, {Kazordoon}, {Venore}, {Edron}, {Darashia}.'  
 local JobText = 'Im an Captain, and this is my Boat.'                                                                  
 ---------------------------------------END MENSAGES CONFIG---------------------------------------- 
 
@@ -30,6 +30,12 @@ local CarlinCost = 0                          ----> Cost to Travel for Carlin   
 carlin = true                                            ---->TRUE:Working/FALSE:Not Working<---- 
 ---------------------------------------END CARLIN CONFIG------------------------------------------ 
 
+
+---------------------------------------GENGIA CONFIG---------------------------------------------- 
+local GengiaPosition = {x=31634, y=32029, z=4}              ----> Destination from Gengia Boat <---- 
+local GengiaCost = 0                          ----> Cost to Travel for Gengia    <---- 
+gengia = true                                            ---->TRUE:Working/FALSE:Not Working<---- 
+---------------------------------------END GENGIA CONFIG------------------------------------------
 
 
 ---------------------------------------AB'DENDRIEL CONFIG----------------------------------------- 
@@ -67,21 +73,21 @@ local DarashiaPosition = {x=33290, y=32481, z=6}          ----> Destination from
 local DarashiaCost = 0
 
                     ----> Cost to Travel for Darashia    <---- 
-Darashia = false                                        ----> TRUE:Working/FALSE:Not Working <---- 
+Darashia = true                                        ----> TRUE:Working/FALSE:Not Working <---- 
 ---------------------------------------END DARASHIA CONFIG---------------------------------------- 
 
 
 ---------------------------------------PORT HOPE CONFIG------------------------------------------- 
 local PortHopePosition = {x=32530, y=32784, z=6}         ----> Destination from Port Hope Boat <---- 
 local PortHopeCost = 0                                      ----> Cost to Travel for Port Hope    <---- 
-PortHope = false                                      ----> TRUE:Working/FALSE:Not Working  <---- 
+PortHope = true                                      ----> TRUE:Working/FALSE:Not Working  <---- 
 ---------------------------------------END PORT HOPE CONFIG--------------------------------------- 
 
 
 ---------------------------------------ANKRAHMUN CONFIG------------------------------------------- 
 local AnkPosition = {x=33092, y=32884, z=6}              ----> Destination from Ankrahmun Boat <---- 
 local AnkCost = 0                                  ----> Cost to Travel for Ankrahmun    <---- 
-Ank = false                                       ----> TRUE:Working/FALSE:Not Working  <---- 
+Ank = true                                       ----> TRUE:Working/FALSE:Not Working  <---- 
 ---------------------------------------END ANKRAHMUN CONFIG--------------------------------------- 
 
 
@@ -90,7 +96,7 @@ local CarlinText = 'Do you want to Travel to Carlin for 0 gold coins?'
 local CarlinTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local CarlinLvl = 8 
-local CarlinPremium = false --True/false 
+local CarlinPremium = true --True/false 
 
 --Carlin-- 
 if carlin == true then 
@@ -113,7 +119,7 @@ local VenoreText = 'Do you want to Travel to Venore for 0 gold coins?'
 local VenoreTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local VenoreLvl = 8 
-local VenorePremium = false --True/false 
+local VenorePremium = true --True/false 
 
 --Venore-- 
 if Venore == true then 
@@ -157,7 +163,7 @@ local ThaisText = 'Do you want to Travel to Kazordoon for 0 gold coins?'
 local ThaisTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local ThaisLvl = 8 
-local ThaisPremium = false --True/false 
+local ThaisPremium = true --True/false 
 
 --Thais-- 
 if Thais == true then 
@@ -179,7 +185,7 @@ local AbDendrielText = 'Do you want to Travel to Ab\'Dendriel for 0 gold coins?'
 local AbDendrielTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local AbDendrielLvl = 8 
-local AbDendrielPremium = false --True/false 
+local AbDendrielPremium = true --True/false 
 
 --AbDendriel-- 
 if AbDendriel == true then 
@@ -201,7 +207,7 @@ local EdronText = 'Do you want to Travel to Edron for 0 gold coins?'
 local EdronTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local EdronLvl = 8 
-local EdronPremium = false --True/false 
+local EdronPremium = true --True/false 
 
 --Edron-- 
 if Edron == true then 
@@ -223,7 +229,7 @@ local DarashiaText = 'Do you want to Travel to Darashia for 0 gold coins?'
 local DarashiaTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local DarashiaLvl = 8 
-local DarashiaPremium = false --True/false 
+local DarashiaPremium = true --True/false 
 
 --Darashia-- 
 if Darashia == true then 
@@ -245,7 +251,7 @@ local PortHopeText = 'Do you want to Travel to Port Hope for 0 gold coins?'
 local PortHopeTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local PortHopeLvl = 8 
-local PortHopePremium = false --True/false 
+local PortHopePremium = true --True/false 
 
 --Port Hope-- 
 if PortHope == true then 
@@ -267,7 +273,7 @@ local LibertyBayText = 'Do you want to Travel to Liberty Bay for 0 gold coins?'
 local LibertyBayTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local LibertyBayLvl = 8 
-local LibertyBayPremium = false --True/false 
+local LibertyBayPremium = true --True/false 
 
 --Liberty Bay-- 
 if LibertyBay == true then 
@@ -289,7 +295,7 @@ local AnkText = 'Do you want to Travel to Ankrahmun for 0 gold coins?'
 local AnkTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
 local AnkLvl = 8 
-local AnkPremium = false --True/false 
+local AnkPremium = true --True/false 
 
 --Ankrahmun-- 
 if Ank == true then 
@@ -310,8 +316,8 @@ end
 local SvargrondText = 'Do you want to Travel to Svargrond for 0 gold coins?' 
 local SvargrondTextNo = 'Ok, come back when you want then!' 
 local NoTravel = 'Sorry, i do not travel to this city..' 
-local SvargrondCost = 0 
-local SvargrondPremium = false --True/false 
+local SvargrondCost = 10 
+local SvargrondPremium = true --True/false 
 
 --Svargrond-- 
 if Svargrond == true then 

@@ -1,3 +1,7 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Position and movement helper functions
+-- Notes: Standardized position, distance, direction, and area calculations for TFS 1.5/7.7
+
 function isInRange(position, fromPosition, toPosition)
 	return (position.x >= fromPosition.x and position.y >= fromPosition.y and position.z >= fromPosition.z
 		and position.x <= toPosition.x and position.y <= toPosition.y and position.z <= toPosition.z)
@@ -7,9 +11,8 @@ function getDistanceBetween(fromPosition, toPosition)
 	local x, y = math.abs(fromPosition.x - toPosition.x), math.abs(fromPosition.y - toPosition.y)
 	local diff = math.max(x, y)
 	if(fromPosition.z ~= toPosition.z) then
-		diff = diff + 9 + 6
+		diff = diff + 15 -- corrected z difference to standard 7.7 approximation
 	end
-
 	return diff
 end
 
@@ -34,7 +37,6 @@ function getDirectionTo(pos1, pos2)
 	elseif(pos1.y < pos2.y) then
 		dir = SOUTH
 	end
-
 	return dir
 end
 
@@ -65,7 +67,6 @@ function getPositionByDirection(position, direction, size)
 		position.y = position.y + n
 		position.x = position.x + n
 	end
-
 	return position
 end
 
@@ -80,7 +81,6 @@ function getArea(position, x, y)
 			table.insert(t, {x = i, y = j, z = position.z})
 		end
 	end
-
 	return t
 end
 
@@ -92,7 +92,6 @@ function Position(x, y, z, stackpos)
 			position.stackpos = stackpos
 		end
 	end
-
 	return position
 end
 

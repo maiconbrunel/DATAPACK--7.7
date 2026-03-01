@@ -1,5 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Abran Ironeye" script="data/npc/scripts/default.lua" walkinterval="2000" floorchange="0">
-<health now="100" max="100"/>
-<look type="73" head="0" body="0" legs="0" feet="0" addons="0"/>
-</npc>
+-- [PROJECT 7.7 TFS 1.5] Converted NPC
+-- Purpose: Abran Ironeye basic NPC
+-- Notes: Converted from XML, TFS 1.5/7.7 ready, no shop or dialogue
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+npcHandler:setMessage(MESSAGE_GREET, "Hello, |PLAYERNAME|!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Bye.")
+
+function onCreatureAppear(cid)         npcHandler:onCreatureAppear(cid)        end
+function onCreatureDisappear(cid)      npcHandler:onCreatureDisappear(cid)     end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                      npcHandler:onThink()                     end
+
+npc = {
+    name = "Abran Ironeye",
+    script = "data/npc/scripts/default.lua",
+    walkInterval = 2000,
+    floorChange = 0,
+    health = {current = 100, max = 100},
+    look = {type = 73, head = 0, body = 0, legs = 0, feet = 0, addons = 0}
+}
+
+npcHandler:addModule(FocusModule:new())

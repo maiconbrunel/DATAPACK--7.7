@@ -1,7 +1,27 @@
-<?xml version="1.0"?>
-<npc name="Albert" script="data/npc/scripts/default.lua" walkinterval="2000">
+-- [PROJECT 7.7 TFS 1.5] Converted NPC
+-- Purpose: Albert basic NPC
+-- Notes: Converted from XML, TFS 1.5/7.7 ready, no shop or keywords
 
-  <health now="200" max="200" />
-  <look type="130" head="78" body="0" legs="49" feet="95"/>
-  
-</npc>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+npcHandler:setMessage(MESSAGE_GREET, "Hello, |PLAYERNAME|!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Bye.")
+
+function onCreatureAppear(cid)         npcHandler:onCreatureAppear(cid)        end
+function onCreatureDisappear(cid)      npcHandler:onCreatureDisappear(cid)     end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                      npcHandler:onThink()                     end
+function onPlayerEndTrade(cid)         npcHandler:onPlayerEndTrade(cid)        end
+function onPlayerCloseChannel(cid)     npcHandler:onPlayerCloseChannel(cid)    end
+
+npc = {
+    name = "Albert",
+    script = "data/npc/scripts/default.lua",
+    walkInterval = 2000,
+    health = {current = 200, max = 200},
+    look = {type = 130, head = 78, body = 0, legs = 49, feet = 95, addons = 0}
+}
+
+npcHandler:addModule(FocusModule:new())

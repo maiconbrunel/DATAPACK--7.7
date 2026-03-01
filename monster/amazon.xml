@@ -1,0 +1,55 @@
+-- [PROJECT 7.7 TFS 1.5] Converted monster
+-- Purpose: Amazon monster data
+-- Notes: Name capitalized, description preserved, loot comments added, compatible with TFS 1.5/7.7
+
+monster = {
+    name = "Amazon",
+    description = "an amazon",
+    experience = 60,
+    speed = 172,
+    manaCost = 390,
+    health = {current = 110, max = 110},
+    look = {type = 137, head = 113, body = 120, legs = 95, feet = 115, corpse = 3065},
+    targetChange = {interval = 1000, chance = 50},
+    flags = {
+        attackable = true,
+        hostile = true,
+        summonable = true,
+        convinceable = true,
+        illusionable = true,
+        pushable = false,
+        canPushItems = true,
+        canPushCreatures = false,
+        targetDistance = 4,
+        staticAttackChance = 100,
+        runOnHealth = 10
+    },
+    attacks = {
+        {name="melee", interval=2000, skill=24, attack=16},
+        {name="physical", interval=1000, chance=10, range=7, min=-20, max=-30, shootEffect="throwingknife"}
+    },
+    defenses = {armor=11, defense=11},
+    elements = {},
+    immunities = {},
+    voices = {
+        interval=2000,
+        chance=10,
+        sentences={"Yeee ha!", "Your head will be mine!"}
+    },
+    loot = {
+        {id=1987, chance=100000, inside={
+            {id=2526, chance=10000}, -- 10% studded shield
+            {id=2385, chance=46000}, -- 46% sabre
+            {id=2379, chance=80000}, -- 80% dagger
+            {id=2050, chance=10000}, -- 10% torch
+        }},
+        {id=2125, chance=300},   -- 0.3% crystal necklace
+        {id=2467, chance=50000}, -- 50% leather armor
+        {id=2147, chance=300},   -- 0.3% small ruby
+        {id=2229, chance=80000, countMax=2}, -- 2 80% skull
+        {id=2148, chance=80000, countMax=10}, -- 10 80% gold coin
+        {id=2691, chance=60000}  -- 60% brown bread
+    }
+}
+
+return monster

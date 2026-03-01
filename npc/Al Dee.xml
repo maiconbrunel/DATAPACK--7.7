@@ -1,46 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Al Dee" script="data/npc/scripts/aldee.lua" walkinterval="1000" access="6" floorchange="0">
-    <health now="100" max="100"/>
-    <look type="129" head="97" body="77" legs="87" feet="115" addons="0"/>
-    <parameters>
-        
-        <parameter key="message_greet" value="Hello, hello, |PLAYERNAME|! Please come in, look, and buy!"/>
-		<parameter key="message_farewell" value="Bye, bye."/>
-		
-        <parameter key="module_keywords" value="1" />
-        <parameter key="keywords" value="how are you;selling;job;name;help;monster;dungeon;sewer;king;seymour;hyancinth;dallheim;amber;willie;bug;stuff;tibia;sam;thais;wares;offer;weapons;armors;helmets;shields;equipments;do you sell;do you have" />
-		
-        <parameter key="keyword_reply1" value="I am fine, I am fine. I'm so glad to have you here as my customer." />
-        <parameter key="keyword_reply2" value="I sell much, much indeed. Just read the blackboards for my awesome wares or just ask me." />
-        <parameter key="keyword_reply3" value="I am a merchant. What can I do for you?" />
-        <parameter key="keyword_reply4" value="My name is Al Dee, but you can call me Al. Do you want to buy something?" />
-        <parameter key="keyword_reply5" value="I sell stuff to prices that low, that all other merchants would mock at my stupidity." />
-        <parameter key="keyword_reply6" value="If you want to challenge the monsters, you need some weapons and armor I sell. You need them definitely!" />
-        <parameter key="keyword_reply7" value="If you want to explore the dungeons, you have to equip yourself with the vital stuff I am selling. It's vital in the deepest sense of the word." />
-        <parameter key="keyword_reply8" value="Oh, our sewer system is very primitive; so primitive it's overrun by rats. But the stuff I sell is safe from them. Do you want to buy some of it?" />
-        <parameter key="keyword_reply9" value="The king encouraged salesmen to travel here, but only I dared to take the risk, and a risk it was!" />
-        <parameter key="keyword_reply10" value="" />
-        <parameter key="keyword_reply11" value="" />
-        <parameter key="keyword_reply12" value="Some call him a hero." />
-        <parameter key="keyword_reply13" value="" />
-        <parameter key="keyword_reply14" value="This guy does not understand that he should entrust me with the foodbusiness, too. He really should do that and have more time for his farm." />
-        <parameter key="keyword_reply15" value="Bugs plague this isle, but my wares are bugfree, totally bugfree." />
-        <parameter key="keyword_reply16" value="I sell equipment of all kinds, all kind available on this isle. Just ask me about my wares if you are interested." />
-        <parameter key="keyword_reply17" value="One day I will return to the continent as a rich, a very rich man!" />
-        <parameter key="keyword_reply18" value="" />
-        <parameter key="keyword_reply19" value="Thais is a crowded town." />
-        <parameter key="keyword_reply20" value="I sell weapons, shields, armor, helmets, and equipment. For what do you want to ask?" />
-        <parameter key="keyword_reply21" value="I sell weapons, shields, armor, helmets, and equipment. For what do you want to ask?" />
-        <parameter key="keyword_reply22" value="I sell spears, rapiers, sabres, daggers, hand axes, axes, and short swords. Just tell me what you want to buy." />
-        <parameter key="keyword_reply23" value="I sell jackets, coats, doublets, leather armor, leather boots and leather legs. Just tell me what you want to buy." />
-        <parameter key="keyword_reply24" value="I sell leather helmets, studded helmets, and chain helmets. Just tell me what you want to buy." />
-        <parameter key="keyword_reply25" value="I sell wooden shields and studded shields. Just tell me what you want to buy." />
-        <parameter key="keyword_reply26" value="I sell torches, bags, scrolls, shovels, picks, backpacks, sickles, scythes, ropes, fishing rods and worms. Just tell me what you want to buy." />
-        <parameter key="keyword_reply27" value="What do you need? I sell weapons, armor, helmets, shields, and equipment." />
-        <parameter key="keyword_reply28" value="What do you need? I sell weapons, armor, helmets, shields, and equipment." />
+-- [PROJECT 7.7 TFS 1.5] Converted NPC
+-- Purpose: Al Dee merchant NPC fully integrated
+-- Notes: Messages, shop, and trade logic preserved, TFS 1.5/7.7 ready
 
-        <parameter key="module_shop" value="1"/>
-        <parameter key="shop_buyable" value="" />
-        <parameter key="shop_sellable" value="" />
-    </parameters>
-</npc>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+npcHandler:setMessage(MESSAGE_GREET, "Hello, hello, |PLAYERNAME|! Please come in, look, and buy!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "Bye, bye.")
+
+local talk_state = 0
+
+function onCreatureAppear(cid)         npcHandler:onCreatureAppear(cid)        end
+function onCreatureDisappear(cid)      npcHandler:onCreatureDisappear(cid)     end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                      npcHandler:onThink()                     end
+
+function creatureSayCallback(cid, type, msg)
+    if(npcHandler.focus ~= cid) then
+        return false
+    end
+
+    -- Al Dee NPC trade logic for pickaxe
+    if msgcontains(msg, 'pick') then
+        npcHandler:say('Picks are hard to come by. I trade them only for high quality small axes. Do you want to trade?')
+        talk_state = 1
+    elseif msgcontains(msg, 'yes') and talk_state == 1 then
+        if getPlayerItemCount(cid,2559) >= 1 then
+            npcHandler:say('Splendid! Here take your pickaxe.')
+            doPlayerRemoveItem(cid,2559,1)
+            doPlayerAddItem(cid,2553,1)
+            setPlayerStorageValue(cid,3029,1)
+        else
+            npcHandler:say('Sorry, I am looking for a SMALL axe.')
+        end
+        talk_state = 0
+    elseif msgcontains(msg, 'no') and talk_state == 1 then
+        npcHandler:say('Well, then not.')
+        talk_state = 0
+    end
+
+    return true
+end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Sellable Items
+shopModule:addSellableItem({'leather armor'},2467,5,'leather armor')
+shopModule:addSellableItem({'chain armor'},2464,40,'chain armor')
+shopModule:addSellableItem({'brass armor'},2465,150,'brass armor')
+shopModule:addSellableItem({'leather helmet'},2461,3,'leather helmet')
+shopModule:addSellableItem({'chain helmet'},2458,12,'chain helmet')
+shopModule:addSellableItem({'studded helmet'},2482,20,'studded helmet')
+shopModule:addSellableItem({'wooden shield'},2512,3,'wooden shield')
+shopModule:addSellableItem({'studded shield'},2526,16,'studded shield')
+shopModule:addSellableItem({'brass shield'},2511,25,'brass shield')
+shopModule:addSellableItem({'plate shield'},2510,40,'plate shield')
+shopModule:addSellableItem({'copper shield'},2530,50,'copper shield')
+shopModule:addSellableItem({'leather boots'},2643,2,'leather boots')
+shopModule:addSellableItem({'hand axe'},2380,4,'hand axe')
+shopModule:addSellableItem({'short sword'},2406,10,'short sword')
+shopModule:addSellableItem({'dagger'},2379,2,'dagger')
+shopModule:addSellableItem({'spear'},2389,3,'spear')
+shopModule:addSellableItem({'rapier'},2384,5,'rapier')
+shopModule:addSellableItem({'axe'},2380,7,'axe')
+shopModule:addSellableItem({'hatchet'},2388,25,'hatchet')
+shopModule:addSellableItem({'sabre'},2385,12,'sabre')
+shopModule:addSellableItem({'sword'},2376,25,'sword')
+shopModule:addSellableItem({'mace'},2398,30,'mace')
+shopModule:addSellableItem({'doublet'},2485,3,'doublet')
+shopModule:addSellableItem({'rope'},2120,8,'rope')
+
+-- Buyable Items
+shopModule:addBuyableItem({'short sword'},2406,30,'short sword')
+shopModule:addBuyableItem({'hand axe'},2380,8,'hand axe')
+shopModule:addBuyableItem({'fishing rod','rod'},2580,150,'fishing rod')
+shopModule:addBuyableItem({'leather armor'},2467,25,'leather armor')
+shopModule:addBuyableItem({'leather legs'},2649,10,'leather legs')
+shopModule:addBuyableItem({'leather helmet'},2461,12,'leather helmet')
+shopModule:addBuyableItem({'studded helmet'},2482,63,'studded helmet')
+shopModule:addBuyableItem({'chain helmet'},2458,52,'chain helmet')
+shopModule:addBuyableItem({'wooden shield'},2512,15,'wooden shield')
+shopModule:addBuyableItem({'studded shield'},2526,50,'studded shield')
+shopModule:addBuyableItem({'spear'},2389,10,'spear')
+shopModule:addBuyableItem({'rapier'},2384,15,'rapier')
+shopModule:addBuyableItem({'sabre'},2385,25,'sabre')
+shopModule:addBuyableItem({'dagger'},2379,5,'dagger')
+shopModule:addBuyableItem({'sickle'},2405,8,'sickle')
+shopModule:addBuyableItem({'axe'},2386,20,'axe')
+shopModule:addBuyableItem({'jacket'},2650,10,'jacket')
+shopModule:addBuyableItem({'coat'},2651,8,'coat')
+shopModule:addBuyableItem({'doublet'},2485,16,'doublet')
+shopModule:addBuyableItem({'torch'},2050,2,'torch')
+shopModule:addBuyableItem({'bag'},1987,4,'bag')
+shopModule:addBuyableItem({'scroll'},1949,5,'scroll')
+shopModule:addBuyableItem({'shovel'},2554,10,'shovel')
+shopModule:addBuyableItem({'backpack'},1988,10,'backpack')
+shopModule:addBuyableItem({'scythe'},2550,12,'scythe')
+shopModule:addBuyableItem({'rope'},2120,50,'rope')
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

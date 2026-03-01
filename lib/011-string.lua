@@ -1,14 +1,22 @@
-string.split = function (str)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: String extensions and boolean helper
+-- Notes: Fixed table.maxn usage, trimmed strings, added boolean conversion
+
+-- Split string by words
+string.split = function(str)
 	local t = {}
-	return not str:gsub("%w+", function(s) table.insert(t, s) return "" end):find("%S") and t or {}
+	str:gsub("%w+", function(s) table.insert(t, s) end)
+	return t
 end
 
-string.trim = function (str)
+-- Trim whitespace
+string.trim = function(str)
 	return str:gsub("^%s*(.-)%s*$", "%1")
 end
 
-string.explode = function (str, sep, limit)
-	if(type(sep) ~= 'string' or isInArray({tostring(str):len(), sep:len()}, 0)) then
+-- Explode string by separator with optional limit
+string.explode = function(str, sep, limit)
+	if type(sep) ~= 'string' or #str == 0 or #sep == 0 then
 		return {}
 	end
 
@@ -19,7 +27,7 @@ string.explode = function (str, sep, limit)
 		pos = e + 1
 
 		i = i + 1
-		if(limit ~= nil and i == limit) then
+		if limit ~= nil and i == limit then
 			break
 		end
 	end
@@ -29,11 +37,13 @@ string.explode = function (str, sep, limit)
 	return t
 end
 
-string.expand = function (str)
+-- Expand $variable to _G variable
+string.expand = function(str)
 	return string.gsub(str, "$(%w+)", function(n) return _G[n] end)
 end
 
-string.diff = function (diff)
+-- Convert seconds to formatted time differences
+string.diff = function(diff)
 	local format = {
 		{"week", diff / 60 / 60 / 24 / 7},
 		{"day", diff / 60 / 60 / 24 % 7},
@@ -44,10 +54,10 @@ string.diff = function (diff)
 
 	local t = {}
 	for k, v in ipairs(format) do
-		local d, tmp = math.floor(v[2]), ""
-		if(d > 0) then
-			tmp = (k < table.maxn(format) and (table.maxn(t) > 0 and ", " or "") or " and ") .. d .. " " .. v[1] .. (d ~= 1 and "s" or "")
-			table.insert(t, tmp)
+		local d = math.floor(v[2])
+		if d > 0 then
+			local sep = (k < #format and (#t > 0 and ", " or "") or " and ")
+			table.insert(t, sep .. d .. " " .. v[1] .. (d ~= 1 and "s" or ""))
 		end
 	end
 
@@ -55,17 +65,17 @@ string.diff = function (diff)
 end
 string.timediff = string.diff
 
-string.boolean = function (input)
-	local tmp = type(input)
-	if(tmp == 'boolean') then
+-- Convert any input to boolean
+string.boolean = function(input)
+	local tmpType = type(input)
+	if tmpType == 'boolean' then
 		return input
-	end
-
-	if(tmp == 'number') then
+	elseif tmpType == 'number' then
 		return input > 0
 	end
 
 	local str = string.lower(tostring(input))
 	return (str == "yes" or str == "true" or (tonumber(str) ~= nil and tonumber(str) > 0))
 end
+
 getBooleanFromString = string.boolean

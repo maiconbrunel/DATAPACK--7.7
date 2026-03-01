@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<raids>
+<raid name="Demodras" file="demodras.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Elf" file="elf.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="Horned Fox" file="horned.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Necropharus" file="necropharus.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Old Widow" file="tow.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="Orcs" file="orcs.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Orshabaal" file="orshabaal.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Scarabs" file="scarabs.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Thais" file="thais.xml" interval2="30" margin="1000" enabled="yes"/>
+</raids>
