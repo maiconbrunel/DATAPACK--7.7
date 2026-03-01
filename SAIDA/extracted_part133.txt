@@ -1,0 +1,254 @@
+===== FILE_START: npc/scripts/dalbrect.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/dalbrect.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	if msgcontains(msg, 'brooch') then
+	npcHandler:say('What? You want me to examine a brooch?')
+	talk_state = 1
+	elseif msgcontains(msg, 'yes') and talk_state == 1 and getPlayerItemCount(cid,2318) >= 1 then
+	npcHandler:say('You have recovered my brooch! I shall forever be in your debt, my friend!')
+	doPlayerTakeItem(cid,2318,1)
+	setPlayerStorageValue(cid,99999,1)
+	talk_state = 2
+	elseif msgcontains(msg, 'passage') then
+		if getPlayerStorageValue(cid,99999) == 1 then
+				
+			npcHandler:say('Since you are my friend now I will sail you to the isle of the kings for 10 gold. Is that okay for you?')
+			talk_state = 3
+		else
+			npcHandler:say('You are not my friend.')
+		talk_state = 0
+		end
+	elseif msgcontains(msg, 'yes') and talk_state == 3 then
+	if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+		if getPlayerStorageValue(cid,99999) == 1 then
+				if getPlayerMoney(cid) >= 10 then
+					
+			
+							selfSay('Have a nice trip!')
+							doPlayerRemoveMoney(cid, 10)
+							doTeleportThing(cid, {x=32190,y=31957,z=6})
+							doSendMagicEffect(getCreaturePosition(cid), 10)
+							talk_state = 0
+							
+				else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+				end
+			else
+			npcHandler:say('You can\'t travel without my family brooch')
+			talk_state = 0
+			end
+
+	else
+	npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+	talk_state = 0
+	end
+	end
+	return TRUE
+	end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/default.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/default.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)		npcHandler:onCreatureSay(cid, type, msg)		end
+function onThink()				npcHandler:onThink()					end
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/default1.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/default1.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)		npcHandler:onCreatureSay(cid, type, msg)		end
+function onThink()				npcHandler:onThink()					end
+
+npcHandler:addModule(FocusModule:new())
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/dermot.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/dermot.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+local talkState = {}
+
+function onCreatureAppear(cid)	 npcHandler:onCreatureAppear(cid)	 end
+function onCreatureDisappear(cid)	 npcHandler:onCreatureDisappear(cid)	 end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()	 npcHandler:onThink()	end
+
+npcHandler:setMessage(MESSAGE_GREET, "Be greeted |PLAYERNAME|.")
+
+function greetCallback(cid)
+-- Resetting talkState[talkUser]
+local talkUser = NPCHANDLER_CONVBEHAVIOR == CONVERSATION_DEFAULT and 0 or cid
+talkState[talkUser] = 0
+return true
+end
+
+function creatureSayCallback (cid, type, msg)
+
+if(npcHandler.focus ~= cid) then
+return false
+end
+
+local talkUser = NPCHANDLER_CONVBEHAVIOR == CONVERSATION_DEFAULT and 0 or cid
+
+if(msgcontains(msg, 'key') or msgcontains(msg, 'door')) then
+npcHandler:say("Do you want to buy the dungeon key for 2000 gold?",cid)
+talkState[talkUser] = 1
+elseif(msgcontains(msg, "yes") and talkState[talkUser] == 1) then
+if doPlayerRemoveMoney(cid, 2000) == TRUE then -- edit the amount of gold here
+key = doPlayerAddItem(cid,2089,1)
+doSetItemActionId(key, 3940)
+npcHandler:say("Here you go.",cid)
+talkState[talkUser] = 0
+else
+npcHandler:say("You don't have enough money.", cid)
+talkState[talkUser] = 0
+end
+elseif(talkState[talkUser] == 1) then
+npcHandler:say("Believe me, it's better for you that way.", cid)
+talkState[talkUser] = 0
+end
+return true
+end
+
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/elathriel.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/elathriel.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	-- NPC Simon (Deeper Fibula Quest) feito por Rodrigo (Nottinghster)
+	-- Inicio Simon NPC
+	
+	local player_gold     = getPlayerItemCount(cid,2148)
+    local player_plat     = getPlayerItemCount(cid,2152)*100
+    local player_crys     = getPlayerItemCount(cid,2160)*10000
+    local player_money    = player_gold + player_plat + player_crys
+	
+	if msgcontains(msg, 'key') then
+	selfSay(' If you are that curious, do you want to buy a key for 5000 gold? Don\'t blame me if you get sucked in.')
+	talk_state = 1
+	
+	elseif msgcontains(msg, 'yes') and talk_state == 1 and player_money >= 5000 then
+	selfSay('Here it is.')
+	doPlayerRemoveMoney(cid, 5000)
+	key = doPlayerAddItem(cid, 2087,1)
+	doSetItemActionId(key,3012)
+	talk_state = 0
+	elseif msgcontains(msg, 'yes') and talk_state == 1 and player_money < 5000 then
+	selfSay('You dont have enought money.')
+	
+	elseif msgcontains(msg, 'bye') and (talk_state >= 1 and talk_state <= 3) then
+	selfSay('Have a nice day.')
+	talk_state = 0
+	
+	end
+
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/eremo.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/eremo.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) 			end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) 		end
+function onCreatureSay(cid, type, msg) 		npcHandler:onCreatureSay(cid, type, msg) 	end
+function onThink() 							npcHandler:onThink() 						end
+
+
+local node1 = keywordHandler:addKeyword({'wisdom of solitude'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the wisdom of solitude for 10000 gold?'})
+	node1:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 4, premium = 0, cost = 10000})
+	node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+
+npcHandler:addModule(FocusModule:new())
+
+
+
+
+function onCreatureAppear(cid)                npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)            npcHandler:onCreatureDisappear(cid)            end
+function onCreatureSay(cid, type, msg)            npcHandler:onCreatureSay(cid, type, msg)        end
+function onThink()                    npcHandler:onThink()                    end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	if msgcontains(msg, 'teleport') or msgcontains(msg, 'pemaret') or msgcontains(msg, 'back') or msgcontains(msg, 'cormaya') or msgcontains(msg, 'edron') then
+	npcHandler:say('Should I teleport you back to Pemaret?')
+	talk_state = 2
+	
+	elseif msgcontains(msg, 'yes') and talk_state == 2 then
+	npcHandler:say('Here you go!')
+	doTeleportThing(cid, {x=33288,y=31956,z=6})
+	
+	elseif msgcontains(msg, 'no') and talk_state == 2 then
+	npcHandler:say('Maybe later.')
+	talk_state = 0
+	end
+	
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

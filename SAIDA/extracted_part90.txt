@@ -1,0 +1,93 @@
+===== FILE_START: TOTAL/spells/scripts/attack/holy flash.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/holy flash.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HOLYDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SMALLHOLY)
+
+local condition = createConditionObject(CONDITION_DAZZLED)
+setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
+addDamageCondition(condition, math.random(7,11), 3000, -20)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/attack/holy missile.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/holy missile.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, true)
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HOLYDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_HOLYDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_HOLY)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1, 0, -1, -10, 5, 5, 0.85, 1.95, -20, -40)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/attack/ice strike.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/ice strike.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ICEATTACK)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SMALLICE)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1, -10, -1, -20, 5, 5, 1.4, 2.1)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/attack/ice wave.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/ice wave.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ICEAREA)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ICE)
+setAttackFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 5, 5, 1, 2)
+
+local area = createCombatArea(AREA_WAVE4, AREADIAGONAL_WAVE4)
+setCombatArea(combat, area)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/attack/icicle.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/icicle.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, true)
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ICEAREA)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ICE)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1, -10, -1, -15, 5, 5, 1.8, 3, -20, -40)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/attack/ignite.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/attack/ignite.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
+
+local condition = createConditionObject(CONDITION_FIRE)
+setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
+addDamageCondition(condition, 25, 3000, -45)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+===== FILE_END =====
+

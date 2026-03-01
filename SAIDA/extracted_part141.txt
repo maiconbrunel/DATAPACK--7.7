@@ -1,0 +1,668 @@
+===== FILE_START: npc/scripts/smiley.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/smiley.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid) npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local node1 = keywordHandler:addKeyword({'great light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn great light for 500 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'great light',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light magic missile'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light magic missile for 500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light magic missile',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light healing for 170 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light healing',vocation = 2, price = 170, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light for free?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light',vocation = 2, price = 0, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'find person'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn find person for 80 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'find person',vocation = 2, price = 80, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'antidote'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn antidote for 150 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'antidote',vocation = 2, price = 150, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'create food'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create food for 300 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'food',vocation = 2, price = 300, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'destroy field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn destroy field for 700 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'destroy field',vocation = 2, price = 700, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'creature illusion'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn creature illusion for 1000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'creature illusion',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'create ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create ultimate healing for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing rune',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create intense healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create intense healing for 600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'intense healing rune',vocation = 2, price = 600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'intense healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn intense healing for 350 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'intense healing',vocation = 2, price = 350, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn ultimate healing for 1000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'poison field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn poison field for 300 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'poison field',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fire field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fire field for 500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire field',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'heavy magic missile'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn heavy magic missile for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'heavy magic missile',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create antidote'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create antidote for 600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'antidote rune',vocation = 2, price = 600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'energy field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn energy field for 700 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'energy field',vocation = 2, price = 700, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'animate dead'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn animate dead for 1200 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'animate dead',vocation = 2, price = 1200, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'desintegrate'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn desintegrate for 900 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'desintegrate',vocation = 2, price = 900, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create ultimate healing for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing rune',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'explosion'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn explosion for 1800 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'explosion',vocation = 2, price = 1800, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'summon creature'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn summon creature for 2000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'summon creature',vocation = 2, price = 2000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'great fireball'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn greate fireball for 1600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'great fireball',vocation = 2, price = 1600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fireball'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fireball for 1200 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fireball',vocation = 2, price = 1200, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'convince creature'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn convince creature for 800 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'convince creature',vocation = 2, price = 800, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'energy wall'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn energy wall for 2500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'energy wall',vocation = 2, price = 2500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fire wall'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fire wall for 2500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire wall',vocation = 2, price = 2500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fire bomb'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fire bomb for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire bomb',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'poison bomb'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn poison bomb for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire bomb',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+-- Makes sure the npc reacts when you say hi, bye etc.
+npcHandler:addModule(FocusModule:new())
+
+
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/snabb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/snabb.lua</ABSOLUTE_PATH>
+focus = 0
+ talk_start = 0
+ target = 0
+ following = false
+ attacking = false
+ 
+ function onThingMove(creature, thing, oldpos, oldstackpos)
+ 
+ end
+ 
+ 
+ function onCreatureAppear(creature)
+ 
+ end
+ 
+ 
+ function onCreatureDisappear(cid, pos)
+  	if focus == cid then
+          selfSay('Good bye then.')
+          focus = 0
+          talk_start = 0
+  	end
+ end
+ 
+ 
+ function onCreatureTurn(creature)
+ 
+ end
+ 
+ function msgcontains(txt, str)
+  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
+ end
+ 
+ 
+ function onCreatureSay(cid, type, msg)
+  	msg = string.lower(msg)
+ 
+  	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
+  		selfSay('Hello ' .. creatureGetName(cid) .. '! I can take you to the iceland (50gps) or desert (100gps) Where do you want to go?')
+  		focus = cid
+  		talk_start = os.clock()
+  	end
+ 
+ 	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
+  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
+  	end
+ 
+ 	if msgcontains(msg, 'iceland') and focus == cid then
+ 		if pay(cid,50) then
+			selfSay('Let\'s go!')
+			selfSay('/send ' .. creatureGetName(cid) .. ', 254 25 6')
+			focus = 0
+			talk_start = 0
+		else
+			selfSay('Sorry, you don\'t have enough money.')
+			talk_start = os.clock()
+		end
+ 	end
+  
+ 
+ 
+  	if msgcontains(msg, 'desert') and focus == cid then
+  		if pay(cid,30) then
+ 			selfSay('Let\'s go!')
+ 			selfSay('/send ' .. creatureGetName(cid) .. ', 100 577 7')
+ 			focus = 0
+ 			talk_start = 0
+ 		else
+ 			selfSay('Sorry, you don\'t have enough money.')
+ 			talk_start = os.clock()
+ 		end
+  	end
+ 
+ 
+
+ 
+  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
+  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
+  		focus = 0
+  		talk_start = 0
+  	end
+ end
+ function onCreatureChangeOutfit(creature)
+ 
+ end
+ 
+  function onThink()
+  	if (os.clock() - talk_start) > 30 then
+  		if focus > 0 then
+  			selfSay('Next Please...')
+  		end
+ 		focus = 0
+  	end
+ 	if focus ~= 0 then
+ 		if getDistanceToCreature(focus) > 5 then
+ 			selfSay('Good bye then.')
+ 			focus = 0
+ 		end
+ 	end
+  end
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/svenson.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/svenson.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+        local npcHandler = NpcHandler:new(keywordHandler)
+        NpcSystem.parseParameters(npcHandler)
+        
+        
+        
+        -- OTServ event handling functions start
+        function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+        function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+        function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+        function onThink() 						npcHandler:onThink() end
+        -- OTServ event handling functions end
+        
+        
+        -- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
+        local travelNode = keywordHandler:addKeyword({'folda'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Folda for 10 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 10, destination = {x = 32047, y = 31581, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+			
+		local travelNode = keywordHandler:addKeyword({'senja'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Senja for 10 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 10, destination = {x = 32125, y = 31666, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+			
+		local travelNode = keywordHandler:addKeyword({'vega'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Vega for 10 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 10, destination = {x = 32025, y = 31692, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+			
+	    local travelNode = keywordHandler:addKeyword({'tibia'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a free passage back to Tibia?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 0, destination = {x = 32231, y = 31677, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+        
+        keywordHandler:addKeyword({'passage'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Where do you want to go today? We serve the routes to Senja, Folda, and Vega, and back to Tibia.'})
+        -- Makes sure the npc reacts when you say hi, bye etc.
+        npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/travel.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/travel.lua</ABSOLUTE_PATH>
+-- This is an example NPC script that can be used on Jiddo's NPC system
+-- Coordinates are not real, same for the name of cities or other server-based things here
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local travelNode = {}
+
+-- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
+travelNode = keywordHandler:addKeyword({'derelin'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you wish to travel to Derelin for 119 gold coins?'})
+	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = yes, level = 0, cost = 1, destination = {x=1367, y=403, z=7} })
+	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'I wouldn\'t go there either.'})
+
+travelNode = keywordHandler:addKeyword({'drunia'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you wish to travel to Drunia for 1 gold coins?'})
+	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 1, destination = {x=967, y=247, z=7} })
+	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+
+keywordHandler:addKeyword({'destination'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I can take you to Derelin or Drunia for just a small fee.'})
+
+-- Makes sure the npc reacts when you say hi, bye etc.
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/uzon.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/uzon.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+        local npcHandler = NpcHandler:new(keywordHandler)
+        NpcSystem.parseParameters(npcHandler)
+        
+        
+        
+        -- OTServ event handling functions start
+        function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+        function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+        function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+        function onThink() 						npcHandler:onThink() end
+        -- OTServ event handling functions end
+        
+        
+        -- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
+        local travelNode = keywordHandler:addKeyword({'darashia'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to fly to darashia for 40 gold coins'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 40, destination = {x=33270, y=32441, z=6} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Then stay here.'})
+
+        local travelNode = keywordHandler:addKeyword({'edron'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to fly to edron for 60 gold coins?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = true, level = 0, cost = 60, destination = {x = 33193, y = 31783, z = 3} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Then stay here.'})
+        
+        keywordHandler:addKeyword({'fly'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I can take you to Darashia and Edron.'})
+        keywordHandler:addKeyword({'travel'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I only can offer you my services to Darashia and Edron.'})
+        -- Makes sure the npc reacts when you say hi, bye etc.
+        npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/vip.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/vip.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	-- NPC Captain Fearless Venore Boat feito por Rodrigo (Nottinghster)
+	local venore = {x=32954,y=32023,z=6, stackpos=0}
+	local thais = {x=32312,y=32211,z=6, stackpos=0}
+	local carlin = {x=32387,y=31821,z=6, stackpos=0}
+	local abdendriel = {x=32733,y=31668,z=6, stackpos=0}
+	local darashia = {x=33290,y=32481,z=6, stackpos=0}
+	local edron = {x=33175,y=31764,z=6, stackpos=0}
+	local ankrahmun = {x=33091,y=32883,z=6, stackpos=0}
+	local porthope = {x=32530,y=32784,z=6, stackpos=0}
+	local ghostship = {x=33330,y=32172,z=5, stackpos=0}
+	
+	
+	-- Vip
+	if msgcontains(msg, 'vip') or msgcontains(msg, 'Vip') then
+	if getPlayerStorageValue(cid,30009) == 1 then
+	npcHandler:say('Do you seek a passage to vip island for free?')
+	talk_state = 1
+	else
+	npcHandler:say('You are not VIP.')
+	talk_state = 1
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 1 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 0 then
+				if getPlayerStorageValue(cid,30009) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, vip)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('You are ot VIP.')
+					
+				
+					
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Carlin
+	if msgcontains(msg, 'carlin') or msgcontains(msg, 'Carlin') then
+	if getPlayerStorageValue(cid,30009) == 1 or getPlayerStorageValue(cid,30009) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Carlin for free?')
+	talk_state = 2
+	else
+	npcHandler:say('Do you seek a passage to Carlin for 130 gold?')
+	talk_state = 2
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 2 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 130 then
+				if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, carlin)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 130)
+					doTeleportThing(cid, carlin)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Ab'Dendriel
+	if msgcontains(msg, 'ab\'dendriel') or msgcontains(msg, 'Ab\'dendriel') then
+	if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Ab\'Dendriel for free?')
+	talk_state = 3
+	else
+	npcHandler:say('Do you seek a passage to Ab\'dendriel for 90 gold?')
+	talk_state = 3
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 3 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 90 then
+				if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, abdendriel)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 90)
+					doTeleportThing(cid, abdendriel)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Darashia
+	if msgcontains(msg, 'darashia') or msgcontains(msg, 'Darashia') then
+	if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Darashia for free?')
+	talk_state = 4
+	else
+	npcHandler:say('Do you seek a passage to Darashia for 60 gold?')
+	talk_state = 4
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 4 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 60 then
+				if math.random(1,10) == 1 then
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 60)
+					doTeleportThing(cid, ghostship)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 60)
+					doTeleportThing(cid, darashia)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end
+			else
+				npcHandler:say('You don\'t have enough money.')
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Edron
+	if msgcontains(msg, 'edron') or msgcontains(msg, 'edron') then
+	if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Edron for free?')
+	talk_state = 5
+	else
+	npcHandler:say('Do you seek a passage to Edron for 40 gold?')
+	talk_state = 5
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 5 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 40 then
+				if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, edron)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 40)
+					doTeleportThing(cid, edron)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Ankrahmun
+	if msgcontains(msg, 'ankrahmun') or msgcontains(msg, 'Ankrahmun') then
+	if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Ankrahmun for free?')
+	talk_state = 6
+	else
+	npcHandler:say('Do you seek a passage to Ankrahmun for 150 gold?')
+	talk_state = 6
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 6 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 150 then
+				if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, ankrahmun)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 150)
+					doTeleportThing(cid, ankrahmun)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+	
+	-- Port Hope
+	if msgcontains(msg, 'port hope') or msgcontains(msg, 'Port Hope') then
+	if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+	npcHandler:say('Do you seek a passage to Port Hope for free?')
+	talk_state = 7
+	else
+	npcHandler:say('Do you seek a passage to Port Hope for 160 gold?')
+	talk_state = 7
+	end
+	
+	elseif msgcontains(msg,'yes') and talk_state == 7 then
+	-- if isPremium(cid) == TRUE then
+		if hasCondition(cid, CONDITION_INFIGHT) ~= 1 then
+			if getPlayerMoney(cid) >= 160 then
+				if getPlayerStorageValue(cid,30010) == 1 or getPlayerStorageValue(cid,30011) == 1 or getPlayerStorageValue(cid,30012) == 1 or getPlayerStorageValue(cid,30013) == 1 then
+					selfSay('Set the sails!')
+					doTeleportThing(cid, porthope)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				else
+					selfSay('Set the sails!')
+					doPlayerRemoveMoney(cid, 160)
+					doTeleportThing(cid, porthope)
+					doSendMagicEffect(getCreaturePosition(cid), 10)
+					talk_state = 0
+				end	
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+		else
+			npcHandler:say('First get rid of those blood stains! You are not going to ruin my vehicle!')
+			talk_state = 0
+		end
+	--[[ else
+		npcHandler:say('I\'m sorry, but you need a premium account in order to travel onboard our ships.')
+		talk_state = 0
+	end --]]
+end
+
+	return TRUE	
+end
+
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

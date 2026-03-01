@@ -1,0 +1,157 @@
+===== FILE_START: TOTAL/actions/scripts/Ankrahmun/The Ancient Tombs Quest/premio_tumbas.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Ankrahmun/The Ancient Tombs Quest/premio_tumbas.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English normalization, item ID comments added, storage safety
+
+local rewards = {
+	[10044] = {itemId = 2337, text = "You have found a right horn."},          --Right Horn
+	[10045] = {itemId = 2338, text = "You have found a left horn."},           --Left Horn
+	[10046] = {itemId = 2335, text = "You have found a helmet ornament."},     --Helmet Ornament
+	[10047] = {itemId = 2336, text = "You have found a gem holder."},          --Gem Holder
+	[10048] = {itemId = 2339, text = "You have found a damaged helmet."},      --Damaged Helmet
+	[10049] = {itemId = 2340, text = "You have found a helmet piece."},        --Helmet Piece
+	[10050] = {itemId = 2341, text = "You have found a helmet adornment."}     --Helmet Adornment
+}
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+local reward = rewards[item.actionid]
+if not reward then
+	return true
+end
+
+if player:getStorageValue(item.actionid) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, reward.text)
+	player:addItem(reward.itemId, 1)
+	player:setStorageValue(item.actionid, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The sarcophagus is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+
+===== FILE_START: TOTAL/actions/scripts/Carlin/Crystal Wand Quest/crystal.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Carlin/Crystal Wand Quest/crystal.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: item ID comment, English normalization, storage cleanup
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9003 then
+	return true
+end
+
+local storage = 9003
+if player:getStorageValue(storage) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a crystal wand.")
+	player:addItem(2184, 1) -- crystal wand
+	player:setStorageValue(storage, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+
+===== FILE_START: TOTAL/actions/scripts/Carlin/Crystal Wand Quest/sdrune.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Carlin/Crystal Wand Quest/sdrune.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English fix, item comment, structure cleanup
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9004 then
+	return true
+end
+
+local storage = 9004
+if player:getStorageValue(storage) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a sudden death rune.")
+	player:addItem(2263, 6) -- sudden death rune
+	player:setStorageValue(storage, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+
+===== FILE_START: TOTAL/actions/scripts/Carlin/Griffin Shield Quest/dwarven_axe.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Carlin/Griffin Shield Quest/dwarven_axe.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English fix, storage normalization, item comment
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9002 then
+	return true
+end
+
+local storage = 9002
+if player:getStorageValue(storage) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a dwarven axe.")
+	player:addItem(2435, 1) -- dwarven axe
+	player:setStorageValue(storage, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The dead skeleton is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+
+===== FILE_START: TOTAL/actions/scripts/Carlin/Griffin Shield Quest/griffin.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Carlin/Griffin Shield Quest/griffin.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English consistency, item comment, storage logic cleaned
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9001 then
+	return true
+end
+
+local storage = 9001
+if player:getStorageValue(storage) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a griffin shield.")
+	player:addItem(2533, 1) -- griffin shield
+	player:setStorageValue(storage, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The dead skeleton is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+
+===== FILE_START: TOTAL/actions/scripts/Carlin/Griffin Shield Quest/obsidian.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Carlin/Griffin Shield Quest/obsidian.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English consistency, item ID comment, cleaned storage check
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9000 then
+	return true
+end
+
+local storage = 9000
+if player:getStorageValue(storage) < 1 then
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found an obsidian lance.")
+	player:addItem(2425, 1) -- obsidian lance
+	player:setStorageValue(storage, 1)
+else
+	player:sendTextMessage(MESSAGE_INFO_DESCR, "The dead human is empty.")
+end
+
+return true
+end
+===== FILE_END =====

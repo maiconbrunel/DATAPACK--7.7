@@ -1,0 +1,327 @@
+===== FILE_START: TOTAL/actions/scripts/other/createbread.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/createbread.lua</ABSOLUTE_PATH>
+local LIQUID_CONTAINERS = {1775, 2005, 2006, 2007, 2008, 2009, 2011, 2012, 2013, 2014, 2015, 2023, 2031, 2032, 2033}
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(item.itemid == 2692 and isInArray(LIQUID_CONTAINERS, itemEx.itemid) and itemEx.type == 1) then
+		doChangeTypeItem(item.uid, item.type - 1)
+		doPlayerAddItem(cid, 2693, 1)
+
+		doChangeTypeItem(itemEx.uid, item.type - item.type)
+		return true
+	elseif(itemEx.itemid == 1381) then
+		doChangeTypeItem(item.uid, item.type - 1)
+		doPlayerAddItem(cid, 2692, 1)
+		return true
+	end
+
+	return false
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/dice.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/dice.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(fromPosition.x ~= CONTAINER_POSITION) then
+		doSendMagicEffect(fromPosition, CONST_ME_CRAPS)
+	end
+
+	local value = math.random(5792, 5797)
+	for i, pid in ipairs(getSpectators(getThingPosition(item.uid), 3, 3)) do
+		if(isPlayer(pid)) then
+			doCreatureSay(cid, getCreatureName(cid) .. ' rolled a ' .. value - 5791 .. '.', TALKTYPE_MONSTER, false, pid)
+		end
+	end
+
+	doTransformItem(item.uid, value)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/doors.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/doors.lua</ABSOLUTE_PATH>
+local function doorEnter(cid, uid, id, position)
+	doTransformItem(uid, id)
+	doTeleportThing(cid, position)
+	return true
+end
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(fromPosition.x ~= CONTAINER_POSITION and isPlayerPzLocked(cid) and getTileInfo(fromPosition).protection) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		return true
+	end
+
+	local locked = DOORS[item.itemid]
+	if(locked) then
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is locked.")
+		return true
+	end
+
+	local door = getItemInfo(item.itemid)
+	if(door.levelDoor > 0) then
+		if(item.aid == 189) then
+			if(not isPremium(cid)) then
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		local gender = item.aid - 186
+		if(isInArray({PLAYERSEX_FEMALE,  PLAYERSEX_MALE}, gender)) then
+			if(gender ~= getPlayerSex(cid)) then
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		local skull = item.aid - 180
+		if(skull >= SKULL_NONE and skull <= SKULL_BLACK) then
+			if(skull ~= getCreatureSkullType(cid)) then
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		local group = item.aid - 150
+		if(group >= 0 and group < 30) then
+			if(group > getPlayerGroupId(cid)) then
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		local vocation = item.aid - 100
+		if(vocation >= 0 and vocation < 50) then
+			local vocationEx = getVocationInfo(getPlayerVocation(cid))
+			if(vocationEx.id ~= vocation and vocationEx.fromVocation ~= vocation) then
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+				return true
+			end
+
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		if(item.aid == 190 or (item.aid ~= 0 and getPlayerLevel(cid) >= (item.aid - door.levelDoor))) then
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Only the worthy may pass.")
+		return true
+	end
+
+	if(door.specialDoor) then
+		if(item.aid == 100 or (item.aid ~= 0 and getCreatureStorage(cid, item.aid) > 0)) then
+			return doorEnter(cid, item.uid, door.transformUseTo, toPosition)
+		end
+
+		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "The door seems to be sealed against unwanted intruders.")
+		return true
+	end
+
+	toPosition.stackpos = STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE
+	local fields, thing = getTileItemsByType(fromPosition, ITEM_TYPE_MAGICFIELD), getThingFromPosition(toPosition)
+	if(item.uid ~= thing.uid and thing.itemid >= 100 and table.maxn(fields) ~= 0) then
+		return true
+	end
+
+	local doorCreature = getThingFromPosition(toPosition)
+	if(doorCreature.itemid ~= 0) then
+		toPosition.x = toPosition.x + 1
+		local query = doTileQueryAdd(doorCreature.uid, toPosition, 20) -- allow to stack outside doors, but not on teleports or floor changing tiles
+		if(query == RETURNVALUE_NOTPOSSIBLE) then
+			toPosition.x = toPosition.x - 1
+			toPosition.y = toPosition.y + 1
+			query = doTileQueryAdd(doorCreature.uid, toPosition, 20) -- repeat until found
+		end
+
+		if(query ~= RETURNVALUE_NOERROR) then
+			doPlayerSendDefaultCancel(cid, query)
+			return true
+		end
+
+		doTeleportThing(doorCreature.uid, toPosition)
+		if(not door.closingDoor) then
+			doTransformItem(item.uid, door.transformUseTo)
+		end
+
+		return true
+	end
+
+	return false
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/enchanting.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/enchanting.lua</ABSOLUTE_PATH>
+local config = {
+	hardcoreManaSpent = getConfigValue("addManaSpentInPvPZone"),
+	manaCost = 300,
+	soulCost = 2
+}
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(item.itemid == 2147 and itemEx.itemid == 2342) then
+		doTransformItem(itemEx.uid, 2343)
+		doDecayItem(itemEx.uid)
+		doRemoveItem(item.uid, 1)
+
+		doSendMagicEffect(toPosition, CONST_ME_MAGIC_RED)
+		return true
+	end
+
+	if(item.itemid == 7760 and isInArray({9934, 10022}, itemEx.itemid)) then
+		doTransformItem(itemEx.uid, 9933)
+		doRemoveItem(item.uid, 1)
+
+		doSendMagicEffect(toPosition, CONST_ME_MAGIC_RED)
+		return true
+	end
+
+	if(item.itemid == 7761 and isInArray({9949, 9954}, itemEx.itemid)) then
+		doTransformItem(itemEx.uid, itemEx.itemid - 1)
+		doRemoveItem(item.uid, 1)
+
+		doSendMagicEffect(toPosition, CONST_ME_MAGIC_GREEN)
+		return true
+	end
+
+	if(isInArray(enchantableGems, item.itemid)) then
+		local subtype = item.type
+		if(subtype == 0) then
+			subtype = 1
+		end
+
+		local mana = config.manaCost * subtype
+		if(getPlayerMana(cid) < mana) then
+			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTENOUGHMANA)
+			return true
+		end
+
+		local soul = config.soulCost * subtype
+		if(getPlayerSoul(cid) < soul) then
+			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTENOUGHSOUL)
+			return true
+		end
+
+		local a = table.find(enchantableGems, item.itemid)
+		if(a == nil or not isInArray(enchantingAltars[a], itemEx.itemid)) then
+			return false
+		end
+
+		doPlayerAddMana(cid, -mana)
+		doPlayerAddSoul(cid, -soul)
+
+		doTransformItem(item.uid, enchantedGems[a])
+		if(not getPlayerFlagValue(cid, PlayerFlag_NotGainMana) and (not getTileInfo(getThingPosition(cid)).hardcore or config.hardcoreManaSpent)) then
+			doPlayerAddSpentMana(cid, mana)
+		end
+
+		doSendMagicEffect(fromPosition, CONST_ME_HOLYDAMAGE)
+		return true
+	end
+ 
+	if(isInArray(enchantedGems, item.itemid)) then
+		if(not isInArray(enchantableItems, itemEx.itemid)) then
+			doSendMagicEffect(fromPosition, CONST_ME_POFF)
+			return false
+		end
+
+		local b = table.find(enchantedGems, item.itemid)
+		if(b == nil) then
+			return false
+		end
+
+		local subtype = itemEx.type
+		if(not isInArray({2544, 8905}, itemEx.itemid)) then
+			subtype = 1000
+		end
+
+		doTransformItem(itemEx.uid, enchantedItems[itemEx.itemid][b], subtype)
+		doSendMagicEffect(getThingPos(itemEx.uid), CONST_ME_HOLYDAMAGE)
+		doDecayItem(itemEx.uid)
+
+		doRemoveItem(item.uid, 1)
+		return true
+	end
+
+	return false
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/fireworksrocket.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/fireworksrocket.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(fromPosition.x ~= CONTAINER_POSITION) then
+		doSendMagicEffect(fromPosition, math.random(CONST_ME_FIREWORK_YELLOW, CONST_ME_FIREWORK_BLUE))
+	else
+		doCreatureSay(cid, "Ouch! Rather place it on the ground next time.", TALKTYPE_MONSTER)
+		doTargetCombatHealth(0, cid, COMBAT_PHYSICALDAMAGE, -1, -1, CONST_ME_EXPLOSIONHIT)
+	end
+
+	doRemoveItem(cid, item.uid, 1)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/furniturebeds.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/furniturebeds.lua</ABSOLUTE_PATH>
+local BEDS = {
+	[7904] = {{1754, 1755}, {1760, 1761}}, -- blue kit
+	[7905] = {{7811, 7812}, {7813, 7814}}, -- green kit
+	[7906] = {{7815, 7816}, {7817, 7818}}, -- red kit
+	[7907] = {{7819, 7820}, {7821, 7822}} -- yellow kit
+}
+
+local function internalBedTransform(item, itemEx, toPosition, ids)
+	doTransformItem(itemEx.uid, ids[1])
+	doTransformItem(getThingfromPos(toPosition).uid, ids[2])
+
+	doSendMagicEffect(getThingPos(itemEx.uid), CONST_ME_POFF)
+	doSendMagicEffect(toPosition, CONST_ME_POFF)
+
+	doRemoveItem(item.uid)
+end
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	local newBed = BEDS[item.itemid]
+	if(not newBed or not getHouseFromPos(getCreaturePosition(cid))) then
+		return false
+	end
+
+	--TODO
+	--Is it possible in real tibia, to use same modification on current used?
+	if(isInArray({newBed[1][1], newBed[2][1]}, itemEx.itemid)) then
+		doPlayerSendCancel(cid, "You already have this bed modification.")
+		return true
+	end
+
+	for kit, bed in pairs(BEDS) do
+		if(bed[1][1] == itemEx.itemid or itemEx.itemid == 1758) then
+			toPosition.y = toPosition.y + 1
+			internalBedTransform(item, itemEx, toPosition, newBed[1])
+			break
+		elseif(bed[2][1] == itemEx.itemid or itemEx.itemid == 1756) then
+			toPosition.x = toPosition.x + 1
+			internalBedTransform(item, itemEx, toPosition, newBed[2])
+			break
+		end
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

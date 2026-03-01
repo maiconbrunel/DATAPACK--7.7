@@ -1,0 +1,268 @@
+===== FILE_START: TOTAL/actions/scripts/liquids/mastermind_potion.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/liquids/mastermind_potion.lua</ABSOLUTE_PATH>
+local condition = createConditionObject(CONDITION_ATTRIBUTES)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 10 * 60 * 1000) -- 10 minutes
+setConditionParam(condition, CONDITION_PARAM_STAT_MAGICLEVEL, 3)
+setConditionParam(condition, CONDITION_PARAM_SKILL_SHIELD, -10)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 99)
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(not isSorcerer(cid) and not isDruid(cid)) then
+		doCreatureSay(cid, "Only sorcerers and druids may drink this fluid.", TALKTYPE_ORANGE_1, cid)
+		return true
+	end
+
+	if(doAddCondition(cid, condition)) then
+		doSendMagicEffect(fromPosition, CONST_ME_MAGIC_RED)
+		doRemoveItem(item.uid, 1)
+		doCreatureSay(cid, "You feel smarter.", TALKTYPE_ORANGE_1, cid)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/liquids/potions.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/liquids/potions.lua</ABSOLUTE_PATH>
+local ITEM_RUM_FLASK = 5553
+
+local TYPE_EMPTY = 0
+local TYPE_WATER = 1
+local TYPE_BLOOD = 2
+local TYPE_BEER = 3
+local TYPE_SLIME = 4
+local TYPE_LEMONADE = 5
+local TYPE_MILK = 6
+local TYPE_MANA_FLUID = 7
+local TYPE_LIFE_FLUID = 10
+local TYPE_OIL = 11
+local TYPE_URINE = 13
+local TYPE_COCONUT_MILK = 14
+local TYPE_WINE = 15
+local TYPE_MUD = 19
+local TYPE_FRUIT_JUICE = 21
+local TYPE_LAVA = 26
+local TYPE_RUM = 27
+local TYPE_SWAMP = 28
+local TYPE_TEA = 35
+
+local oilLamps = {[2046] = 2044}
+local casks = {[1771] = TYPE_WATER, [1772] = TYPE_BEER, [1773] = TYPE_WINE}
+local alcoholDrinks = {TYPE_BEER, TYPE_WINE, TYPE_RUM}
+local poisonDrinks = {TYPE_SLIME, TYPE_SWAMP}
+
+local drunk = createConditionObject(CONDITION_DRUNK)
+setConditionParam(drunk, CONDITION_PARAM_TICKS, 60000)
+
+local poison = createConditionObject(CONDITION_POISON)
+setConditionParam(poison, CONDITION_PARAM_DELAYED, true) -- Condition will delay the first damage from when it's added
+setConditionParam(poison, CONDITION_PARAM_MINVALUE, -50) -- Minimum damage the condition can do at total
+setConditionParam(poison, CONDITION_PARAM_MAXVALUE, -120) -- Maximum damage
+setConditionParam(poison, CONDITION_PARAM_STARTVALUE, -5) -- The damage the condition will do on the first hit
+setConditionParam(poison, CONDITION_PARAM_TICKINTERVAL, 4000) -- Delay between damages
+setConditionParam(poison, CONDITION_PARAM_FORCEUPDATE, true) -- Re-update condition when adding it(ie. min/max value)
+
+local burn = createConditionObject(CONDITION_FIRE)
+setConditionParam(burn, CONDITION_PARAM_DELAYED, true) -- Condition will delay the first damage from when it's added
+setConditionParam(burn, CONDITION_PARAM_MINVALUE, -70) -- Minimum damage the condition can do at total
+setConditionParam(burn, CONDITION_PARAM_MAXVALUE, -150) -- Maximum damage
+setConditionParam(burn, CONDITION_PARAM_STARTVALUE, -10) -- The damage the condition will do on the first hit
+setConditionParam(burn, CONDITION_PARAM_TICKINTERVAL, 10000) -- Delay between damages
+setConditionParam(burn, CONDITION_PARAM_FORCEUPDATE, true) -- Re-update condition when adding it(ie. min/max value)
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(doComparePositions(getCreaturePosition(cid), toPosition))then
+		itemEx.uid = cid
+	end
+
+	if(itemEx.uid == cid) then
+		if(item.type == TYPE_EMPTY) then
+			doPlayerSendCancel(cid, "It is empty.")
+			return true
+		end
+
+		if(item.type == TYPE_MANA_FLUID) then
+			if(not doPlayerAddMana(itemEx.uid, math.random(40, 80))) then
+				return false
+			end
+
+			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER_SAY)
+			doSendMagicEffect(toPosition, CONST_ME_MAGIC_BLUE)
+		elseif(item.type == TYPE_LIFE_FLUID) then
+			if(not doCreatureAddHealth(itemEx.uid, math.random(40, 80))) then
+				return false
+			end
+
+			doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_MONSTER_SAY)
+			doSendMagicEffect(toPosition, CONST_ME_MAGIC_BLUE)
+		elseif(isInArray(alcoholDrinks, item.type)) then
+			if(not doTargetCombatCondition(0, cid, drunk, CONST_ME_NONE)) then
+				return false
+			end
+
+			doCreatureSay(cid, "Aaah...", TALKTYPE_MONSTER_SAY)
+		elseif(isInArray(poisonDrinks, item.type)) then
+			if(not doTargetCombatCondition(0, cid, poison, CONST_ME_NONE)) then
+				return false
+			end
+
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER_SAY)
+		elseif(item.type == TYPE_LAVA) then
+			if(not doTargetCombatCondition(0, cid, burn, CONST_ME_NONE)) then
+				return false
+			end
+
+			doCreatureSay(cid, "Urgh!", TALKTYPE_MONSTER_SAY)
+		else
+			doCreatureSay(cid, "Gulp.", TALKTYPE_MONSTER_SAY)
+		end
+
+		doChangeTypeItem(item.uid, TYPE_EMPTY)
+		return true
+	end
+
+	if(not isCreature(itemEx.uid)) then
+		if(item.type == TYPE_EMPTY) then
+			if(isItemFluidContainer(itemEx.itemid) and itemEx.type ~= TYPE_EMPTY) then
+				doChangeTypeItem(item.uid, itemEx.type)
+				doChangeTypeItem(itemEx.uid, TYPE_EMPTY)
+				return true
+			end
+
+			local tmp = casks[itemEx.itemid]
+			if(tmp == nil) then
+				tmp = getFluidSourceType(itemEx.itemid)
+			end
+
+			if(tmp) then
+				doChangeTypeItem(item.uid, tmp)
+				return true
+			end
+
+			doPlayerSendCancel(cid, "It is empty.")
+			return true
+		end
+
+		local tmp = oilLamps[itemEx.itemid]
+		if(item.type == TYPE_OIL and tmp ~= nil) then
+			doTransformItem(itemEx.uid, tmp)
+			doChangeTypeItem(item.uid, TYPE_NONE)
+			return true
+		end
+
+		if(isItemFluidContainer(itemEx.itemid) and itemEx.type == TYPE_EMPTY) then
+			doChangeTypeItem(itemEx.uid, itemEx.type)
+			doChangeTypeItem(item.uid, TYPE_EMPTY)
+			return true
+		end
+
+		if(hasProperty(itemEx.uid, CONST_PROP_BLOCKSOLID)) then
+			return false
+		end
+	end
+
+	if(item.type == TYPE_EMPTY) then
+		doPlayerSendCancel(cid, "It is empty.")
+		return true
+	end
+
+	doDecayItem(doCreateItem(POOL, item.type, toPosition))
+	doChangeTypeItem(item.uid, TYPE_EMPTY)
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/blessings.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/blessings.lua</ABSOLUTE_PATH>
+local BLESSINGS = {"Wisdom of Solitude", "Spark of the Phoenix", "Fire of the Suns", "Spiritual Shielding", "Embrace of Tibia", "Twist of Fate"}
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	local result = ""
+	for i = 1, (table.maxn(BLESSINGS) - 1) do
+		result = (getPlayerBlessing(cid, i) and result .. (result:len() > 0 and ", " or "") .. BLESSINGS[i] or result)
+	end
+
+	if(getPlayerPVPBlessing(cid)) then
+		result = result .. ", " .. BLESSINGS[table.maxn(BLESSINGS)]
+	end
+
+	return doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, result:len() > 0 and "Currently you have the following blessings: " .. result .. "." or "You do not have any blessing.")
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/blueberrybush.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/blueberrybush.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	doCreateItem(2677, 3, fromPosition)
+	return false
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/changegold.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/changegold.lua</ABSOLUTE_PATH>
+local coins = {
+	[ITEM_GOLD_COIN] = {
+		to = ITEM_PLATINUM_COIN, effect = COLOR_YELLOW
+	}, 
+	[ITEM_PLATINUM_COIN] = {
+		from = ITEM_GOLD_COIN, to = ITEM_CRYSTAL_COIN, effect = COLOR_LIGHTBLUE
+	}, 
+	[ITEM_CRYSTAL_COIN] = {
+		from = ITEM_PLATINUM_COIN, effect = COLOR_TEAL
+	}
+}
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(getPlayerFlagValue(cid, PLAYERFLAG_CANNOTPICKUPITEM)) then
+		return false
+	end
+
+	local coin = coins[item.itemid]
+	if(not coin) then
+		return false
+	end
+
+	if(coin.to ~= nil and item.type == ITEMCOUNT_MAX) then
+		doChangeTypeItem(item.uid, item.type - item.type)
+		doPlayerAddItem(cid, coin.to, 1)
+		doSendAnimatedText(fromPosition, "$$$", coins[coin.to].effect)
+	elseif(coin.from ~= nil) then
+		doChangeTypeItem(item.uid, item.type - 1)
+		doPlayerAddItem(cid, coin.from, ITEMCOUNT_MAX)
+		doSendAnimatedText(fromPosition, "$$$", coins[coin.from].effect)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/other/constructionkits.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/other/constructionkits.lua</ABSOLUTE_PATH>
+local CONSTRUCTIONS = {
+	[3901] = 1652, [3902] = 1658, [3903] = 1666, [3904] = 1670, [3905] = 3813, [3906] = 3817, [3907] = 3821, [3908] = 1619, [3909] = 1614, [3910] = 1615,
+	[3911] = 1616, [3912] = 2604, [3913] = 3805, [3914] = 3807, [3915] = 1716, [3916] = 1724, [3917] = 1728, [3918] = 1732, [3919] = 3809, [3920] = 3811,
+	[3921] = 2084, [3922] = 2095, [3923] = 2098, [3924] = 2064, [3925] = 1674, [3926] = 2080, [3927] = 1442, [3928] = 1446, [3929] = 2034, [3930] = 1447,
+	[3931] = 2101, [3932] = 1774, [3933] = 2105, [3934] = 2117, [3935] = 2582, [3936] = 3832, [3937] = 1775, [3938] = 1750, [5086] = 5056, [5087] = 5055,
+	[5088] = 5046
+}
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(fromPosition.x == CONTAINER_POSITION) then
+		doPlayerSendCancel(cid, "Put the construction kit on the floor first.")
+	elseif(not getTileInfo(fromPosition).house) then
+		doPlayerSendCancel(cid, "You may construct this only inside a house.")
+	elseif(CONSTRUCTIONS[item.itemid] ~= nil) then
+		doTransformItem(item.uid, CONSTRUCTIONS[item.itemid])
+		doSendMagicEffect(fromPosition, CONST_ME_POFF)
+	else
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

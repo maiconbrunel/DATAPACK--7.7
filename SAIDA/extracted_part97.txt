@@ -1,0 +1,125 @@
+===== FILE_START: TOTAL/spells/scripts/healing/intense healing rune.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/intense healing rune.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, 1)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+function onGetFormulaValues(cid, level, maglevel)
+	min = (level * 1.05 + maglevel * 1.55)+10
+	max = (level * 1.25 + maglevel * 1.95)+10
+	return min, max
+end
+
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/intense healing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/intense healing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+
+function onGetFormulaValues(cid, level, maglevel)
+	min = (level * 2 + maglevel * 3) * 0.20
+	max = (level * 2 + maglevel * 3) * 0.60
+		
+	return min, max
+end
+
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/intense recovery.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/intense recovery.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_REGENERATION)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 1)
+setConditionParam(condition, CONDITION_PARAM_BUFF, true)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 1 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_HEALTHGAIN, 40)
+setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 3000)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/intense wound cleansing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/intense wound cleansing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+setHealingFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 10, 10, 100.5, 150.10)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/light healing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/light healing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+
+function onGetFormulaValues(cid, level, maglevel)
+	min = (level * 2 + maglevel * 3) * 0.10
+	max = (level * 2 + maglevel * 3) * 0.35
+	
+	if min < 15 then
+		min = 15
+	end
+
+	return min, max
+end
+
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/mass healing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/mass healing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_TARGETPLAYERSORSUMMONS, true)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 1.2, -30, 1.5, 0)
+
+local area = createCombatArea(AREA_CIRCLE3X3)
+setCombatArea(combat, area)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+

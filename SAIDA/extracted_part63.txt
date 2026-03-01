@@ -1,0 +1,137 @@
+===== FILE_START: TOTAL/actions/scripts/rook/goblin temple quest/goblin temple snow.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/goblin temple quest/goblin temple snow.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3014 then
+  queststatus = getPlayerStorageValue(cid,3014)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a bag.")
+   container = doPlayerAddItem(cid, 1987, 1)
+   doAddContainerItem(container,2111,4)
+   doAddContainerItem(container,1294,5)
+   setPlayerStorageValue(cid,3014,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/goblin temple quest/goblin temple.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/goblin temple quest/goblin temple.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3015 then
+  queststatus = getPlayerStorageValue(cid,3015)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a bag.")
+   container = doPlayerAddItem(cid, 1987, 1)
+   doAddContainerItem(container,2642,1)
+   doAddContainerItem(container,2563,1)
+   doAddContainerItem(container,20006,1)
+   setPlayerStorageValue(cid,3015,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/honey flower.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/honey flower.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3024 then
+  queststatus = getPlayerStorageValue(cid,3024)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a combat knife.")
+   item_uid = doPlayerAddItem(cid,2103,1)
+   setPlayerStorageValue(cid,3024,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/katana quest/katana.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/katana quest/katana.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3017 then
+  queststatus = getPlayerStorageValue(cid,3017)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a katana sword.")
+   item_uid = doPlayerAddItem(cid,2412,1)
+   setPlayerStorageValue(cid,3017,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"The dead human body is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/katana quest/key.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/katana quest/key.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3018 then
+  queststatus = getPlayerStorageValue(cid,3018)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a key.")
+   item_uid = doPlayerAddItem(cid,2088,1)
+   doSetItemActionId(item_uid,14000)
+   setPlayerStorageValue(cid,3018,1)
+  else
+   doPlayerSendTextMessage(cid,22,"The slain skeleton is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/katana quest/viking helmet.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/katana quest/viking helmet.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3016 then
+  queststatus = getPlayerStorageValue(cid,3016)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a viking helmet.")
+   item_uid = doPlayerAddItem(cid,2473,1)
+   setPlayerStorageValue(cid,3016,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"The dead human body is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+

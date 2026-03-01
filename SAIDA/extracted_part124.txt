@@ -1,0 +1,826 @@
+===== FILE_START: npc/scripts/Padreia.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Padreia.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid) npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local node1 = keywordHandler:addKeyword({'great light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn great light for 500 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'great light',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light magic missile'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light magic missile for 500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light magic missile',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light healing for 170 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light healing',vocation = 2, price = 170, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light for free?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light',vocation = 2, price = 0, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'find person'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn find person for 80 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'find person',vocation = 2, price = 80, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'antidote'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn antidote for 150 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'antidote',vocation = 2, price = 150, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'create food'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create food for 300 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'food',vocation = 2, price = 300, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'destroy field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn destroy field for 700 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'destroy field',vocation = 2, price = 700, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'creature illusion'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn creature illusion for 1000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'creature illusion',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+
+local node1 = keywordHandler:addKeyword({'create ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create ultimate healing for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing rune',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create intense healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create intense healing for 600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'intense healing rune',vocation = 2, price = 600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'intense healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn intense healing for 350 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'intense healing',vocation = 2, price = 350, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn ultimate healing for 1000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'poison field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn poison field for 300 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'poison field',vocation = 2, price = 1000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fire field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fire field for 500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire field',vocation = 2, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'heavy magic missile'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn heavy magic missile for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'heavy magic missile',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create antidote'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create antidote for 600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'antidote rune',vocation = 2, price = 600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'energy field'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn energy field for 700 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'energy field',vocation = 2, price = 700, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'animate dead'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn animate dead for 1200 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'animate dead',vocation = 2, price = 1200, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'desintegrate'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn desintegrate for 900 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'desintegrate',vocation = 2, price = 900, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'create ultimate healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn create ultimate healing for 1500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'ultimate healing rune',vocation = 2, price = 1500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'explosion'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn explosion for 1800 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'explosion',vocation = 2, price = 1800, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'summon creature'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn summon creature for 2000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'summon creature',vocation = 2, price = 2000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'great fireball'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn greate fireball for 1600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'great fireball',vocation = 2, price = 1600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fireball'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fireball for 1200 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fireball',vocation = 2, price = 1200, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'convince creature'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn convince creature for 800 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'convince creature',vocation = 2, price = 800, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'energy wall'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn energy wall for 2500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'energy wall',vocation = 2, price = 2500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'fire wall'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn fire wall for 2500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'fire wall',vocation = 2, price = 2500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+-- Makes sure the npc reacts when you say hi, bye etc.
+npcHandler:addModule(FocusModule:new())
+
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/Pydar.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Pydar.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) 			end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) 		end
+function onCreatureSay(cid, type, msg) 		npcHandler:onCreatureSay(cid, type, msg) 	end
+function onThink() 							npcHandler:onThink() 						end
+
+
+local node1 = keywordHandler:addKeyword({'spark of the phoenix'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want to buy the spark of the phoenix for 10000 gold?'})
+	node1:addChildKeyword({'yes'}, StdModule.bless, {npcHandler = npcHandler, bless = 5, premium = 1, cost = 10000})
+	node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'Too expensive, eh?'})
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/Quero.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Quero.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	-- Inicio Sam by Rodrigo (Nottinghster)
+	if msgcontains(msg, 'magic plate armor') then
+	npcHandler:say('WOW! Do you really want to sell me a MAGIC plate armor?')
+	talk_state = 3
+	
+	elseif msgcontains(msg, 'yes') and talk_state == 3 then
+	npcHandler:say('Oh, unbelievable! I would pay 6400 gold for this wonderful piece of armor. Are you still interested?')
+	talk_state = 4
+	elseif msgcontains(msg, 'no') and talk_state == 3 then
+	npcHandler:say('Hmmm, what a pity! I am looking for such an armor since I live in Thais.')
+	talk_state = 0
+	
+	elseif msgcontains(msg, 'yes') and talk_state == 4 and getPlayerItemCount(cid, 2472) >= 1 then
+	npcHandler:say('Finally it is mine! Here is your money. Can I be of any further help?')
+	doPlayerAddMoney(cid, 6400)
+	doPlayerRemoveItem(cid, 2472, 1)
+	talk_state = 0
+	elseif msgcontains(msg, 'yes') and talk_state == 4 and getPlayerItemCount(cid, 2472) == 0 then
+	npcHandler:say('Argl! You do not have one! Trying to tease me? Get lost or I call the guards!')
+	elseif msgcontains(msg, 'no') and talk_state == 4 then
+	npcHandler:say('Maybe my offer is too low? Unfortunately I can not bring up more money, I am just a smith.')
+	talk_state = 0
+	
+	elseif msgcontains(msg, 'backpack') or msgcontains(msg, 'old backpack') then
+	npcHandler:say('What? Are you telling me you found my old adventurer\'s backpack that I lost years ago??')
+	talk_state = 5
+	
+	elseif msgcontains(msg, 'yes') and talk_state == 5 and getPlayerItemCount(cid, 3960) >= 1 then
+	npcHandler:say('Thank you verry much! This brings back good old memories! Please, as a reward, travel to kazordoon and ask my old friend Kroox to provide you a special dwarven armor. ...')
+	npcHandler:say('I will mail him about you immediately. Just tell him, his old buddy sam is sending you.')
+	setPlayerStorageValue(cid, 289, 1)
+	doPlayerRemoveItem(cid, 3960, 1)
+	talk_state = 0
+	elseif msgcontains(msg, 'yes') and talk_state == 5 and getPlayerItemCount(cid, 3960) == 0 then
+	npcHandler:say('No, you don\'t have my old backpack. What a pity.')
+	talk_state = 0
+	elseif msgcontains(msg, 'no') and talk_state == 5 then
+	npcHandler:say('What a pity.')
+	talk_state = 0
+	end
+	return TRUE
+	end
+	
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Itens para vender
+
+-- Itens para comprar
+shopModule:addBuyableItem({'lyre'},2071,120,'lyre')
+shopModule:addBuyableItem({'lute'},2072,195,'lute')
+shopModule:addBuyableItem({'drum'},2073,140,'drum')
+shopModule:addBuyableItem({'simple fanfare'},2075,150,'fanfare')
+	
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+
+
+
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/Rachel.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Rachel.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() 						npcHandler:onThink() end
+-- OTServ event handling functions end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+
+--[[ if msgcontains(msg, 'bp of ultimate healing') then
+	npcHandler:say('Do you want to buy a backpack of ultimate healing rune for 2500 gold coins?')
+	talk_state = 1
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 1 then
+			if getPlayerMoney(cid) >= 2500 then
+				blue_bp = doPlayerAddItem(cid, 2002, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doAddContainerItem(blue_bp, 2273, 1)
+				doPlayerRemoveMoney(cid, 2500)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end
+	
+if msgcontains(msg, 'bp of sudden death') then
+	npcHandler:say('Do you want to buy a backpack of sudden death rune for 4500 gold coins?')
+	talk_state = 2
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 2 then
+			if getPlayerMoney(cid) >= 4500 then
+				grey_bp = doPlayerAddItem(cid, 2003, 1)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doAddContainerItem(grey_bp, 2268, 3)
+				doPlayerRemoveMoney(cid, 4500)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end	
+	
+if msgcontains(msg, 'bp of heavy magic missile') then
+	npcHandler:say('Do you want to buy a backpack of heavy magic missile rune for 1000 gold coins?')
+	talk_state = 3
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 3 then
+			if getPlayerMoney(cid) >= 1000 then
+				purple1_bp = doPlayerAddItem(cid, 2001, 1)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doAddContainerItem(purple1_bp, 2311, 5)
+				doPlayerRemoveMoney(cid, 1000)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end
+
+if msgcontains(msg, 'bp of great fireball') then
+	npcHandler:say('Do you want to buy a backpack of great fireball rune for 2000 gold coins?')
+	talk_state = 4
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 4 then
+			if getPlayerMoney(cid) >= 2000 then
+				red_bp = doPlayerAddItem(cid, 2000, 1)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doAddContainerItem(red_bp, 2304, 4)
+				doPlayerRemoveMoney(cid, 2000)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end
+
+if msgcontains(msg, 'bp of explosion') or msgcontains(msg, 'bp of explo') then
+	npcHandler:say('Do you want to buy a backpack of explosion rune for 3000 gold coins?')
+	talk_state = 5
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 5 then
+			if getPlayerMoney(cid) >= 3000 then
+				purple2_bp = doPlayerAddItem(cid, 2001, 1)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doAddContainerItem(purple2_bp, 2313, 3)
+				doPlayerRemoveMoney(cid, 3000)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end
+
+if msgcontains(msg, 'bp of mf') or msgcontains(msg, 'bp of manafluid') or msgcontains(msg, 'bp of mana fluid') then
+	npcHandler:say('Do you want to buy a backpack of mana fluid for 1100 gold coins?')
+	talk_state = 6
+	
+		elseif msgcontains(msg, 'yes') and talk_state == 6 then
+			if getPlayerMoney(cid) >= 1100 then
+				brown_bp = doPlayerAddItem(cid, 1988, 1)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doAddContainerItem(brown_bp, 2006, 7)
+				doPlayerRemoveMoney(cid, 1100)
+				npcHandler:say('Thank you for buying.')
+				talk_state = 0
+			else
+				npcHandler:say('You don\'t have enough money.')
+				talk_state = 0
+			end
+	end	
+	
+		return TRUE
+end ]]--
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Empty Vial
+shopModule:addSellableItem({'empty', 'vial'}, 2006, 5, 'vial')
+
+-- Spell Book
+
+shopModule:addBuyableItem({'spellbook'}, 2175, 150,	'spellbook')
+
+-- Wand
+
+shopModule:addBuyableItem({'light wand', 'lightwand'}, 2163, 500, 'magic light wand')
+shopModule:addBuyableItem({'wand of vortex', 'vortex'}, 2190, 500, 'wand of vortex')
+shopModule:addBuyableItem({'wand of dragonbreath', 'dragonbreath'}, 2191, 1000, 'wand of dragonbreath')
+shopModule:addBuyableItem({'wand of plague', 'plague'}, 2188, 5000, 'wand of plague')
+shopModule:addBuyableItem({'wand of cosmic energy', 'cosmic energy'}, 2189, 10000, 'wand of cosmic energy')
+shopModule:addBuyableItem({'wand of inferno', 'inferno'}, 2187, 15000, 'wand of inferno')
+
+-- Rods
+
+shopModule:addBuyableItem({'snakebite rod', 'snakebite'}, 2182, 500, 'snakebite rod')
+shopModule:addBuyableItem({'moonlight rod', 'moonlight'}, 2186, 1000, 'moonlight rod')
+shopModule:addBuyableItem({'volcanic rod', 'volcanic'}, 2185, 5000, 'necrotic rod')
+shopModule:addBuyableItem({'terra rod', 'terra'}, 2181, 10000, 'terra rod')
+shopModule:addBuyableItem({'tempest rod', 'tempest'}, 2183, 15000, 'tempest rod')
+
+-- Fluids
+
+shopModule:addBuyableItem({'life fluid','lifefluid'}, 2006, 60,10,'life fluid')
+shopModule:addBuyableItem({'mana fluid','manafluid'},2006,55,7,'mana fluid')
+
+-- Runas 
+
+shopModule:addBuyableItem({'intense healing rune', 'ih'}, 2265, 95, 1, 'intense healing rune')
+shopModule:addBuyableItem({'ultimate healing rune', 'uh'}, 2273, 125, 1, 'ultimate healing rune')
+shopModule:addBuyableItem({'magic wall rune'}, 2293, 200, 3, 'magic wall rune')
+shopModule:addBuyableItem({'destroy field rune'}, 2261, 45, 3, 'destroy field rune')
+shopModule:addBuyableItem({'light magic missile rune'}, 2287, 40, 10, 'light magic missile rune')
+shopModule:addBuyableItem({'heavy magic missile rune', 'hmm'}, 2311, 50, 5, 'heavy magic missile rune')
+shopModule:addBuyableItem({'great fireball rune', 'gfb'}, 2304, 100, 4, 'great fireball rune')
+shopModule:addBuyableItem({'explosion rune', 'explosion'}, 2313, 150, 3, 'explosion rune')
+shopModule:addBuyableItem({'sudden death rune', 'sd'}, 2268, 225, 1, 'sudden death rune')
+shopModule:addBuyableItem({'death arrow rune'}, 2263, 300, 3, 'death arrow rune')
+shopModule:addBuyableItem({'animate dead rune'}, 2316, 375, 1, 'animate dead rune')
+shopModule:addBuyableItem({'convince creature rune'}, 2290, 80, 1, 'convince creature rune')
+shopModule:addBuyableItem({'chameleon rune'}, 2291, 210, 1, 'chameleon rune')
+shopModule:addBuyableItem({'desintegrate'}, 2310, 80,  3, 'desintegreate rune')
+shopModule:addBuyableItem({'blank', 'rune'},2260, 10,'blank rune')
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/Razan.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Razan.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid) npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local node1 = keywordHandler:addKeyword({'great light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn great light for 500 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'great light',vocation = 4, price = 500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light healing for 170 gp?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light healing',vocation = 4, price = 170, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'light'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn light for free?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'light',vocation = 4, price = 0, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'find person'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn find person for 80 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'find person',vocation = 4, price = 80, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'antidote'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn antidote for 150 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'antidote',vocation = 4, price = 150, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'magic rope'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn magic rope for 200 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'magic rope',vocation = 4, price = 200, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'haste'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn haste for 600 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'haste',vocation = 4, price = 600, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'berserk'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to learn berserk for 2500 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'berserk',vocation = 4, price = 2500, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+local node1 = keywordHandler:addKeyword({'challenge'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Would you like to challenge for 2000 gold coins?'})
+node1:addChildKeyword({'yes'}, StdModule.learnSpell, {npcHandler = npcHandler, premium = false, spellName = 'challenge',vocation = 4, price = 2000, level = 1})
+node1:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Cant you handle the power of the spell?', reset = true})
+
+-- Makes sure the npc reacts when you say hi, bye etc.
+npcHandler:addModule(FocusModule:new())
+
+
+
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/Riddler.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/Riddler.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)                npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)             npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)     npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                         npcHandler:onThink() end
+-- OTServ event handling functions end
+
+function creatureSayCallback(cid, type, msg)
+    if(npcHandler.focus ~= cid) then
+        return false
+    end
+    
+    -- start config
+	local queststate1 = getPlayerStorageValue(cid,6667)
+	local queststate2 = getPlayerStorageValue(cid,6668)
+    local response01 = "Death awaits those who fail the test of the three seals! Do you really want me to test you?"
+    local response02 = "FOOL! Now you're doomed! But well ... So be it! Let's start out with the Seal of Knowledge and the first question: What name did the necromant king choose for himself?"
+    local response03 = "HOHO! You have learned your lesson well. Question number two then: Who or what is the feared Hugo?"
+    local response04 = "HOHO! Right again. All right. The final question of the first seal: Who was the first warrior to follow the path of the Mooh'Tah?"
+    local response05 = "HOHO! Lucky you. You have passed the first seal! So ... would you like to continue with the Seal of the Mind?"
+    local response06 = "As you wish, foolish one! Here is my first question: Its lighter then a feather but no living creature can hold it for ten minutes?"
+    local response07 = "That was an easy one. Let's try the second: If you name it, you break it."
+    local response08 = "Hm. I bet you think you're smart. All right. How about this: What does everybody want to become but nobody to be?"
+    local response09 = "ARGH! You did it again! Well all right. Do you wish to break the Seal of Madness?"
+    local response10 = "GOOD! So I will get you at last. Answer this: What is my favourite colour?"
+    local response11 = "UHM UH OH ... How could you guess that? Are you mad??? All right. Question number two: What is the opposite?"
+    local response12 = "NO! NO! NO! That can't be true. You're not only mad, you are a complete idiot! Ah well. Here is the last question: What is 1 plus 1?"
+    local response13 = "WRONG!"
+    local response14 = "RIGHT!"
+
+    local wrong = "NO! HAHA! YOU FAILED!"
+    local keywordAbadon = "no"
+    local abadon = "Better for you..."
+
+    -- all keywords MUST be lower-case
+    local keyword01 = "test"
+    local keyword02 = "yes"
+    local keyword03 = "goshnar"
+    local keyword04 = "demonbunny"
+    local keyword05 = "tha'kull"
+    local keyword06 = "yes"
+    local keyword07 = "breath"
+    local keyword08 = "silence"
+    local keyword09 = "old"
+    local keyword10 = "yes"
+    local keyword11 = "green"
+    local keyword12 = "none"
+    local keyword13 = "1132asas"
+    local keyword14 = "2"
+    
+    local posPass = {x=32478, y=31905, z=1, stackpos=0}
+    local posFail = {x=32725, y=31589, z=12, stackpos=0}
+
+    -- end config
+    if msgcontains(msg, keyword01) and queststate2 == 1 then
+        selfSay(response01)
+        talkState = 13
+    elseif msgcontains(msg, keyword02) and talkState == 13 then
+        selfSay(response02)
+        talkState = 14
+    elseif msgcontains(msg, keywordAbadon) and talkState == 13 then
+        selfSay(abadon)
+        talkState = 0
+    -- let's start the right answers
+    elseif msgcontains(msg, keyword03) and talkState == 14 then
+        selfSay(response03)
+        talkState = 15
+    elseif msgcontains(msg, keyword04) and talkState == 15 then
+        selfSay(response04)
+        talkState = 16
+    elseif msgcontains(msg, keyword05) and talkState == 16 then
+        selfSay(response05)
+        talkState = 17
+    elseif msgcontains(msg, keyword06) and talkState == 17 then
+        selfSay(response06)
+        talkState = 18
+    elseif msgcontains(msg, keyword07) and talkState == 18 then
+        selfSay(response07)
+        talkState = 19
+    elseif msgcontains(msg, keyword08) and talkState == 19 then
+        selfSay(response08)
+        talkState = 20
+    elseif msgcontains(msg, keyword09) and talkState == 20 then
+        selfSay(response09)
+        talkState = 21
+    elseif msgcontains(msg, keyword10) and talkState == 21 then
+        selfSay(response10)
+        talkState = 22
+    elseif msgcontains(msg, keyword11) and talkState == 22 then
+        selfSay(response11)
+        talkState = 23
+    elseif msgcontains(msg, keyword12) and talkState == 23 then
+        selfSay(response12)
+        talkState = 24
+    elseif msgcontains(msg, keyword14) and talkState == 24 then
+		doTeleportThing(cid,posPass)
+        selfSay(response14)
+    -- let's start the wrong answers and the "death" teleport :D
+    elseif msgcontains(msg, keyword03) == nil and talkState == 13 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword04) == nil and talkState == 14 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword05) == nil and talkState == 15 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword06) == nil and talkState == 16 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword07) == nil and talkState == 17 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword08) == nil and talkState == 18 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword09) == nil and talkState == 19 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword10) == nil and talkState == 20 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword11) == nil and talkState == 21 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword12) == nil and talkState == 22 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword13) == nil and talkState == 23 then
+        selfSay(wrong)
+        talkState = 0
+	--1st--
+    elseif msgcontains(msg, keyword01) and queststate1 == 1 then
+        selfSay(response01)
+        talkState = 1
+    elseif msgcontains(msg, keyword02) and talkState == 1 then
+        selfSay(response02)
+        talkState = 2
+    elseif msgcontains(msg, keywordAbadon) and talkState == 1 then
+        selfSay(abadon)
+        talkState = 0
+    -- let's start the right answers
+    elseif msgcontains(msg, keyword03) and talkState == 2 then
+        selfSay(response03)
+        talkState = 3
+    elseif msgcontains(msg, keyword04) and talkState == 3 then
+        selfSay(response04)
+        talkState = 4
+    elseif msgcontains(msg, keyword05) and talkState == 4 then
+        selfSay(response05)
+        talkState = 5
+    elseif msgcontains(msg, keyword06) and talkState == 5 then
+        selfSay(response06)
+        talkState = 6
+    elseif msgcontains(msg, keyword07) and talkState == 6 then
+        selfSay(response07)
+        talkState = 7
+    elseif msgcontains(msg, keyword08) and talkState == 7 then
+        selfSay(response08)
+        talkState = 8
+    elseif msgcontains(msg, keyword09) and talkState == 8 then
+        selfSay(response09)
+        talkState = 9
+    elseif msgcontains(msg, keyword10) and talkState == 9 then
+        selfSay(response10)
+        talkState = 10
+    elseif msgcontains(msg, keyword11) and talkState == 10 then
+        selfSay(response11)
+        talkState = 11
+    elseif msgcontains(msg, keyword12) and talkState == 11 then
+        selfSay(response12)
+        talkState = 12
+    elseif getNumber(msg) >= 1 and talkState == 12 then
+        selfSay(response13)
+        doTeleportThing(cid,posFail)
+    -- let's start the wrong answers and the "death" teleport :D
+    elseif msgcontains(msg, keyword03) == nil and talkState == 2 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword04) == nil and talkState == 3 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword05) == nil and talkState == 4 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword06) == nil and talkState == 5 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword07) == nil and talkState == 6 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword08) == nil and talkState == 7 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword09) == nil and talkState == 8 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword10) == nil and talkState == 9 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword11) == nil and talkState == 10 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword12) == nil and talkState == 11 then
+        selfSay(wrong)
+        talkState = 0
+        doTeleportThing(cid,posFail)
+    elseif msgcontains(msg, keyword13) == nil and talkState == 12 then
+        selfSay(wrong)
+        talkState = 0
+    end
+    return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

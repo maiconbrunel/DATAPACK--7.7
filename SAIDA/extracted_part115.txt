@@ -1,0 +1,1550 @@
+===== FILE_START: lib/034-exhaustion.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/034-exhaustion.lua</ABSOLUTE_PATH>
+exhaustion =
+{
+	check = function (cid, storage)
+		if(getPlayerFlagValue(cid, PLAYERFLAG_HASNOEXHAUSTION)) then
+			return false
+		end
+
+		return getPlayerStorageValue(cid, storage) >= os.time()
+	end,
+
+	get = function (cid, storage)
+		if(getPlayerFlagValue(cid, PLAYERFLAG_HASNOEXHAUSTION)) then
+			return false
+		end
+
+		local exhaust = getPlayerStorageValue(cid, storage)
+		if(exhaust > 0) then
+			local left = exhaust - os.time()
+			if(left >= 0) then
+				return left
+			end
+		end
+
+		return false
+	end,
+
+	set = function (cid, storage, time)
+		setPlayerStorageValue(cid, storage, os.time() + time)
+	end,
+
+	make = function (cid, storage, time)
+		local exhaust = exhaustion.get(cid, storage)
+		if(not exhaust) then
+			exhaustion.set(cid, storage, time)
+			return true
+		end
+
+		return false
+	end
+}
+
+===== FILE_END =====
+
+===== FILE_START: lib/050-function.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/050-function.lua</ABSOLUTE_PATH>
+function isInArray(array, value, caseSensitive)
+	if(caseSensitive == nil or caseSensitive == false) and type(value) == "string" then
+		local lowerValue = value:lower()
+		for _, _value in ipairs(array) do
+			if type(_value) == "string" and lowerValue == _value:lower() then
+				return true
+			end
+		end
+	else
+		for _, _value in ipairs(array) do
+			if (value == _value) then return true end
+		end
+	end
+
+	return false
+end
+
+function doPlayerGiveItem(cid, itemid, amount, subType)
+	local item = 0
+	if(isItemStackable(itemid)) then
+		item = doCreateItemEx(itemid, amount)
+		if(doPlayerAddItemEx(cid, item, true) ~= RETURNVALUE_NOERROR) then
+			return false
+		end
+	else
+		for i = 1, amount do
+			item = doCreateItemEx(itemid, subType)
+			if(doPlayerAddItemEx(cid, item, true) ~= RETURNVALUE_NOERROR) then
+				return false
+			end
+		end
+	end
+
+	return true
+end
+
+function doPlayerGiveItemContainer(cid, containerid, itemid, amount, subType)
+	for i = 1, amount do
+		local container = doCreateItemEx(containerid, 1)
+		for x = 1, getContainerCapById(containerid) do
+			doAddContainerItem(container, itemid, subType)
+		end
+
+		if(doPlayerAddItemEx(cid, container, true) ~= RETURNVALUE_NOERROR) then
+			return false
+		end
+	end
+
+	return true
+end
+
+function doPlayerTakeItem(cid, itemid, amount)
+	return getPlayerItemCount(cid, itemid) >= amount and doPlayerRemoveItem(cid, itemid, amount)
+end
+
+function doPlayerSellItem(cid, itemid, count, cost)
+	if(not doPlayerTakeItem(cid, itemid, count)) then
+		return false
+	end
+
+	if(not doPlayerAddMoney(cid, cost)) then
+		error('[doPlayerSellItem] Could not add money to: ' .. getPlayerName(cid) .. ' (' .. cost .. 'gp).')
+	end
+
+	return true
+end
+
+function doPlayerWithdrawMoney(cid, amount)
+	if(not getBooleanFromString(getConfigInfo('bankSystem'))) then
+		return false
+	end
+
+	local balance = getPlayerBalance(cid)
+	if(amount > balance or not doPlayerAddMoney(cid, amount)) then
+		return false
+	end
+
+	doPlayerSetBalance(cid, balance - amount)
+	return true
+end
+
+function doPlayerDepositMoney(cid, amount)
+	if(not getBooleanFromString(getConfigInfo('bankSystem'))) then
+		return false
+	end
+
+	if(not doPlayerRemoveMoney(cid, amount)) then
+		return false
+	end
+
+	doPlayerSetBalance(cid, getPlayerBalance(cid) + amount)
+	return true
+end
+
+function doPlayerAddStamina(cid, minutes)
+	return doPlayerSetStamina(cid, getPlayerStamina(cid) + minutes)
+end
+
+function isPremium(cid)
+	return (isPlayer(cid) and (getPlayerPremiumDays(cid) > 0 or getBooleanFromString(getConfigValue('freePremium'))))
+end
+
+function getMonthDayEnding(day)
+	if(day == "01" or day == "21" or day == "31") then
+		return "st"
+	elseif(day == "02" or day == "22") then
+		return "nd"
+	elseif(day == "03" or day == "23") then
+		return "rd"
+	end
+
+	return "th"
+end
+
+function getMonthString(m)
+	return os.date("%B", os.time{year = 1970, month = m, day = 1})
+end
+
+function getArticle(str)
+	return str:find("[AaEeIiOoUuYy]") == 1 and "an" or "a"
+end
+
+function doNumberFormat(i)
+	local str, found = string.gsub(i, "(%d)(%d%d%d)$", "%1,%2", 1), 0
+	repeat
+		str, found = string.gsub(str, "(%d)(%d%d%d),", "%1,%2,", 1)
+	until found == 0
+	return str
+end
+
+function doPlayerAddAddons(cid, addon)
+	for i = 0, table.maxn(maleOutfits) do
+		doPlayerAddOutfit(cid, maleOutfits[i], addon)
+	end
+
+	for i = 0, table.maxn(femaleOutfits) do
+		doPlayerAddOutfit(cid, femaleOutfits[i], addon)
+	end
+end
+
+function getTibiaTime(num)
+	local minutes, hours = getWorldTime(), 0
+	while (minutes > 60) do
+		hours = hours + 1
+		minutes = minutes - 60
+	end
+
+	if(num) then
+		return {hours = hours, minutes = minutes}
+	end
+
+	return {hours =  hours < 10 and '0' .. hours or '' .. hours, minutes = minutes < 10 and '0' .. minutes or '' .. minutes}
+end
+
+function doWriteLogFile(file, text)
+	local f = io.open(file, "a+")
+	if(not f) then
+		return false
+	end
+
+	f:write("[" .. os.date("%d/%m/%Y %H:%M:%S") .. "] " .. text .. "\n")
+	f:close()
+	return true
+end
+
+function getExperienceForLevel(lv)
+	lv = lv - 1
+	return ((50 * lv * lv * lv) - (150 * lv * lv) + (400 * lv)) / 3
+end
+
+function doMutePlayer(cid, time)
+	local condition = createConditionObject(CONDITION_MUTED, (time == -1 and time or time * 1000))
+	return doAddCondition(cid, condition, false)
+
+end
+
+function doSummonCreature(name, pos)
+	local cid = doCreateMonster(name, pos, false, false)
+	if(not cid) then
+		cid = doCreateNpc(name, pos)
+	end
+
+	return cid
+end
+
+function getPlayersOnlineEx()
+	local players = {}
+	for i, cid in ipairs(getPlayersOnline()) do
+		table.insert(players, getCreatureName(cid))
+	end
+
+	return players
+end
+
+function getPlayerByName(name)
+	local cid = getCreatureByName(name)
+	return isPlayer(cid) and cid or nil
+end
+
+function isPlayer(cid)
+	return isCreature(cid) and cid >= AUTOID_PLAYERS and cid < AUTOID_MONSTERS
+end
+
+function isPlayerGhost(cid)
+	return isPlayer(cid) and (getCreatureCondition(cid, CONDITION_GAMEMASTER, GAMEMASTER_INVISIBLE, CONDITIONID_DEFAULT) or getPlayerFlagValue(cid, PLAYERFLAG_CANNOTBESEEN))
+end
+
+function isMonster(cid)
+	return isCreature(cid) and cid >= AUTOID_MONSTERS and cid < AUTOID_NPCS
+end
+
+function isNpc(cid)
+	-- Npc IDs are over int32_t range (which is default for lua_pushnumber),
+	-- therefore number is always a negative value.
+	return isCreature(cid) and (cid < 0 or cid >= AUTOID_NPCS)
+end
+
+function isUnderWater(cid)
+	return isInArray(underWater, getTileInfo(getCreaturePosition(cid)).itemid)
+end
+
+function doPlayerAddLevel(cid, amount, round)
+	local experience, level, amount = 0, getPlayerLevel(cid), amount or 1
+	if(amount > 0) then
+		experience = getExperienceForLevel(level + amount) - (round and getPlayerExperience(cid) or getExperienceForLevel(level))
+	else
+		experience = -((round and getPlayerExperience(cid) or getExperienceForLevel(level)) - getExperienceForLevel(level + amount))
+	end
+
+	return doPlayerAddExperience(cid, experience)
+end
+
+function doPlayerAddMagLevel(cid, amount)
+	local amount = amount or 1
+	for i = 1, amount do
+		doPlayerAddSpentMana(cid, getPlayerRequiredMana(cid, getPlayerMagLevel(cid, true) + 1) - getPlayerSpentMana(cid), false)
+	end
+
+	return true
+end
+
+function doPlayerAddSkill(cid, skill, amount, round)
+	local amount = amount or 1
+	if(skill == SKILL__LEVEL) then
+		return doPlayerAddLevel(cid, amount, round)
+	elseif(skill == SKILL__MAGLEVEL) then
+		return doPlayerAddMagLevel(cid, amount)
+	end
+
+	for i = 1, amount do
+		doPlayerAddSkillTry(cid, skill, getPlayerRequiredSkillTries(cid, skill, getPlayerSkillLevel(cid, skill) + 1) - getPlayerSkillTries(cid, skill), false)
+	end
+
+	return true
+end
+
+function isPrivateChannel(channelId)
+	return channelId >= CHANNEL_PRIVATE
+end
+
+function doBroadcastMessage(text, class)
+	local class = class or MESSAGE_STATUS_WARNING
+	if(type(class) == 'string') then
+		local className = MESSAGE_TYPES[class]
+		if(className == nil) then
+			return false
+		end
+
+		class = className
+	elseif(class < MESSAGE_FIRST or class > MESSAGE_LAST) then
+		return false
+	end
+
+	for _, pid in ipairs(getPlayersOnline()) do
+		doPlayerSendTextMessage(pid, class, text)
+	end
+
+	print("> Broadcasted message: \"" .. text .. "\".")
+	return true
+end
+
+function doPlayerBroadcastMessage(cid, text, class, checkFlag, ghost)
+	local checkFlag, ghost, class = checkFlag or true, ghost or false, class or TALKTYPE_BROADCAST
+	if(checkFlag and not getPlayerFlagValue(cid, PLAYERFLAG_CANBROADCAST)) then
+		return false
+	end
+
+	if(type(class) == 'string') then
+		local className = TALKTYPE_TYPES[class]
+		if(className == nil) then
+			return false
+		end
+
+		class = className
+	elseif(class < TALKTYPE_FIRST or class > TALKTYPE_LAST) then
+		return false
+	end
+
+	for _, pid in ipairs(getPlayersOnline()) do
+		doCreatureSay(cid, text, class, ghost, pid)
+	end
+
+	print("> " .. getCreatureName(cid) .. " broadcasted message: \"" .. text .. "\".")
+	return true
+end
+
+function doCopyItem(item, attributes)
+	local attributes = ((type(attributes) == 'table') and attributes or { "aid" })
+
+	local ret = doCreateItemEx(item.itemid, item.type)
+	for _, key in ipairs(attributes) do
+		local value = getItemAttribute(item.uid, key)
+		if(value ~= nil) then
+			doItemSetAttribute(ret, key, value)
+		end
+	end
+
+	if(isContainer(item.uid)) then
+		for i = (getContainerSize(item.uid) - 1), 0, -1 do
+			local tmp = getContainerItem(item.uid, i)
+			if(tmp.itemid > 0) then
+				doAddContainerItemEx(ret, doCopyItem(tmp, true).uid)
+			end
+		end
+	end
+
+	return getThing(ret)
+end
+
+function doSetItemText(uid, text, writer, date)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	doItemSetAttribute(uid, "text", text)
+	if(writer ~= nil) then
+		doItemSetAttribute(uid, "writer", tostring(writer))
+		if(date ~= nil) then
+			doItemSetAttribute(uid, "date", tonumber(date))
+		end
+	end
+
+	return true
+end
+
+function getItemWeightById(itemid, count, precision)
+	local item, count, precision = getItemInfo(itemid), count or 1, precision or false
+	if(not item) then
+		return false
+	end
+
+	if(count > 100) then
+		-- print a warning, as its impossible to have more than 100 stackable items without "cheating" the count
+		print('[Warning] getItemWeightById', 'Calculating weight for more than 100 items!')
+	end
+
+	local weight = item.weight * count
+	return precission and weight or math.round(weight, 2)
+end
+
+function choose(...)
+	local arg, ret = {...}
+
+	if type(arg[1]) == 'table' then
+		ret = arg[1][math.random(#arg[1])]
+	else
+		ret = arg[math.random(#arg)]
+	end
+
+	return ret
+end
+
+function doPlayerAddExpEx(cid, amount)
+	if(not doPlayerAddExp(cid, amount)) then
+		return false
+	end
+
+	local position = getThingPosition(cid)
+	doPlayerSendTextMessage(cid, MESSAGE_EXPERIENCE, "You gained " .. amount .. " experience.", amount, COLOR_WHITE, position)
+
+	local spectators, name = getSpectators(position, 7, 7), getCreatureName(cid)
+	for _, pid in ipairs(spectators) do
+		if(isPlayer(pid) and cid ~= pid) then
+			doPlayerSendTextMessage(pid, MESSAGE_EXPERIENCE_OTHERS, name .. " gained " .. amount .. " experience.", amount, COLOR_WHITE, position)
+		end
+	end
+
+	return true
+end
+
+function getItemTopParent(uid)
+	local parent = getItemParent(uid)
+	if(not parent or parent.uid == 0) then
+		return nil
+	end
+
+	while(true) do
+		local tmp = getItemParent(parent.uid)
+		if(tmp and tmp.uid ~= 0) then
+			parent = tmp
+		else
+			break
+		end
+	end
+
+	return parent
+end
+
+function getItemHolder(uid)
+	local parent = getItemParent(uid)
+	if(not parent or parent.uid == 0) then
+		return nil
+	end
+
+	local holder = nil
+	while(true) do
+		local tmp = getItemParent(parent.uid)
+		if(tmp and tmp.uid ~= 0) then
+			if(tmp.itemid == 1) then -- a creature
+				holder = tmp
+				break
+			end
+
+			parent = tmp
+		else
+			break
+		end
+	end
+
+	return holder
+end
+
+function valid(f)
+	return function(p, ...)
+		if(isCreature(p)) then
+			return f(p, ...)
+		end
+	end
+end
+
+function addContainerItems(container,items)
+	local items_mod = {}
+	for _, it in ipairs(items) do
+		if( isItemStackable(it.id) and it.count > 100) then
+			local c = it.count
+			while( c > 100 ) do
+				table.insert(items_mod,{id = it.id,count = 100})
+				c = c - 100
+			end
+			if(c > 0) then
+				table.insert(items_mod,{id = it.id,count = c})
+			end
+		else
+			table.insert(items_mod,{id = it.id,count = 1})
+		end
+	end
+
+	local free = getContainerCap(container.uid) - (getContainerSize(container.uid) )
+	local count = math.ceil(#items_mod/ free)
+	local main_bp = container.uid
+	local insert_bp = main_bp
+	local counter = 1
+	for c,it in ipairs(items_mod) do
+		local _c = isItemStackable(it.id) and (it.count > 100 and 100 or it.count) or 1
+		if count > 1 then
+			if (counter < free) then
+				doAddContainerItem(insert_bp, it.id, _c)
+			else
+				insert_bp = doAddContainerItem(insert_bp, container.itemid, 1)
+				count = (#items_mod)-(free-1)
+				free = getContainerCap(insert_bp) 
+				count = math.ceil(count/ free)
+				doAddContainerItem(insert_bp, it.id, _c)
+				counter = 1
+			end
+			counter = counter + 1
+		else
+			doAddContainerItem(insert_bp, it.id, _c)
+		end
+	end
+
+	return main_bp
+end
+===== FILE_END =====
+
+===== FILE_START: lib/100-shortcut.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/100-shortcut.lua</ABSOLUTE_PATH>
+function doPlayerSendToChannel(cid, target, type, text, channel, time)
+	return doCreatureChannelSay(cid, target, text, type, channel)
+end
+
+function getItemWeaponType(uid)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	return getItemInfo(thing.itemid).weaponType
+end
+
+function getItemRWInfo(uid)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	local item, flags = getItemInfo(thing.itemid), 0
+	if(item.readable) then
+		flags = 1
+	end
+
+	if(item.writable) then
+		flags = flags + 2
+	end
+
+	return flags
+end
+
+function getItemLevelDoor(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.levelDoor or false
+end
+
+function isContainer(uid)
+	local thing = getThing(uid)
+	return thing.uid > 0 and thing.items ~= nil
+end
+
+function isItemStackable(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.stackable or false
+end
+
+function isItemRune(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.type == ITEM_TYPE_RUNE or false
+end
+
+function isItemDoor(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.type == ITEM_TYPE_DOOR or false
+end
+
+function isItemContainer(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.group == ITEM_GROUP_CONTAINER or false
+end
+
+function isItemFluidContainer(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.group == ITEM_GROUP_FLUID or false
+end
+
+function isItemMovable(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.movable or false
+end
+
+function isCorpse(uid)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	local item = getItemInfo(thing.itemid)
+	return item and item.corpseType ~= 0 or false
+end
+
+function getContainerCapById(itemid)
+	local item = getItemInfo(itemid)
+	if(not item or item.group ~= 2) then
+		return false
+	end
+
+	return item.maxItems
+end
+
+function getMonsterAttackSpells(name)
+	local monster = getMonsterInfo(name)
+	return monster and monster.attacks or false
+end
+
+function getMonsterHealingSpells(name)
+	local monster = getMonsterInfo(name)
+	return monster and monster.defenses or false
+end
+
+function getMonsterLootList(name)
+	local monster = getMonsterInfo(name)
+	return monster and monster.loot or false
+end
+
+function getMonsterSummonList(name)
+	local monster = getMonsterInfo(name)
+	return monster and monster.summons or false
+end
+
+function doItemSetActionId(uid, aid)
+	return doItemSetAttribute(uid, "aid", aid)
+end
+
+function getFluidSourceType(itemid)
+	local item = getItemInfo(itemid)
+	return item and item.fluidSource or false
+end
+
+function getDepotId(uid)
+	return getItemAttribute(uid, "depotid") or false
+end
+
+function getItemDescriptions(uid)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	local item = getItemInfo(thing.itemid)
+	return {
+		name = getItemAttribute(uid, "name") or item.name,
+		plural = getItemAttribute(uid, "pluralname") or item.plural,
+		article = getItemAttribute(uid, "article") or item.article,
+		special = getItemAttribute(uid, "description") or "",
+		text = getItemAttribute(uid, "text") or "",
+		writer = getItemAttribute(uid, "writer") or "",
+		date = getItemAttribute(uid, "date") or 0
+	}
+end
+
+function doRemoveThing(uid)
+	if(isCreature(uid)) then
+		return doRemoveCreature(uid)
+	end
+
+	return doRemoveItem(uid)
+end
+
+function setAttackFormula(combat, type, minl, maxl, minm, maxm, min, max)
+	local min, max = min or 0, max or 0
+	return setCombatFormula(combat, type, -1, 0, -1, 0, minl, maxl, minm, maxm, -min, -max)
+end
+
+function setHealingFormula(combat, type, minl, maxl, minm, maxm, min, max)
+	local min, max = min or 0, max or 0
+	return setCombatFormula(combat, type, 1, 0, 1, 0, minl, maxl, minm, maxm, min, max)
+end
+
+function doChangeTypeItem(uid, subtype)
+	local thing = getThing(uid)
+	if(thing.itemid < 100) then
+		return false
+	end
+
+	local subtype = subtype or 1
+	return doTransformItem(thing.uid, thing.itemid, subtype)
+end
+
+function doPlayerResetIdleTime(cid)
+	return doPlayerSetIdleTime(cid, 0)
+end
+
+function doPlayerSetExperienceRate(cid, value)
+	return doPlayerSetRate(cid, SKILL__LEVEL, value)
+end
+
+function doPlayerSetMagicRate(cid, value)
+	return doPlayerSetRate(cid, SKILL__MAGLEVEL, value)
+end
+
+function isSummon(cid)
+	return getCreatureMaster(cid) and getCreatureMaster(cid) ~= cid
+end
+
+function getPartyLeader(cid)
+	local party = getPartyMembers(cid)
+	if(type(party) ~= 'table') then
+		return 0
+	end
+
+	return party[1]
+end
+
+function isInParty(cid)
+	return type(getPartyMembers(cid)) == 'table'
+end
+
+function doShutdown()
+	return doSetGameState(GAMESTATE_SHUTDOWN)
+end
+
+function getPlayerGroupName(cid)
+	return getGroupInfo(getPlayerGroupId(cid)).name
+end
+
+function getPlayerVocationName(cid)
+	return getVocationInfo(getPlayerVocation(cid)).name
+end
+
+function getPromotedVocation(vid)
+	return getVocationInfo(vid).promotedVocation
+end
+
+function doPlayerRemovePremiumDays(cid, days)
+	return doPlayerAddPremiumDays(cid, -days)
+end
+
+function getPlayerMasterPos(cid)
+	return getTownTemplePosition(getPlayerTown(cid))
+end
+
+function getHouseOwner(houseId)
+	return getHouseInfo(houseId).owner
+end
+
+function getHouseName(houseId)
+	return getHouseInfo(houseId).name
+end
+
+function getHouseEntry(houseId)
+	return getHouseInfo(houseId).entry
+end
+
+function getHouseRent(houseId)
+	return getHouseInfo(houseId).rent
+end
+
+function getHousePrice(houseId)
+	return getHouseInfo(houseId).price
+end
+
+function getHouseTown(houseId)
+	return getHouseInfo(houseId).town
+end
+
+function getHouseDoorsCount(houseId)
+	return table.maxn(getHouseInfo(houseId).doors)
+end
+
+function getHouseBedsCount(houseId)
+	return table.maxn(getHouseInfo(houseId).beds)
+end
+
+function getHouseTilesCount(houseId)
+	return table.maxn(getHouseInfo(houseId).tiles)
+end
+
+function getItemNameById(itemid)
+	return getItemDescriptionsById(itemid).name
+end
+
+function getItemPluralNameById(itemid)
+	return getItemDescriptionsById(itemid).plural
+end
+
+function getItemArticleById(itemid)
+	return getItemDescriptionsById(itemid).article
+end
+
+function getItemName(uid)
+	return getItemDescriptions(uid).name
+end
+
+function getItemPluralName(uid)
+	return getItemDescriptions(uid).plural
+end
+
+function getItemArticle(uid)
+	return getItemDescriptions(uid).article
+end
+
+function getItemText(uid)
+	return getItemDescriptions(uid).text
+end
+
+function getItemSpecialDescription(uid)
+	return getItemDescriptions(uid).special
+end
+
+function doSetItemSpecialDescription(uid, str)
+	return doItemSetAttribute(uid, "description", str)
+end
+
+function getItemWriter(uid)
+	return getItemDescriptions(uid).writer
+end
+
+function getItemDate(uid)
+	return getItemDescriptions(uid).date
+end
+
+function getTilePzInfo(pos)
+	return getTileInfo(pos).protection
+end
+
+function getTileZoneInfo(pos)
+	local tmp = getTileInfo(pos)
+	if(tmp.pvp) then
+		return 2
+	end
+
+	if(tmp.nopvp) then
+		return 1
+	end
+
+	return 0
+end
+
+function playerExists(name, multiworld)
+	return getPlayerGUIDByName(name, multiworld or false) ~= nil
+end
+
+function doPlayerWithdrawAllMoney(cid)
+	return doPlayerWithdrawMoney(cid, getPlayerBalance(cid))
+end
+
+function doPlayerDepositAllMoney(cid)
+	return doPlayerDepositMoney(cid, getPlayerMoney(cid))
+end
+
+function doPlayerTransferAllMoneyTo(cid, target)
+	return doPlayerTransferMoneyTo(cid, target, getPlayerBalance(cid))
+end
+
+function isNumeric(str)
+	return tonumber(str) ~= nil
+end
+
+function doPlayerBuyItem(cid, itemid, count, cost, charges)
+	return doPlayerRemoveMoney(cid, cost) and doPlayerGiveItem(cid, itemid, count, charges)
+end
+
+function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges)
+	return doPlayerRemoveMoney(cid, cost) and doPlayerGiveItemContainer(cid, containerid, itemid, count, charges)
+end
+
+function isPlayerUsingOtclient(cid)
+	return getPlayerOperatingSystem(cid) >= CLIENTOS_OTCLIENT_LINUX
+end
+
+function getPlayerPassword(cid)
+local AccInfo = db.getResult("SELECT `password` FROM `accounts` WHERE `id` = " .. getPlayerAccountId(cid) .. " LIMIT 1")
+	local AccPass = AccInfo:getDataString("password")
+	return AccPass
+end
+
+function doPlayerAddPremiumPoints(cid, points)
+	return db.Query("UPDATE `accounts` SET `premium_points` = `premium_points` + " .. points .. " WHERE `id` = " .. getPlayerAccountId(cid) .. ";")
+end
+
+function doRemoveHouse(cid)
+	local pid = getPlayerGUID(cid)
+		cleanHouse(getHouseByPlayerGUID(pid))
+		setHouseOwner(getHouseByPlayerGUID(pid), NO_OWNER_PHRASE,true)
+	return true
+end
+
+function warnPlayer(cid, msg)
+	doSendMagicEffect(getPlayerPosition(cid), CONST_ME_POFF)
+	return doPlayerSendCancel(cid, msg)
+end
+===== FILE_END =====
+
+===== FILE_START: lib/101-compat.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/101-compat.lua</ABSOLUTE_PATH>
+--[[
+ * File containing deprecated functions and constants used by alot of scripts and other engines
+]]--
+
+TRUE = true
+FALSE = false
+LUA_ERROR = false
+LUA_NO_ERROR = true
+LUA_NULL = nil
+
+TALKTYPE_SPELL = TALKTYPE_SAY
+TALKTYPE_PRIVATE_PN = TALKTYPE_NPC_TO
+TALKTYPE_PRIVATE_NP = TALKTYPE_NPC_FROM
+TALKTYPE_PRIVATE_FROM = TALKTYPE_PRIVATE
+TALKTYPE_PRIVATE_TO = TALKTYPE_PRIVATE
+TALKTYPE_CHANNEL_Y = TALKTYPE_CHANNEL
+TALKTYPE_CHANNEL_W = TALKTYPE_CHANNEL_MANAGEMENT
+TALKTYPE_CHANNEL_RA = TALKTYPE_CHANNEL_MANAGEMENT
+TALKTYPE_CHANNEL_R2 = TALKTYPE_CHANNEL_MANAGEMENT
+TALKTYPE_BROADCAST = TALKTYPE_GAMEMASTER_BROADCAST
+TALKTYPE_CHANNEL_RN = TALKTYPE_GAMEMASTER_CHANNEL
+TALKTYPE_PRIVATE_RED = TALKTYPE_GAMEMASTER_PRIVATE
+TALKTYPE_GAMEMASTER_PRIVATE_FROM = TALKTYPE_GAMEMASTER_PRIVATE
+TALKTYPE_GAMEMASTER_PRIVATE_TO = TALKTYPE_GAMEMASTER_PRIVATE
+TALKTYPE_CHANNEL_O = TALKTYPE_CHANNEL_ORANGE
+TALKTYPE_CHANNEL_ORANGE = TALKTYPE_CHANNEL_HIGHLIGHT
+TALKTYPE_MONSTER = TALKTYPE_MONSTER_SAY
+TALKTYPE_ORANGE_1 = TALKTYPE_MONSTER_SAY
+TALKTYPE_ORANGE_2 = TALKTYPE_MONSTER_YELL
+
+TEXTCOLOR_BLACK = COLOR_BLACK
+TEXTCOLOR_BLUE = COLOR_BLUE
+TEXTCOLOR_GREEN = COLOR_GREEN
+TEXTCOLOR_LIGHTGREEN = COLOR_LIGHTGREEN
+TEXTCOLOR_DARKBROWN = COLOR_DARKBROWN
+TEXTCOLOR_LIGHTBLUE = COLOR_LIGHTBLUE
+TEXTCOLOR_DARKRED = COLOR_DARKRED
+TEXTCOLOR_DARKPURPLE = COLOR_DARKPURPLE
+TEXTCOLOR_BROWN = COLOR_BROWN
+TEXTCOLOR_GREY = COLOR_GREY
+TEXTCOLOR_TEAL = COLOR_TEAL
+TEXTCOLOR_DARKPINK = COLOR_DARKPINK
+TEXTCOLOR_PURPLE = COLOR_PURPLE
+TEXTCOLOR_DARKORANGE = COLOR_DARKORANGE
+TEXTCOLOR_RED = COLOR_RED
+TEXTCOLOR_PINK = COLOR_PINK
+TEXTCOLOR_ORANGE = COLOR_ORANGE
+TEXTCOLOR_DARKYELLOW = COLOR_DARKYELLOW
+TEXTCOLOR_YELLOW = COLOR_YELLOW
+TEXTCOLOR_WHITE = COLOR_WHITE
+TEXTCOLOR_NONE = COLOR_NONE
+
+CONDITION_PARAM_STAT_MAXHITPOINTS = CONDITION_PARAM_STAT_MAXHEALTH
+CONDITION_PARAM_STAT_MAXMANAPOINTS = CONDITION_PARAM_STAT_MAXMANA
+CONDITION_PARAM_STAT_SOULPOINTS = CONDITION_PARAM_STAT_SOUL
+CONDITION_PARAM_STAT_MAGICPOINTS = CONDITION_PARAM_STAT_MAGICLEVEL
+CONDITION_PARAM_STAT_MAXHITPOINTSPERCENT = CONDITION_PARAM_STAT_MAXHEALTHPERCENT
+CONDITION_PARAM_STAT_MAXMANAPOINTSPERCENT = CONDITION_PARAM_STAT_MAXMANAPERCENT
+CONDITION_PARAM_STAT_SOULPOINTSPERCENT = CONDITION_PARAM_STAT_SOULPERCENT
+CONDITION_PARAM_STAT_MAGICPOINTSPERCENT = CONDITION_PARAM_STAT_MAGICLEVELPERCENT
+
+CONDITION_PHYSICAL = CONDITION_BLEEDING
+
+STACKPOS_FIRST_ITEM_ABOVE_GROUNDTILE = 1
+STACKPOS_SECOND_ITEM_ABOVE_GROUNDTILE = 2
+STACKPOS_THIRD_ITEM_ABOVE_GROUNDTILE = 3
+STACKPOS_FOURTH_ITEM_ABOVE_GROUNDTILE = 4
+STACKPOS_FIFTH_ITEM_ABOVE_GROUNDTILE = 5
+
+WORLD_TYPE_NO_PVP = WORLDTYPE_OPTIONAL
+WORLD_TYPE_PVP = WORLDTYPE_OPEN
+WORLD_TYPE_PVP_ENFORCED = WORLDTYPE_HARDCORE
+
+WORLDTYPE_NO_PVP = WORLDTYPE_OPTIONAL
+WORLDTYPE_PVP = WORLDTYPE_OPEN
+WORLDTYPE_PVP_ENFORCED = WORLDTYPE_HARDCORE
+
+GUILDLEVEL_MEMBER = GUILD_MEMBER
+GUILDLEVEL_VICE = GUILD_VICE
+GUILDLEVEL_LEADER = GUILD_LEADER
+
+DATABASE_ENGINE_NONE = DATABASE_NONE
+DATABASE_ENGINE_MYSQL = DATABASE_MYSQL
+DATABASE_ENGINE_SQLITE = DATABASE_SQLITE
+DATABASE_ENGINE_POSTGRESQL = DATABASE_POSTGRESQL
+DATABASE_ENGINE_ODBC = DATABASE_ODBC
+
+CHANNEL_STAFF = 4
+CHANNEL_COUNSELOR = 2
+CHANNEL_GAMECHAT = 5
+CHANNEL_TRADE = 6
+CHANNEL_TRADEROOK = 7
+CHANNEL_RLCHAT = 8
+
+BANTYPE_IP_BANISHMENT = 1
+BANTYPE_NAMELOCK = 2
+BANTYPE_BANISHMENT = 3
+BANTYPE_NOTATION = 4
+BANTYPE_DELETION = 3
+
+CONST_PROP_MOVEABLE = CONST_PROP_MOVABLE
+CONST_PROP_BLOCKINGANDNOTMOVEABLE = CONST_PROP_BLOCKINGANDNOTMOVABLE
+
+CONDITION_EARTH = CONDITION_POISON
+
+STACKPOS_TOP_MOVEABLE_ITEM_OR_CREATURE = STACKPOS_TOP_MOVABLE_ITEM_OR_CREATURE
+
+RETURNVALUE_NOTMOVEABLE = RETURNVALUE_NOTMOVABLE
+
+SKILLS = SKILL_NAMES
+
+doSetCreatureDropLoot = doCreatureSetDropLoot
+doPlayerSay = doCreatureSay
+doPlayerAddMana = doCreatureAddMana
+playerLearnInstantSpell = doPlayerLearnInstantSpell
+doPlayerRemOutfit = doPlayerRemoveOutfit
+pay = doPlayerRemoveMoney
+broadcastMessage = doBroadcastMessage
+getPlayerName = getCreatureName
+getCreaturePosition = getThingPosition
+getPlayerPosition = getCreaturePosition
+getCreaturePos = getCreaturePosition
+creatureGetPosition = getCreaturePosition
+getPlayerMana = getCreatureMana
+getPlayerMaxMana = getCreatureMaxMana
+hasCondition = hasCreatureCondition
+getCreatureCondition = hasCreatureCondition
+isMoveable = isMovable
+isItemMoveable = isItemMovable
+saveData = saveServer
+savePlayers = saveServer
+getPlayerSkill = getPlayerSkillLevel
+getPlayerSkullType = getCreatureSkullType
+getCreatureSkull = getCreatureSkullType
+getAccountNumberByName = getAccountIdByName
+getIPByName = getIpByName
+getPlayersByIP = getPlayersByIp
+getThingFromPos = getThingFromPosition
+getThingfromPos = getThingFromPos
+getHouseFromPos = getHouseFromPosition
+getPlayersByAccountNumber = getPlayersByAccountId
+getIPByPlayerName = getIpByName
+getPlayersByIPNumber = getPlayersByIp
+getAccountNumberByPlayerName = getAccountIdByName
+convertIntToIP = doConvertIntegerToIp
+convertIPToInt = doConvertIpToInteger
+queryTileAddThing = doTileQueryAdd
+getTileHouseInfo = getHouseFromPos
+executeRaid = doExecuteRaid
+saveServer = doSaveServer
+cleanHouse = doCleanHouse
+cleanMap = doCleanMap
+shutdown = doShutdown
+mayNotMove = doCreatureSetNoMove
+getTileItemsByType = getTileItemByType
+doPlayerSetNoMove = doCreatureSetNoMove
+getPlayerNoMove = getCreatureNoMove
+getConfigInfo = getConfigValue
+doPlayerAddExp = doPlayerAddExperience
+isInArea = isInRange
+doPlayerSetSkillRate = doPlayerSetRate
+getCreatureLookDir = getCreatureLookDirection
+getPlayerLookDir = getCreatureLookDirection
+getPlayerLookDirection = getCreatureLookDirection
+doCreatureSetLookDir = doCreatureSetLookDirection
+getPlayerLookPos = getCreatureLookPosition
+setPlayerStamina = doPlayerSetStamina
+setPlayerPromotionLevel = doPlayerSetPromotionLevel
+setPlayerGroupId = doPlayerSetGroupId
+setPlayerPartner = doPlayerSetPartner
+doPlayerSetStorageValue = doCreatureSetStorage
+setPlayerStorageValue = doPlayerSetStorageValue
+getPlayerStorageValue = getCreatureStorage
+getGlobalStorageValue = getStorage
+setGlobalStorageValue = doSetStorage
+getPlayerMount = canPlayerRideMount
+setPlayerBalance = doPlayerSetBalance
+doAddMapMark = doPlayerAddMapMark
+doSendTutorial = doPlayerSendTutorial
+getWaypointsList = getWaypointList
+getPlayerLastLoginSaved = getPlayerLastLogin
+getThingPos = getThingPosition
+doAreaCombatHealth = doCombatAreaHealth
+doAreaCombatMana = doCombatAreaMana
+doAreaCombatCondition = doCombatAreaCondition
+doAreaCombatDispel = doCombatAreaDispel
+getItemDescriptionsById = getItemInfo
+hasProperty = hasItemProperty
+hasClient = hasPlayerClient
+print = std.cout
+getPosByDir = getPositionByDirection
+isNumber = isNumeric
+doSetItemActionId = doItemSetActionId
+getOnlinePlayers = getPlayersOnlineEx
+addDialog = doPlayerAddDialog
+doSendPlayerExtendedOpcode = doPlayerSendExtendedOpcode
+
+PlayerFlag_CannotUseCombat = 0
+PlayerFlag_CannotAttackPlayer = 1
+PlayerFlag_CannotAttackMonster = 2
+PlayerFlag_CannotBeAttacked = 3
+PlayerFlag_CanConvinceAll = 4
+PlayerFlag_CanSummonAll = 5
+PlayerFlag_CanIllusionAll = 6
+PlayerFlag_CanSenseInvisibility = 7
+PlayerFlag_IgnoredByMonsters = 8
+PlayerFlag_NotGainInFight = 9
+PlayerFlag_HasInfiniteMana = 10
+PlayerFlag_HasInfiniteSoul = 11
+PlayerFlag_HasNoExhaustion = 12
+PlayerFlag_CannotUseSpells = 13
+PlayerFlag_CannotPickupItem = 14
+PlayerFlag_CanAlwaysLogin = 15
+PlayerFlag_CanBroadcast = 16
+PlayerFlag_CanEditHouses = 17
+PlayerFlag_CannotBeBanned = 18
+PlayerFlag_CannotBePushed = 19
+PlayerFlag_HasInfiniteCapacity = 20
+PlayerFlag_CanPushAllCreatures = 21
+PlayerFlag_CanTalkRedPrivate = 22
+PlayerFlag_CanTalkRedChannel = 23
+PlayerFlag_TalkOrangeHelpChannel = 24
+PlayerFlag_NotGainExperience = 25
+PlayerFlag_NotGainMana = 26
+PlayerFlag_NotGainHealth = 27
+PlayerFlag_NotGainSkill = 28
+PlayerFlag_SetMaxSpeed = 29
+PlayerFlag_SpecialVIP = 30
+PlayerFlag_NotGenerateLoot = 31
+PlayerFlag_CanTalkRedChannelAnonymous = 32
+PlayerFlag_IgnoreProtectionZone = 33
+PlayerFlag_IgnoreSpellCheck = 34
+PlayerFlag_IgnoreWeaponCheck = 35
+PlayerFlag_CannotBeMuted = 36
+PlayerFlag_IsAlwaysPremium = 37
+PlayerFlag_ShowGroupNameInsteadOfVocation = 40
+PlayerFlag_HasInfiniteStamina = 41
+PlayerFlag_CannotMoveItems = 42
+PlayerFlag_CannotMoveCreatures = 43
+PlayerFlag_CanReportBugs = 44
+PlayerFlag_CannotBeSeen = 46
+PlayerFlag_HideHealth = 47
+PlayerFlag_CanPassThroughAllCreatures = 48
+
+PlayerCustomFlag_AllowIdle = 0
+PlayerCustomFlag_CanSeePosition	= 1
+PlayerCustomFlag_CanSeeItemDetails = 2
+PlayerCustomFlag_CanSeeCreatureDetails = 3
+PlayerCustomFlag_NotSearchable = 4
+PlayerCustomFlag_GamemasterPrivileges = 5
+PlayerCustomFlag_CanThrowAnywhere = 6
+PlayerCustomFlag_CanPushAllItems = 7
+PlayerCustomFlag_CanMoveAnywhere = 8
+PlayerCustomFlag_CanMoveFromFar = 9
+PlayerCustomFlag_CanUseFar = 10
+PlayerCustomFlag_CanLoginMultipleCharacters = 11
+PlayerCustomFlag_CanLogoutAnytime = 12
+PlayerCustomFlag_HideLevel = 13
+PlayerCustomFlag_IsProtected = 14
+PlayerCustomFlag_IsImmune = 15
+PlayerCustomFlag_NotGainSkull = 16
+PlayerCustomFlag_NotGainUnjustified = 17
+PlayerCustomFlag_IgnorePacification = 18
+PlayerCustomFlag_IgnoreLoginDelay = 19
+PlayerCustomFlag_CanStairhop = 20
+PlayerCustomFlag_CanTurnhop = 21
+PlayerCustomFlag_IgnoreHouseRent = 22
+PlayerCustomFlag_CanWearAllAddons = 23
+PlayerCustomFlag_IsWalkable = 24
+PlayerCustomFlag_HasFullLight = 26
+===== FILE_END =====
+
+===== FILE_START: npc/lib/_npcsystem.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/lib/_npcsystem.lua</ABSOLUTE_PATH>
+-- Advanced NPC System (Created by Jiddo),
+-- Modified by TheForgottenServer Team,
+-- Modified by The OTX Server Team.
+
+if(NpcSystem == nil) then
+	-- Loads the underlying classes of the npcsystem.
+	dodirectory(getDataDir() .. 'npc/lib/npcsystem')
+
+	-- Global npc constants:
+
+	-- Keyword nestling behavior. For more information look at the top of keywordhandler.lua
+	KEYWORD_BEHAVIOR = BEHAVIOR_NORMAL_EXTENDED
+
+	-- Greeting and unGreeting keywords. For more information look at the top of modules.lua
+	FOCUS_GREETWORDS = {'hi', 'hello'}
+	FOCUS_FAREWELLWORDS = {'bye', 'farewell'}
+
+	-- The word for requesting trade window. For more information look at the top of modules.lua
+	SHOP_TRADEREQUEST = {'offer', 'trade'}
+
+	-- The word for accepting/declining an offer. CAN ONLY CONTAIN ONE FIELD! For more information look at the top of modules.lua
+	SHOP_YESWORD = {'yes'}
+	SHOP_NOWORD = {'no'}
+
+	-- Pattern used to get the amount of an item a player wants to buy/sell.
+	PATTERN_COUNT = '%d+'
+
+	-- Talkdelay behavior. For more information, look at the top of npchandler.lua.
+	NPCHANDLER_TALKDELAY = TALKDELAY_ONTHINK
+
+	-- Conversation behavior. For more information, look at the top of npchandler.lua.
+	NPCHANDLER_CONVBEHAVIOR = CONVERSATION_DEFAULT
+
+	-- Constant strings defining the keywords to replace in the default messages.
+	--	For more information, look at the top of npchandler.lua...
+	TAG_PLAYERNAME = '|PLAYERNAME|'
+	TAG_ITEMCOUNT = '|ITEMCOUNT|'
+	TAG_TOTALCOST = '|TOTALCOST|'
+	TAG_ITEMNAME = '|ITEMNAME|'
+	TAG_QUEUESIZE = '|QUEUESIZE|'
+
+	NpcSystem = {}
+
+	-- Gets an npcparameter with the specified key. Returns nil if no such parameter is found.
+	function NpcSystem.getParameter(key)
+		local ret = getNpcParameter(tostring(key))
+		if((type(ret) == 'number' and ret == 0) or ret == nil) then
+			return nil
+		else
+			return ret
+		end
+	end
+
+	-- Parses all known parameters for the npc. Also parses parseable modules.
+	function NpcSystem.parseParameters(npcHandler)
+		local ret = NpcSystem.getParameter('idletime')
+		if(ret ~= nil) then
+			npcHandler.idleTime = tonumber(ret)
+		end
+		local ret = NpcSystem.getParameter('talkradius')
+		if(ret ~= nil) then
+			npcHandler.talkRadius = tonumber(ret)
+		end
+		local ret = NpcSystem.getParameter('message_greet')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_GREET, ret)
+		end
+		local ret = NpcSystem.getParameter('message_farewell')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_FAREWELL, ret)
+		end
+		local ret = NpcSystem.getParameter('message_decline')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_DECLINE, ret)
+		end
+		local ret = NpcSystem.getParameter('message_needmorespace')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_NEEDMORESPACE, ret)
+		end
+		local ret = NpcSystem.getParameter('message_needspace')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_NEEDSPACE, ret)
+		end
+		local ret = NpcSystem.getParameter('message_sendtrade')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_SENDTRADE, ret)
+		end
+		local ret = NpcSystem.getParameter('message_noshop')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_NOSHOP, ret)
+		end
+		local ret = NpcSystem.getParameter('message_oncloseshop')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_ONCLOSESHOP, ret)
+		end
+		local ret = NpcSystem.getParameter('message_onbuy')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_ONBUY, ret)
+		end
+		local ret = NpcSystem.getParameter('message_onsell')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_ONSELL, ret)
+		end
+		local ret = NpcSystem.getParameter('message_missingmoney')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_MISSINGMONEY, ret)
+		end
+		local ret = NpcSystem.getParameter('message_needmoney')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_NEEDMONEY, ret)
+		end
+		local ret = NpcSystem.getParameter('message_missingitem')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_MISSINGITEM, ret)
+		end
+		local ret = NpcSystem.getParameter('message_needitem')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_NEEDITEM, ret)
+		end
+		local ret = NpcSystem.getParameter('message_idletimeout')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_IDLETIMEOUT, ret)
+		end
+		local ret = NpcSystem.getParameter('message_walkaway')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_WALKAWAY, ret)
+		end
+		local ret = NpcSystem.getParameter('message_alreadyfocused')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_ALREADYFOCUSED, ret)
+		end
+		local ret = NpcSystem.getParameter('message_placedinqueue')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_PLACEDINQUEUE, ret)
+		end
+		local ret = NpcSystem.getParameter('message_buy')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_BUY, ret)
+		end
+		local ret = NpcSystem.getParameter('message_sell')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_SELL, ret)
+		end
+		local ret = NpcSystem.getParameter('message_bought')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_BOUGHT, ret)
+		end
+		local ret = NpcSystem.getParameter('message_sold')
+		if(ret ~= nil) then
+			npcHandler:setMessage(MESSAGE_SOLD, ret)
+		end
+
+		-- Parse modules.
+		for parameter, module in pairs(Modules.parseableModules) do
+			local ret = NpcSystem.getParameter(parameter)
+			if(ret ~= nil) then
+				local number = tonumber(ret)
+				if(number ~= nil and number ~= 0) then
+					npcHandler:addModule(module:new())
+				end
+			end
+		end
+	end
+end
+
+===== FILE_END =====
+
+===== FILE_START: npc/lib/npc.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/lib/npc.lua</ABSOLUTE_PATH>
+function selfSayChannel(cid, message)
+	return selfSay(message, cid, false)
+end
+
+function selfMoveToThing(id)
+	errors(false)
+	local thing = getThing(id)
+
+	errors(true)
+	if(thing.uid == 0) then
+		return
+	end
+
+	local t = getThingPosition(id)
+	selfMoveTo(t.x, t.y, t.z)
+	return
+end
+
+function selfMoveTo(x, y, z)
+	local position = {x = 0, y = 0, z = 0}
+	if(type(x) ~= "table") then
+		position = Position(x, y, z)
+	else
+		position = x
+	end
+
+	if(isValidPosition(position)) then
+		doSteerCreature(getNpcId(), position)
+	end
+end
+
+function selfMove(direction, flags)
+	local flags = flags or 0
+	doMoveCreature(getNpcId(), direction, flags)
+end
+
+function selfTurn(direction)
+	doCreatureSetLookDirection(getNpcId(), direction)
+end
+
+function getNpcDistanceTo(id)
+	errors(false)
+	local thing = getThing(id)
+
+	errors(true)
+	if(thing.uid == 0) then
+		return nil
+	end
+
+	local c = getCreaturePosition(id)
+	if(not isValidPosition(c)) then
+		return nil
+	end
+
+	local s = getCreaturePosition(getNpcId())
+	if(not isValidPosition(s) or s.z ~= c.z) then
+		return nil
+	end
+
+	return math.max(math.abs(s.x - c.x), math.abs(s.y - c.y))
+end
+
+function doMessageCheck(message, keyword, exact)
+	local exact = exact or false
+	if(type(keyword) == "table") then
+		return isInArray(keyword, message, exact)
+	end
+
+	if(exact) then
+		return message == keyword
+	end
+
+	local a, b = message:lower(), keyword:lower()
+	return a == b or (a:find(b) and not a:find('(%w+)' .. b))
+end
+
+function doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
+	local amount, subType, ignoreCap, inBackpacks, backpack  = amount or 1, subType or 0, ignoreCap or false, inBackpacks or false, backpack or 1988
+
+	local exhaustionInSeconds = 1
+	local storage = 45814
+	if(exhaustion.check(cid, storage) == true) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cant buy it so fast.")
+		return 0
+	end
+	exhaustion.set(cid, storage, exhaustionInSeconds)
+
+	local ignoreCap = false
+	local item, a = nil, 0
+	if(inBackpacks) then
+		local custom, stackable = 1, isItemStackable(itemid)
+		if(stackable) then
+			custom = math.max(1, subType)
+			subType = amount
+			amount = math.max(1, math.floor(amount / 100))
+		end
+
+		local container, b = doCreateItemEx(backpack, 1), 1
+		for i = 1, amount * custom do
+			item = doAddContainerItem(container, itemid, subType)
+			if(itemid == ITEM_PARCEL) then
+				doAddContainerItem(item, ITEM_LABEL)
+			end
+
+			if(isInArray({(getContainerCapById(backpack) * b), amount}, i)) then
+				if(doPlayerAddItemEx(cid, container, ignoreCap) ~= RETURNVALUE_NOERROR) then
+					b = b - 1
+					break
+				end
+
+				a = i
+				if(amount > i) then
+					container = doCreateItemEx(backpack, 1)
+					b = b + 1
+				end
+			end
+		end
+
+		if(not stackable) then
+			return a, b
+		end
+
+		return (a * subType / custom), b
+	end
+
+	if(isItemStackable(itemid)) then
+		a = amount * math.max(1, subType)
+		repeat
+			local tmp = math.min(100, a)
+			item = doCreateItemEx(itemid, tmp)
+			if(doPlayerAddItemEx(cid, item, ignoreCap) ~= RETURNVALUE_NOERROR) then
+				return 0, 0
+			end
+
+			a = a - tmp
+		until a == 0
+		return amount, 0
+	end
+
+	for i = 1, amount do
+		item = doCreateItemEx(itemid, subType)
+		if(itemid == ITEM_PARCEL) then
+			doAddContainerItem(item, ITEM_LABEL)
+		end
+
+		if(doPlayerAddItemEx(cid, item, ignoreCap) ~= RETURNVALUE_NOERROR) then
+			break
+		end
+
+		a = i
+	end
+
+	return a, 0
+end
+
+function doRemoveItemIdFromPosition(id, n, position)
+	local thing = getTileItemById(position, id)
+	if(thing.itemid < 101) then
+		return false
+	end
+
+	doRemoveItem(thing.uid, n)
+	return true
+end
+
+function getNpcName()
+	return getCreatureName(getNpcId())
+end
+
+function getNpcPosition()
+	return getThingPosition(getNpcId())
+end
+
+function selfGetPosition()
+	local t = getThingPosition(getNpcId())
+	return t.x, t.y, t.z
+end
+
+msgcontains = doMessageCheck
+moveToPosition = selfMoveTo
+moveToCreature = selfMoveToThing
+selfMoveToCreature = selfMoveToThing
+selfMoveToPosition = selfMoveTo
+isPlayerPremiumCallback = isPremium
+doPosRemoveItem = doRemoveItemIdFromPosition
+doRemoveItemIdFromPos = doRemoveItemIdFromPosition
+doNpcBuyItem = doPlayerRemoveItem
+doNpcSetCreatureFocus = selfFocus
+getNpcCid = getNpcId
+getDistanceTo = getNpcDistanceTo
+getDistanceToCreature = getNpcDistanceTo
+getNpcDistanceToCreature = getNpcDistanceTo
+getNpcPos = getNpcPosition
+
+===== FILE_END =====
+

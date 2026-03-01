@@ -1,0 +1,250 @@
+===== FILE_START: TOTAL/movements/scripts/rook/premiumrook.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/rook/premiumrook.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, position, fromPosition)
+
+local tileConfig = {
+        kickPos = fromPosition,
+        kickEffect = CONST_ME_POFF,
+        kickMsg = "Usted necesita Premium!.",
+        enterMsg = "bienvenido a la area Premium!",
+        enterEffect = CONST_ME_MAGIC_BLUE,
+}
+	if isPremium(cid) == TRUE then
+        doPlayerSendTextMessage(cid, 25, tileConfig.enterMsg)
+        doSendMagicEffect(position, tileConfig.enterEffect)
+
+        return
+    end
+
+        doTeleportThing(cid, tileConfig.kickPos)
+        doSendMagicEffect(tileConfig.kickPos, tileConfig.kickEffect)
+        doPlayerSendCancel(cid, tileConfig.kickMsg)
+        return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/snow.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/snow.lua</ABSOLUTE_PATH>
+TILE_SNOW = 670
+TILE_FOOTPRINT_I = 6594
+TILE_FOOTPRINT_II = 6598
+
+function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	if(isPlayerGhost(cid)) then
+		return true
+	end
+
+	if(item.itemid == TILE_SNOW) then
+		doTransformItem(item.uid, TILE_FOOTPRINT_I)
+		doDecayItem(item.uid)
+	elseif(item.itemid == TILE_FOOTPRINT_I) then
+		doTransformItem(item.uid, TILE_FOOTPRINT_II)
+		doDecayItem(item.uid)
+	else
+		doTransformItem(item.uid, TILE_FOOTPRINT_I)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/swimming.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/swimming.lua</ABSOLUTE_PATH>
+local outfit = {lookType = 267, lookHead = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookTypeEx = 0, lookAddons = 0}
+
+function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	if(hasCondition(cid, CONDITION_OUTFIT, 0, CONDITIONID_COMBAT) and getCreatureOutfit(cid).lookType == outfit.lookType) then
+		doRemoveCondition(cid, CONDITION_OUTFIT)
+		if(not isPlayerGhost(cid)) then
+			doSendMagicEffect(position, CONST_ME_POFF)
+		end
+	end
+
+	return true
+end
+
+function onStepOut(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	if(not isPlayer(cid)) then
+		return true
+	end
+
+	local tmp = getTileInfo(toPosition)
+	if(tmp.trashHolder) then
+		if(doTileQueryAdd(cid, toPosition, 4) ~= RETURNVALUE_NOERROR) then
+			return false
+		end
+
+		if(not isPlayerGhost(cid)) then
+			doSendMagicEffect(fromPosition, CONST_ME_POFF)
+			doSendMagicEffect(toPosition, CONST_ME_WATERSPLASH)
+		end
+
+		doRemoveConditions(cid, true)
+		doSetCreatureOutfit(cid, outfit, -1)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/tiles.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/tiles.lua</ABSOLUTE_PATH>
+local config = {
+	increasing = {[416] = 417, [426] = 425, [446] = 447, [3216] = 3217, [3202] = 3215},
+	decreasing = {[417] = 416, [425] = 426, [447] = 446, [3217] = 3216, [3215] = 3202},
+	maxLevel = getConfigInfo('maximumDoorLevel')
+}
+
+local checkCreature = {isPlayer, isMonster, isNpc}
+local function pushBack(cid, position, fromPosition, displayMessage)
+	doTeleportThing(cid, fromPosition, false)
+	doSendMagicEffect(position, CONST_ME_MAGIC_BLUE)
+	if(displayMessage) then
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "The tile seems to be protected against unwanted intruders.")
+	end
+end
+
+function onStepIn(cid, item, position, fromPosition)
+	if(not config.increasing[item.itemid]) then
+		return false
+	end
+
+	if(not isPlayerGhost(cid)) then
+		doTransformItem(item.uid, config.increasing[item.itemid])
+	end
+
+	if(item.actionid >= 194 and item.actionid <= 196) then
+		local f = checkCreature[item.actionid - 193]
+		if(f(cid)) then
+			pushBack(cid, position, fromPosition, false)
+		end
+
+		return true
+	end
+
+	if(item.actionid >= 191 and item.actionid <= 193) then
+		local f = checkCreature[item.actionid - 190]
+		if(not f(cid)) then
+			pushBack(cid, position, fromPosition, false)
+		end
+
+		return true
+	end
+
+	if(not isPlayer(cid)) then
+		return true
+	end
+
+	if(item.actionid == 189 and not isPremium(cid)) then
+		pushBack(cid, position, fromPosition, true)
+		return true
+	end
+
+	local gender = item.actionid - 186
+	if(isInArray({PLAYERSEX_FEMALE,  PLAYERSEX_MALE, PLAYERSEX_GAMEMASTER}, gender)) then
+		if(gender ~= getPlayerSex(cid)) then
+			pushBack(cid, position, fromPosition, true)
+		end
+
+		return true
+	end
+
+	local skull = item.actionid - 180
+	if(skull >= SKULL_NONE and skull <= SKULL_BLACK) then
+		if(skull ~= getCreatureSkullType(cid)) then
+			pushBack(cid, position, fromPosition, true)
+		end
+
+		return true
+	end
+
+	local group = item.actionid - 150
+	if(group >= 0 and group < 30) then
+		if(group > getPlayerGroupId(cid)) then
+			pushBack(cid, position, fromPosition, true)
+		end
+
+		return true
+	end
+
+	local vocation = item.actionid - 100
+	if(vocation >= 0 and vocation < 50) then
+		local playerVocation = getVocationInfo(getPlayerVocation(cid))
+		if(playerVocation.id ~= vocation and playerVocation.fromVocation ~= vocation) then
+			pushBack(cid, position, fromPosition, true)
+		end
+
+		return true
+	end
+
+	if(item.actionid >= 1000 and item.actionid - 1000 <= config.maxLevel) then
+		if(getPlayerLevel(cid) < item.actionid - 1000) then
+			pushBack(cid, position, fromPosition, true)
+		end
+
+		return true
+	end
+
+	if(item.actionid ~= 0 and getCreatureStorage(cid, item.actionid) <= 0) then
+		pushBack(cid, position, fromPosition, true)
+		return true
+	end
+
+	if(getTileInfo(position).protection) then
+		local depotItem = getTileItemByType(getCreatureLookPosition(cid), ITEM_TYPE_DEPOT)
+		if(depotItem.itemid ~= 0) then
+			local depotItems = getPlayerDepotItems(cid, getDepotId(depotItem.uid))
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Your depot contains " .. depotItems .. " item" .. (depotItems > 1 and "s" or "") .. ".")
+			return true
+		end
+	end
+
+	return false
+end
+
+function onStepOut(cid, item, position, fromPosition)
+	if(not config.decreasing[item.itemid]) then
+		return false
+	end
+
+	if(not isPlayerGhost(cid)) then
+		doTransformItem(item.uid, config.decreasing[item.itemid])
+		return true
+	end
+
+	return false
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/Ankrahmun.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/Ankrahmun.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50108 then
+		newpos = {x = 33195, y = 32853, z = 8}
+		doPlayerSetTown(cid, 6) -- put the town id here
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Ankrahmun.")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/Carlin.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/Carlin.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50102 then
+		newpos = {x = 32360, y = 31782, z = 7}
+		doPlayerSetTown(cid, 5)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Carlin")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+

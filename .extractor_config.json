@@ -1,0 +1,25 @@
+{
+    "base_path": "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+    "last_export_path": "/home/maicon/Documentos/GitHub/DATAPACK--7.7/SAIDA",
+    "last_scan_path": "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+    "history_base": [
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7"
+    ],
+    "history_scan": [
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7"
+    ],
+    "history_export": [
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7",
+        "/home/maicon/Documentos/GitHub/DATAPACK--7.7"
+    ],
+    "filemode": "both",
+    "recursive": false,
+    "limit": 3,
+    "fastmode": false,
+    "window_w": 900,
+    "window_h": 600,
+    "file_mode": "lua"
+}

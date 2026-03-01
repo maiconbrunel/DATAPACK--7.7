@@ -1,0 +1,229 @@
+===== FILE_START: TOTAL/talkactions/scripts/shutdown.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/shutdown.lua</ABSOLUTE_PATH>
+shutdownEvent = 0
+
+function onSay(cid, words, param, channel)
+	if(param == '') then
+		doSetGameState(GAMESTATE_SHUTDOWN)
+		return true
+	end
+
+	params = string.explode(param, ",")
+	local action, reason, mins  = "", "", 0
+	if(not tonumber(params[1])) then
+		action = string.trim(params[1]:lower())
+	else
+		mins = string.trim(params[1])
+		if(table.maxn(params) > 1) then
+			reason = params[2]
+		end
+	end
+
+	if(action) then
+		if(action == "cancel" or action == "stop") then
+			if(shutdownEvent ~= 0) then
+				stopEvent(shutdownEvent)
+				shutdownEvent = 0
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Shutdown cancelled.")
+			else
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "Server is not in the shutdown phase.")
+			end
+			return true
+		elseif(action == "kill") then
+			os.exit()
+			return true
+		end
+	end
+
+	mins = tonumber(mins)
+	if(not mins or mins < 0) then
+		doPlayerSendCancel(cid, "Numeric param may not be lower than 0.")
+		return true
+	end
+
+	if(shutdownEvent ~= 0) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "Server is already in a shutdown state. To cancel shutdown use the \"/shutdown stop\" command.")
+		return true
+	end
+
+	return prepareShutdown(math.abs(math.ceil(mins)), reason)
+end
+
+function prepareShutdown(minutes, reason)
+	if(minutes <= 0) then
+		doSetGameState(GAMESTATE_SHUTDOWN)
+		return false
+	end
+
+	local change, r = 5, (reason ~= "" and " Reason: "..reason or "")
+	if(minutes == 1) then
+		doBroadcastMessage("Server is going down in " .. minutes .. " minute, please log out now!" .. r)
+	elseif(minutes <= 5) then
+		doBroadcastMessage("Server is going down in " .. minutes .. " minutes, please log out." .. r)
+		change = 1
+	else
+		doBroadcastMessage("Server is going down in " .. minutes .. " minutes." .. r)
+	end
+
+	shutdownEvent = addEvent(prepareShutdown, (change * 60 * 1000), minutes - change, reason)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/skill.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/skill.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	if(param == '') then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+		return true
+	end
+
+	local t = string.explode(param, ",")
+	if(not t[2]) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Not enough params.")
+		return true
+	end
+
+	local pid = getPlayerByNameWildcard(t[1])
+	if(not pid or (isPlayerGhost(pid) and getPlayerGhostAccess(pid) > getPlayerGhostAccess(cid))) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player " .. t[1] .. " not found.")
+		return true
+	end
+
+	t[2] = t[2]:lower()
+	local skill = SKILL_IDS[t[2]]
+	if(not skill) then
+		local tmp = t[2]:sub(1, 1)
+		if(tmp == 'l' or tmp == 'e') then
+			skill = SKILL__LEVEL
+		elseif(tmp == 'm') then
+			skill = SKILL__MAGLEVEL
+		else
+			skill = tonumber(t[2])
+			if(not skill or skill < SKILL_FIRST or SKILL > SKILL__PRE_LAST) then
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Such skill does not exists.")
+				return true
+			end
+		end
+	end
+
+	local amount = tonumber(t[3])
+	if(not amount or amount == 0) then
+		amount = 1
+	end
+
+	doPlayerAddSkill(pid, skill, amount, true)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/stamina.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/stamina.lua</ABSOLUTE_PATH>
+local function formatStamina(miliseconds)
+	if(miliseconds < 1000)then
+		return "00:00:00";
+	else
+		local seconds = string.format("%02.f", math.floor(miliseconds / 1000))
+		local hours = string.format("%02.f", math.floor(seconds / 3600))
+		local mins = string.format("%02.f", math.floor(seconds / 60 - (hours * 60)))
+		local secs = string.format("%02.f", math.floor(seconds - (hours * 3600) - (mins * 60)))
+		return hours..":"..mins..":"..secs
+	end
+end
+
+function onSay(cid, words, param)
+	if(not(getConfigValue('useStamina')))then
+		return false
+	end
+
+	doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have "..formatStamina(getPlayerStamina(cid)).." of stamina left.")
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/storage.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/storage.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	local t = string.explode(param, ",")
+	if(not t[2]) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Invalid param specified.")
+		return true
+	end
+
+	local tid = getPlayerByNameWildcard(t[1])
+	if(not tid or (isPlayerGhost(tid) and getPlayerGhostAccess(tid) > getPlayerGhostAccess(cid))) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player " .. t[1] .. " not found.")
+		return true
+	end
+
+	if(not t[3]) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, " [" .. t[1] .. " - " .. t[2] .. "] = " .. getPlayerStorageValue(tid, t[2]))
+	else
+		setPlayerStorageValue(tid, t[2], t[3])
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/summon.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/summon.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	local pid = cid
+	local t = string.explode(param, ",")
+	if(t[2]) then
+		pid = getPlayerByNameWildcard(t[2])
+		if(not pid or (isPlayerGhost(pid) and getPlayerGhostAccess(pid) > getPlayerGhostAccess(cid))) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player " .. t[2] .. " not found.")
+			return true
+		end
+	end
+
+	local effect = CONST_ME_MAGIC_RED
+	local ret = doSummonMonster(pid, t[1])
+	if(ret ~= RETURNVALUE_NOERROR) then
+		effect = CONST_ME_POFF
+		doPlayerSendDefaultCancel(cid, ret)
+	end
+
+	doSendMagicEffect(getCreaturePosition(cid), effect)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/teleportfloor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/teleportfloor.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	local n = 1
+	if(param ~= '' and tonumber(param)) then
+		n = math.max(0, tonumber(param))
+	end
+
+	local tmp, pos = getCreaturePosition(cid), getCreaturePosition(cid)
+	if(words:sub(2, 2) == "u") then
+		pos.z = pos.z - n
+	else
+		pos.z = pos.z + n
+	end
+
+	pos = getClosestFreeTile(cid, pos, false, false)
+	if(not pos or isInArray({pos.x, pos.y}, 0)) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Destination not reachable.")
+		return true
+	end
+
+	if(doTeleportThing(cid, pos, true) and not isPlayerGhost(cid)) then
+		doSendMagicEffect(tmp, CONST_ME_POFF)
+		doSendMagicEffect(pos, CONST_ME_TELEPORT)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

@@ -1,0 +1,347 @@
+===== FILE_START: npc/scripts/mirabell.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/mirabell.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+
+	
+	if msgcontains(msg, 'time') then
+	local time = getTibiaTime()
+	npcHandler:say('It is '.. time.hours .. string.char(58) .. time.minutes ..', right now.')
+	
+	end
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/nahbob.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/nahbob.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid) npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+shopModule:addSellableItem({'dragon lance'}, 2414, 9000, 'dragon lance')
+shopModule:addSellableItem({'fire axe'}, 2432, 8000, 'fire axe')
+shopModule:addSellableItem({'fire sword'}, 2392, 4000, 'fire sword')
+shopModule:addSellableItem({'war hammer'}, 2391, 1200, 'war hammer')
+shopModule:addSellableItem({'spike sword'}, 2383, 1000, 'spike sword')
+shopModule:addSellableItem({'ice rapier'}, 2396, 1000, 'ice rapier')
+shopModule:addSellableItem({'broad sword'}, 2413, 500, 'broad sword')
+shopModule:addSellableItem({'obsidian lance'}, 2425, 500, 'obsidian lance')
+shopModule:addSellableItem({'crown armor'}, 2487, 12000, 'crown armor')
+shopModule:addSellableItem({'blue robe'}, 2656, 10000, 'blue robe')
+shopModule:addSellableItem({'noble armor'}, 2486, 900, 'noble armor')
+shopModule:addSellableItem({'royal helmet'}, 2498, 30000, 'royal helmet')
+shopModule:addSellableItem({'crusader helmet'}, 2497, 6000, 'crusader helmet')
+shopModule:addSellableItem({'crown helmet'}, 2491, 2500, 'crown helmet')
+shopModule:addSellableItem({'crown legs'}, 2488, 12000, 'crown legs')
+shopModule:addSellableItem({'boots of haste'}, 2195, 30000, 'boots of haste')
+shopModule:addSellableItem({'phoenix shield'}, 2539, 16000, 'phoenix shield')
+shopModule:addSellableItem({'crown shield'}, 2519, 8000, 'crown shield')
+shopModule:addSellableItem({'dragon shield'}, 2516, 4000, 'dragon shield')
+shopModule:addSellableItem({'guardian shield'}, 2515, 2000, 'guardian shield')
+shopModule:addSellableItem({'beholder shield'}, 2518, 1200, 'beholder shield')
+
+shopModule:addBuyableItem({'war hammer'}, 2391, 10000, 'war hammer')
+shopModule:addBuyableItem({'spike sword'}, 2383, 8000, 'spikesword')
+shopModule:addBuyableItem({'noble armor'}, 2486, 8000, 'noble armor')
+shopModule:addBuyableItem({'beholder shield'}, 2518, 7000, 'war hammer')
+
+npcHandler:addModule(FocusModule:new())
+
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I sell and buy different kinds of armors. I also extract magic sulphur from fire swords, warrior\'s sweat from warrior helmets, fighting spirit from royal helmets and enchanted chicken wings from boots of haste.'})
+keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Why would I need that rubbish? Just fooling you... I buy dragon lances, fire axes, fire swords, war hammers, spike swords, ice rapiers, broad swords, obsidian lances, crown armors, blue robes, noble armors, royal helmets, crusader helmets, crown helmets, crown legs, boots of hastes, phoenix shields, crown shields, dragon shields, guardian shields and beholder shields.'})
+keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I seel all kinds of tools.'})
+keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'A quest is nothing I want to be involved in.'})
+keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I can\'t help you in that area, son.'})
+keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Sorry but I do not sell those. Just fooling you... I sell war hammers, spike swords, noble armors and beholder shields.'})
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/new.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/new.lua</ABSOLUTE_PATH>
+-- This file contains a default npc script based on Jiddo's npc system
+-- NPCs that are made only in XML can use this file as their Lua file
+
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
+-- OTServ event handling functions end
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/nielson.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/nielson.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+        local npcHandler = NpcHandler:new(keywordHandler)
+        NpcSystem.parseParameters(npcHandler)
+        
+        
+        
+        -- OTServ event handling functions start
+        function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+        function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+        function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+        function onThink() 						npcHandler:onThink() end
+        -- OTServ event handling functions end
+        
+        
+        -- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
+        local travelNode = keywordHandler:addKeyword({'folda'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Folda for 20 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 20, destination = {x = 32047, y = 31581, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+			
+		local travelNode = keywordHandler:addKeyword({'senja'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Senja for 20 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 20, destination = {x = 32125, y = 31666, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+			
+		local travelNode = keywordHandler:addKeyword({'vega'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Do you want a round-trip passage to Vega for 20 gold?'})
+        	travelNode:addChildKeyword({'yes'}, StdModule.travel, {npcHandler = npcHandler, premium = false, level = 0, cost = 20, destination = {x = 32025, y = 31692, z = 7} })
+        	travelNode:addChildKeyword({'no'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, reset = true, text = 'You shouldn\'t miss the experience.'})
+        
+        keywordHandler:addKeyword({'passage'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Where do you want to go today? We serve the routes to Senja, Folda, and Vega, and back to Tibia.'})
+        -- Makes sure the npc reacts when you say hi, bye etc.
+        npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/oracle.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/oracle.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+local Topic, vocation, town, destination = {}, {}, {}, {}
+local TOWN_ISLANDOFDESTINY = 16
+local islandOfDestinyEnabled = false
+
+        function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+        function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+        function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+        function onThink() 						npcHandler:onThink() end
+
+function greetCallback(cid)
+if(getPlayerLevel(cid) < 8) then
+npcHandler:say("CHILD! COME BACK WHEN YOU HAVE GROWN UP!", cid)
+return false
+elseif(getPlayerLevel(cid) > 9) then
+npcHandler:say(getCreatureName(cid) .. ", I CAN'T LET YOU LEAVE - YOU ARE TOO STRONG ALREADY! YOU CAN ONLY LEAVE WITH LEVEL 9 OR LOWER.", cid)
+return false
+else
+local talkUser = NPCHANDLER_CONVBEHAVIOR == CONVERSATION_DEFAULT and 0 or cid
+Topic[talkUser], vocation[talkUser], town[talkUser], destination[talkUser] = 0, 0, 0, 0
+return true
+end
+end
+
+function creatureSayCallback(cid, type, msg)
+local talkUser = NPCHANDLER_CONVBEHAVIOR == CONVERSATION_DEFAULT and 0 or cid
+if(not npcHandler:isFocused(cid)) then
+return false
+elseif msgcontains(msg, "yes") and Topic[talkUser] == 0 then
+npcHandler:say(islandOfDestinyEnabled and "I WILL BRING YOU TO THE ISLAND OF DESTINY AND YOU WILL BE UNABLE TO RETURN HERE! ARE YOU SURE?" or "IN WHICH TOWN DO YOU WANT TO LIVE: {CARLIN}, {AB'DENDRIEL}, {KAZORDOON}" .. (isPremium(cid) == TRUE and ", {THAIS}, {VENORE}, {DARASHIA}, {ANKRAHMUN}, {EDRON} OR {PORT HOPE}?" or " OR {THAIS}?"), cid)
+Topic[talkUser] = islandOfDestinyEnabled and 4 or 1
+elseif Topic[talkUser] == 0 then
+npcHandler:unGreet(cid)
+elseif msgcontains(msg, "carlin") and Topic[talkUser] == 1 then
+npcHandler:say("IN CARLIN! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 2
+destination[talkUser] = {x=32360, y=31782, z=7}
+elseif msgcontains(msg, "ab'dendriel") and Topic[talkUser] == 1 then
+npcHandler:say("IN AB'DENDRIEL! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 3
+destination[talkUser] = {x=32732, y=31634, z=7}
+elseif msgcontains(msg, "kazordoon") and Topic[talkUser] == 1 then
+npcHandler:say("IN KAZORDOON! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 4
+destination[talkUser] = {x=32649, y=31925, z=11}
+elseif msgcontains(msg, "thais") and Topic[talkUser] == 1 then
+npcHandler:say("IN THAIS! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 5
+destination[talkUser] = {x=32369, y=32241, z=7}
+elseif msgcontains(msg, "venore") and Topic[talkUser] == 1 then
+npcHandler:say("IN VENORE! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 6
+destination[talkUser] = {x=32957, y=32076, z=7}
+elseif msgcontains(msg, "darashia") and Topic[talkUser] == 1 then
+if isPremium(cid) == TRUE then
+npcHandler:say("IN DARASHIA! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 7
+destination[talkUser] = {x=33213, y=32454, z=1}
+else
+npcHandler:say("YOU NEED A PREMIUM ACCOUNT IN ORDER TO GO THERE!", cid)
+Topic[talkUser] = 1
+end
+elseif msgcontains(msg, "ankrahmun") and Topic[talkUser] == 1 then
+if isPremium(cid) == TRUE then
+npcHandler:say("IN ANKRAHMUN! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 8
+destination[talkUser] = {x=33194, y=32853, z=8}
+else
+npcHandler:say("YOU NEED A PREMIUM ACCOUNT IN ORDER TO GO THERE!", cid)
+Topic[talkUser] = 1
+end
+elseif msgcontains(msg, "edron") and Topic[talkUser] == 1 then
+if isPremium(cid) == TRUE then
+npcHandler:say("IN EDRON! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 9
+destination[talkUser] = {x=33217, y=31814, z=8}
+else
+npcHandler:say("YOU NEED A PREMIUM ACCOUNT IN ORDER TO GO THERE!", cid)
+Topic[talkUser] = 1
+end
+elseif msgcontains(msg, "port") and msgcontains(msg, "hope") and Topic[talkUser] == 1 then
+if isPremium(cid) == TRUE then
+npcHandler:say("IN PORT HOPE! AND WHAT PROFESSION HAVE YOU CHOSEN: {KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+town[talkUser] = 10
+destination[talkUser] = {x=32595, y=32744, z=6}
+else
+npcHandler:say("YOU NEED A PREMIUM ACCOUNT IN ORDER TO GO THERE!", cid)
+Topic[talkUser] = 1
+end
+elseif Topic[talkUser] == 1 then
+npcHandler:say("{CARLIN}, {AB'DENDRIEL}, {KAZORDOON}" .. (isPremium(cid) == TRUE and ", {THAIS}, {VENORE}, {DARASHIA}, {ANKRAHMUN}, {EDRON} OR {PORT HOPE}?" or " OR {THAIS}?"), cid)
+Topic[talkUser] = 1
+elseif msgcontains(msg, "sorcerer") and Topic[talkUser] == 2 then
+npcHandler:say("A SORCERER! ARE YOU SURE? THIS DECISION IS IRREVERSIBLE!", cid)
+Topic[talkUser] = 3
+vocation[talkUser] = 1
+elseif msgcontains(msg, "druid") and Topic[talkUser] == 2 then
+npcHandler:say("A DRUID! ARE YOU SURE? THIS DECISION IS IRREVERSIBLE!", cid)
+Topic[talkUser] = 3
+vocation[talkUser] = 2
+elseif msgcontains(msg, "paladin") and Topic[talkUser] == 2 then
+npcHandler:say("A PALADIN! ARE YOU SURE? THIS DECISION IS IRREVERSIBLE!", cid)
+Topic[talkUser] = 3
+vocation[talkUser] = 3
+elseif msgcontains(msg, "knight") and Topic[talkUser] == 2 then
+npcHandler:say("A KNIGHT! ARE YOU SURE? THIS DECISION IS IRREVERSIBLE!", cid)
+Topic[talkUser] = 3
+vocation[talkUser] = 4
+elseif Topic[talkUser] == 2 then
+npcHandler:say("{KNIGHT}, {PALADIN}, {SORCERER}, OR {DRUID}?", cid)
+Topic[talkUser] = 2
+elseif msgcontains(msg, "yes") and Topic[talkUser] == 3 then
+npcHandler:say("SO BE IT!", cid)
+Topic[talkUser] = 0
+doPlayerSetVocation(cid, vocation[talkUser])
+doPlayerSetTown(cid, town[talkUser])
+npcHandler:releaseFocus(cid)
+doSendMagicEffect(getCreaturePosition(cid), CONST_ME_TELEPORT)
+doTeleportThing(cid, destination[talkUser])
+doSendMagicEffect(destination[talkUser], CONST_ME_TELEPORT)
+elseif Topic[talkUser] == 3 then
+npcHandler:unGreet(cid)
+elseif Topic[talkUser] == 4 then
+if msgcontains(msg, "yes") then
+npcHandler:say("SO BE IT!", cid)
+Topic[talkUser] = 0
+doPlayerSetTown(cid, TOWN_ISLANDOFDESTINY)
+npcHandler:releaseFocus(cid)
+doSendMagicEffect(getCreaturePosition(cid), CONST_ME_TELEPORT)
+doTeleportThing(cid, {x=32091,y=32027,z=7})
+doSendMagicEffect({x=32091,y=32027,z=7}, CONST_ME_TELEPORT)
+doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Welcome to the Island of Destiny. Walk north to find trainers who will help you find a suitable vocation.")
+doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "The surface of this island is a protection zone. You can't attack or regain health here. If you need healing, talk to Yandur.")
+doAddMapMark(cid, {x=32099,y=31996,z=7}, MAPMARK_EXCLAMATION, "Island of Destiny - Training Centre")
+doAddMapMark(cid, {x=32098,y=31986,z=7}, MAPMARK_GREENNORTH, "Ship to Mainland")
+else
+npcHandler:unGreet(cid)
+end
+end
+return TRUE
+end
+
+npcHandler:setMessage(MESSAGE_GREET, "|PLAYERNAME|, ARE YOU PREPARED TO FACE YOUR DESTINY?")
+npcHandler:setMessage(MESSAGE_WALKAWAY, "COME BACK WHEN YOU ARE PREPARED TO FACE YOUR DESTINY!")
+npcHandler:setMessage(MESSAGE_FAREWELL, "COME BACK WHEN YOU ARE PREPARED TO FACE YOUR DESTINY!")
+
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/orc_king.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/orc_king.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)            npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)        npcHandler:onCreatureDisappear(cid)            end
+function onCreatureSay(cid, type, msg)  npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                        npcHandler:onThink()                        end
+
+
+function greetCallback(cid)
+	if getPlayerStorageValue(cid,3058) == -1 then
+		selfSay('Arrrrgh! A dirty paleskin! Kill them my guards!')
+		pos = getCreaturePosition(getNpcCid())
+
+		local northEast = {x=pos.x+1,y=pos.y-1,z=pos.z}
+		local northWest = {x=pos.x-1,y=pos.y-1,z=pos.z}
+		local southEast = {x=pos.x+1,y=pos.y+1,z=pos.z}
+		local southWest = {x=pos.x-1,y=pos.y+1,z=pos.z}
+		local East = {x=pos.x+1,y=pos.y,z=pos.z}
+		local West = {x=pos.x-1,y=pos.y,z=pos.z}
+		local South = {x=pos.x,y=pos.y+1,z=pos.z}
+		local North = {x=pos.x,y=pos.y-1,z=pos.z}
+
+		doSummonCreature('Orc Warlord', northWest)
+		doSummonCreature('Orc Warlord', West)
+		doSummonCreature('Orc Leader', southWest)
+		doSummonCreature('Orc Leader', South)
+		doSummonCreature('Orc Leader', southEast)
+		doSummonCreature('Slime', East)
+		doSummonCreature('Slime', northEast)
+		doSummonCreature('Slime', North)
+		setPlayerStorageValue(cid,3058,1)
+	else
+		return TRUE
+	end
+end
+ 
+-- Set the greeting callback function
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setMessage(MESSAGE_GREET, 'Arrrgh! Again?! What do you want?')
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

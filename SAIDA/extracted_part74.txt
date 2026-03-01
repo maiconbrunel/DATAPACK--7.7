@@ -1,0 +1,133 @@
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/Ancient Ruins Tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/Ancient Ruins Tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33276, y = 32553, z = 14, stackpos = 1}
+	newpos = {x = 33271, y = 32553 , z = 14}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50120 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50121 then
+		doTeleportThing(cid, {x = 33277, y = 32553, z = 14})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/Oasis Tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/Oasis Tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33135, y = 32682, z = 13, stackpos = 1}
+	newpos = {x = 33130, y = 32683, z = 13}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50118 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50119 then
+		doTeleportThing(cid, {x = 33136, y = 32683, z = 13})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/Peninsula Tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/Peninsula Tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33098, y = 32816, z = 13, stackpos = 1}
+	newpos = {x = 33093, y = 32824, z = 13}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50110 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50111 then
+		doTeleportThing(cid, {x = 33097, y = 32815, z = 13})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/Tarpit Tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/Tarpit Tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33234, y = 32692, z = 13, stackpos = 1}
+	newpos = {x = 33234, y = 32687 , z = 13}
+	getcoin = getThingfromPos(coin)
+
+	if item.actionid == 50122 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50123 then
+		doTeleportThing(cid, {x = 33234, y = 32693, z = 13})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/gs tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/gs tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33072, y = 32589 , z = 13, stackpos = 1}
+	newpos = {x = 33080, y = 32589, z = 13}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50116 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50117 then
+		doTeleportThing(cid, {x = 33071, y = 32590, z = 13})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/shadow tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/shadow tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33240, y = 32855, z = 13, stackpos = 1}
+	newpos = {x = 33246, y = 32850, z = 13}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50114 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	if item.actionid == 50115 then
+	doTeleportThing(cid, {x = 33239, y = 32856, z = 13})
+	doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+

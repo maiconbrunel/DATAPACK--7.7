@@ -1,0 +1,207 @@
+===== FILE_START: npc/scripts/healer_yberius.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/healer_yberius.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)             npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)     npcHandler:onCreatureSay(cid, type, msg)
+
+	if(cid ~= npcHandler.focus) then
+		return false
+	end
+
+	if msgcontains(msg, 'heal') then
+		if hasCondition(cid, CONDITION_FIRE) == TRUE then
+			npcHandler:say('You are burning. I will help you.')
+			doRemoveCondition(cid, CONDITION_FIRE)
+			doSendMagicEffect(getCreaturePosition(cid), 14)
+		elseif hasCondition(cid, CONDITION_POISON) == TRUE then
+			npcHandler:say('You are poisoned. I will help you.')
+			doRemoveCondition(cid, CONDITION_POISON)
+			doSendMagicEffect(getCreaturePosition(cid), 13)
+		elseif getCreatureHealth(cid) < 65 then
+			npcHandler:say('You are looking really bad. Let me heal your wounds.')
+			doCreatureAddHealth(cid, 65 - getCreatureHealth(cid))
+			doSendMagicEffect(getCreaturePosition(cid), 12)
+		else
+			npcHandler:say('You aren\'t looking that bad. Sorry, I can\'t help you. If you are looking for additional protection, you should go on the pilgrimageof ashes.')
+		end
+		return TRUE
+	end
+end
+function onThink()                         npcHandler:onThink() end
+-- OTServ event handling functions end
+npcHandler:addModule(FocusModule:new())
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/healer_zerbrus.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/healer_zerbrus.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)             npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)     npcHandler:onCreatureSay(cid, type, msg)
+
+	if(cid ~= npcHandler.focus) then
+		return false
+	end
+	
+	if msgcontains(msg, 'heal') then
+		if hasCondition(cid, CONDITION_FIRE) == TRUE then
+			npcHandler:say('You are burning. I will help you.')
+			doRemoveCondition(cid, CONDITION_FIRE)
+			doSendMagicEffect(getCreaturePosition(cid), 14)
+		elseif hasCondition(cid, CONDITION_POISON) == TRUE then
+			npcHandler:say('You are poisoned. I will help you.')
+			doRemoveCondition(cid, CONDITION_POISON)
+			doSendMagicEffect(getCreaturePosition(cid), 13)
+		elseif getCreatureHealth(cid) < 65 then
+			npcHandler:say('You are looking really bad. Let me heal your wounds.')
+			doCreatureAddHealth(cid, 65 - getCreatureHealth(cid))
+			doSendMagicEffect(getCreaturePosition(cid), 12)
+		else
+			npcHandler:say('You aren\'t looking really bad. Eat some food to regain strength.')
+		end
+		return TRUE
+	end
+end
+function onThink()                         npcHandler:onThink() end
+-- OTServ event handling functions end
+npcHandler:addModule(FocusModule:new())
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/kroox.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/kroox.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	-- Inicio Sam 
+	if msgcontains(msg, 'sam') or msgcontains(msg, 'sen') and getPlayerStorageValue(cid, 289) == 1 then
+	npcHandler:say('Oh, so its you, he wrote me about? Sadly I have no dwarven armor in stock. But I give you the permission to retrive one from the mines.')
+	npcHandler:say('The problem is, some giant spiders made the tunnels where the storage is their new home. Good luck.')
+	setPlayerStorageValue(cid, 290, 1)
+	else
+	end
+	return TRUE
+	end
+	
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/leedelle.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/leedelle.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+	
+	-- NPC Lee'Delle feito por Rodrigo (Nottinghster)
+	-- Inicio NPC Lee'Delle
+	
+	if msgcontains(msg, 'mission') or msgcontains(msg, 'quest') or msgcontains(msg, 'reward') then
+	npcHandler:say('I really love flowers. Sadly my favourites, honey flowers are very rare on this isle. If you can find me one, I\'ll give you a little reward.')
+	
+	elseif msgcontains (msg, 'honey flower') and getPlayerItemCount(cid,2103) >= 1 then
+	npcHandler:say('Oh, thank you so much! Please take this piece of armor as reward.')
+	doPlayerAddItem(cid, 2468, 1)
+	doPlayerRemoveItem(cid, 2103, 1)
+     setPlayerStorageValue(cid,3030,1)
+    	talk_state = 0
+	
+	elseif msgcontains (msg, 'honey flower') and getPlayerItemCount(cid,2103) == 0 then
+	npcHandler:say('Honey flowers are my favourites <sigh>.')
+	talk_state = 0
+	
+	end
+	-- Final Lee'Delle NPC
+	-- NPC Lee'Delle feito por Rodrigo (Nottinghster)
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/loot.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/loot.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) 			end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) 			end
+function onCreatureSay(cid, type, msg) 			npcHandler:onCreatureSay(cid, type, msg) 		end
+function onThink() 					npcHandler:onThink() 					end
+
+-- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
+keywordHandler:addKeyword({'helmets'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy royal (40k), warrior (6k), crusader (9k), crown (5k), devil (4k), chain (35gp) and iron helmets (30gp), also mystic turbans (500gp).'})
+keywordHandler:addKeyword({'boots'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy golden boots (100k), steel boots (40k) and boots of haste (40k).'})
+keywordHandler:addKeyword({'armors'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy golden (30k), crown (20k), knight (5k), lady (7,5k), plate (400gp), brass (200gp) and chain armors (100gp), also mpa (100k), dsm (60k) and blue robes (15k).'})
+keywordHandler:addKeyword({'legs'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy golden (80k), crown (15k), knight (6k), plate (500gp) and brass legs (100gp).'})
+keywordHandler:addKeyword({'shields'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy blessed (150k), great (100k), demon (40k), vampire (25k), medusa (8k), amazon (4k), crown (5k), tower (4k), dragon (3k), guardian (2k), beholder (1k), and dwarven shields (100gp), also mms (80k).'})
+keywordHandler:addKeyword({'swords'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy giant (10k), bright (6k), fire (3k) serpent (1.5k), spike (800gp) and two handed swords (400gp), also ice rapiers (4k), magic longswords (150k), magic swords (90k), warlord swords (100k) broad swords (70gp), short swords (30gp), sabres (25gp) and swords (25gp).'})
+keywordHandler:addKeyword({'axes'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy fire (10k), guardian halberds (7,5k) knight (2k), double (200gp) and battle axes (100gp), also dragon lances (10k), stonecutters axes (90k), halberds (200gp) and hatchets (20gp).'})
+keywordHandler:addKeyword({'clubs'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I buy thunder hammers (90k), war (6k), dragon (2k) and battle hammers (60gp), also skull staffs (10k) and clerical maces (200gp).'})
+
+npcHandler:addModule(FocusModule:new())
+
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/loui.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/loui.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)			npcHandler:onCreatureAppear(cid)			end
+function onCreatureDisappear(cid)		npcHandler:onCreatureDisappear(cid)			end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()						npcHandler:onThink()						end
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return false
+	end
+
+	
+	if msgcontains(msg, 'time') then
+	local time = getTibiaTime()
+	npcHandler:say('Now, it is '.. time.hours .. string.char(58) .. time.minutes ..', my child.')
+	
+	end
+	return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

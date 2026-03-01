@@ -1,0 +1,209 @@
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Venore/Pits of inferno/oil_lever.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Venore/Pits of inferno/oil_lever.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	local oil = getTileItemById(frompos, 2025)
+	local square = {x = 32801, y = 32336, z = 11, stackpos = 0} 
+	local playerTile = {x = 32801, y = 32336, z = 11, stackpos = 255} 
+	local present_player = getThingfromPos(playerTile)
+	local present_square = getThingfromPos(square)
+	if oil.uid > 0 and oil.type == 11 then
+		if item.itemid == 1945 then
+			if present_square.itemid == 493 then
+				doTransformItem(present_square.uid, 1284)
+			else
+				doTransformItem(present_square.uid, 493)
+			end
+
+		doTransformItem(item.uid, item.itemid+1) 
+		elseif item.itemid == 1946 then
+			if present_square.itemid == 493 then
+				doTransformItem(present_square.uid, 1284)
+			else
+				doTransformItem(present_square.uid, 493)
+			end
+
+			doSendMagicEffect(square, 1)
+			doTransformItem(item.uid, item.itemid-1) 				
+			if isCreature(present_player.uid) == true then
+				doMoveCreature(present_player.uid, WEST)
+			else
+				return false
+			end
+		else
+			doPlayerSay(cid, "The lever is creaking and rusty.", 2)	
+			doTransformItem(item.uid, 1945) 
+			return false  
+		end
+	else
+		doPlayerSay(cid, "The lever is creaking and rusty.", 2)	
+		doTransformItem(item.uid, 1946) 
+		return false
+	end
+
+  return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/crown armor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/crown armor.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if item.uid == 4502 then
+		queststatus = getPlayerStorageValue(cid, 4502)
+		if queststatus == -1 then
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a crown amor.")
+			doPlayerAddItem(cid, 2487, 1)
+			setPlayerStorageValue(cid, 4502, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/crown shield.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/crown shield.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if item.uid == 4503 then
+		queststatus = getPlayerStorageValue(cid, 4503)
+		if queststatus == -1 then
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a crown shield.")
+			doPlayerAddItem(cid, 2519, 1)
+			setPlayerStorageValue(cid, 4503, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/key.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Venore/The Black Knight Quest/key.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if item.uid == 4501 then
+		queststatus = getPlayerStorageValue(cid, 4501)
+		if queststatus == -1 then
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a silver key.")
+			doPlayerAddItem(cid, 2088, 1)
+			setPlayerStorageValue(cid, 4501, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/liquids/antidote_potion.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/liquids/antidote_potion.lua</ABSOLUTE_PATH>
+-- NOTE: This needs update acccording to potions.lua!
+local config = {
+	removeOnUse = "no",
+	usableOnTarget = "yes", -- can be used on target? (fe. healing friend)
+	range = -1,
+	realAnimation = "no", -- make text effect visible only for players in range 1x1
+	flask = 7636,
+	splash = 41
+}
+
+config.removeOnUse = getBooleanFromString(config.removeOnUse)
+config.usableOnTarget = getBooleanFromString(config.usableOnTarget)
+config.realAnimation = getBooleanFromString(config.realAnimation)
+
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, true)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_POISON)
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(not isPlayer(itemEx.uid) or (not config.usableOnTarget and cid ~= itemEx.uid)) then
+		if(config.splash < 1) then
+			return true
+		end
+
+		if(toPosition.x == CONTAINER_POSITION) then
+			toPosition = getThingPosition(item.uid)
+		end
+
+		doDecayItem(doCreateItem(POOL, config.splash, toPosition))
+		doRemoveItem(item.uid, 1)
+		if(not config.flask or config.removeOnUse) then
+			return true
+		end
+
+		if(fromPosition.x ~= CONTAINER_POSITION) then
+			doCreateItem(config.flask, fromPosition)
+		else
+			doPlayerAddItem(cid, config.flask, 1)
+		end
+
+		return true
+	end
+
+	if(config.range > 0 and cid ~= itemEx.uid and getDistanceBetween(getCreaturePosition(cid), getCreaturePosition(itemEx.uid)) > config.range) then
+		return true
+	end
+
+	if(not doCombat(cid, combat, numberToVariant(itemEx.uid))) then
+		return true
+	end
+
+	doSendMagicEffect(getThingPosition(itemEx.uid), CONST_ME_MAGIC_BLUE)
+	if(not config.realAnimation) then
+		doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_ORANGE_1)
+	else
+		for i, tid in ipairs(getSpectators(getThingPosition(itemEx.uid), 1, 1)) do
+			if(isPlayer(tid)) then
+				doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_ORANGE_1, false, tid)
+			end
+		end
+	end
+
+	doRemoveItem(item.uid, 1)
+	if(not config.flask or config.removeOnUse) then
+		return true
+	end
+
+	if(fromPosition.x ~= CONTAINER_POSITION) then
+		doCreateItem(config.flask, fromPosition)
+	else
+		doPlayerAddItem(cid, config.flask, 1)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/liquids/berserk_potion.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/liquids/berserk_potion.lua</ABSOLUTE_PATH>
+local condition = createConditionObject(CONDITION_ATTRIBUTES)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 10 * 60 * 1000) -- 10 minutes
+setConditionParam(condition, CONDITION_PARAM_SKILL_MELEE, 5)
+setConditionParam(condition, CONDITION_PARAM_SKILL_SHIELD, -10)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 99)
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(not isKnight(cid)) then
+		doCreatureSay(cid, "Only knights may drink this fluid.", TALKTYPE_MONSTER, cid)
+		return true
+	end
+
+	if(doAddCondition(cid, condition)) then
+		doSendMagicEffect(fromPosition, CONST_ME_MAGIC_RED)
+		doRemoveItem(item.uid, 1)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

@@ -1,0 +1,211 @@
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Outlaw Camp Quest/power switch.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Outlaw Camp Quest/power switch.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Notes: English messages, API updates, safety fixes
+
+function onUse(player, item, fromPosition, target, toPosition)
+
+local powerPos = {x=32594, y=32214, z=9, stackpos=255}
+local power2Pos = {x=32613, y=32220, z=10, stackpos=255}
+local wallPos = {x=32604, y=32216, z=9, stackpos=1}
+
+local power = getThingfromPos(powerPos)
+local power2 = getThingfromPos(power2Pos)
+local wall = getThingfromPos(wallPos)
+
+if item.uid == 3401 and item.itemid == 1945 and power.itemid == 2166 and wall.itemid == 1026 then
+	doRemoveItem(power.uid, 1)
+	doRemoveItem(wall.uid, 1)
+	doCreateItem(2166, 1, power2Pos)
+	doTransformItem(item.uid, 1946)
+	addEvent(doCreateItem, 600000, 1026, 1, wallPos)
+	doSendMagicEffect(powerPos, 8)
+	return true
+end
+
+if item.uid == 3401 and item.itemid == 1946 and power.itemid == 2166 and wall.itemid == 1026 then
+	doRemoveItem(power.uid, 1)
+	doRemoveItem(wall.uid, 1)
+	doCreateItem(2166, 1, power2Pos)
+	doTransformItem(item.uid, 1945)
+	addEvent(doCreateItem, 600000, 1026, 1, wallPos)
+	doSendMagicEffect(powerPos, 8)
+	return true
+end
+
+player:sendCancelMessage("Sorry, not possible.")
+return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/16Levers.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/16Levers.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Notes: English messages, API cleanup
+
+function onUse(player, item, fromPosition, target, toPosition)
+
+local wall1pos = {x=458, y=1386, z=11, stackpos=1}
+local wall2pos = {x=459, y=1386, z=11, stackpos=1}
+
+local leverPositions = {
+{x=450, y=1412, z=11, stackpos=1},
+{x=454, y=1385, z=12, stackpos=1},
+{x=493, y=1390, z=12, stackpos=1},
+{x=460, y=1412, z=13, stackpos=1},
+{x=457, y=1419, z=12, stackpos=1},
+{x=467, y=1417, z=12, stackpos=1},
+{x=481, y=1407, z=13, stackpos=1},
+{x=481, y=1387, z=11, stackpos=1},
+{x=498, y=1381, z=13, stackpos=1},
+{x=450, y=1405, z=13, stackpos=1},
+{x=496, y=1402, z=14, stackpos=1},
+{x=494, y=1383, z=11, stackpos=1},
+{x=453, y=1371, z=11, stackpos=1},
+{x=494, y=1408, z=12, stackpos=1}
+}
+
+local levers = {}
+for i,v in ipairs(leverPositions) do
+	levers[i] = getThingfromPos(v)
+end
+
+local wall1 = getThingfromPos(wall1pos)
+local wall2 = getThingfromPos(wall2pos)
+
+local allOn = true
+for _, lever in ipairs(levers) do
+	if lever.itemid ~= 1946 then
+		allOn = false
+		break
+	end
+end
+
+if item.uid == 10284 and item.itemid == 1945 and allOn and wall1.itemid == 1304 then
+	doSendMagicEffect(wall1pos, 2)
+	doSendMagicEffect(wall2pos, 2)
+	doRemoveItem(wall1.uid, 1)
+	doRemoveItem(wall2.uid, 1)
+	doTransformItem(item.uid, 1946)
+	return true
+end
+
+if item.uid == 10284 and item.itemid == 1946 and allOn and wall1.itemid == 0 then
+	doSendMagicEffect(wall1pos, 13)
+	doSendMagicEffect(wall2pos, 13)
+	doCreateItem(1304,1,wall1pos)
+	doCreateItem(1304,1,wall2pos)
+	doTransformItem(item.uid, 1945)
+	return true
+end
+
+player:sendCancelMessage("You need to flip all 15 levers.")
+return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/BazirChest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/BazirChest.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid == 10272 and item.itemid == 1746 then
+	local pos = Position(406, 1523, 13)
+	player:teleportTo(pos)
+	pos:sendMagicEffect(10)
+	fromPosition:sendMagicEffect(6)
+	toPosition:sendMagicEffect(6)
+end
+return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/BazirMirror.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/BazirMirror.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid == 10273 and item.itemid == 1850 then
+	local pos = Position(401, 1522, 12)
+	player:teleportTo(pos)
+	pos:sendMagicEffect(10)
+	fromPosition:sendMagicEffect(6)
+	toPosition:sendMagicEffect(6)
+end
+return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/LastDoor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/LastDoor.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: POI Last Door – Official Tibia 7.7 behavior
+-- Notes: No door transform, no resets, no timers
+-- Changes: Rebuilt entire logic, English messages, safe storage check
+
+function onUse(player, item, fromPosition, target, toPosition)
+
+	-- Official POI last door check
+	if item.uid ~= 22222 or item.itemid ~= 1210 then
+		return true
+	end
+
+	local s1 = player:getStorageValue(1234561)
+	local s2 = player:getStorageValue(1234562)
+	local s3 = player:getStorageValue(1234563)
+	local s4 = player:getStorageValue(1234564)
+	local s5 = player:getStorageValue(1234565)
+
+	if s1 ~= 1 or s2 ~= 1 or s3 ~= 1 or s4 ~= 1 or s5 ~= 1 then
+		player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Sorry, but you did not absorb enough energy!")
+		return true
+	end
+
+	player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You absorbed enough energy! You may pass.")
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/LavaLever.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Jakundaf Desert/The Pits of Inferno Quest/LavaLever.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted
+
+function onUse(player, item, fromPosition, target, toPosition)
+
+local pos = {
+	{x=592, y=1419, z=14},
+	{x=593, y=1419, z=14},
+	{x=592, y=1418, z=14},
+	{x=593, y=1418, z=14}
+}
+
+local Walk = 407
+local Unwalk = 599
+
+local tiles = {
+	getThingfromPos({x=592, y=1419, z=14, stackpos=0}),
+	getThingfromPos({x=593, y=1419, z=14, stackpos=0}),
+	getThingfromPos({x=592, y=1418, z=14, stackpos=0}),
+	getThingfromPos({x=593, y=1418, z=14, stackpos=0})
+}
+
+if item.uid == 10285 and item.itemid == 1945 and
+	tiles[1].itemid == Unwalk and tiles[2].itemid == Unwalk and tiles[3].itemid == Unwalk and tiles[4].itemid == Unwalk then
+
+	for i=1,4 do doTransformItem(tiles[i].uid, Walk) end
+	doTransformItem(item.uid, 1946)
+	return true
+end
+
+if item.uid == 10285 and item.itemid == 1946 and
+	tiles[1].itemid == Walk and tiles[2].itemid == Walk and tiles[3].itemid == Walk and tiles[4].itemid == Walk then
+
+	for i=1,4 do doTransformItem(tiles[i].uid, Unwalk) end
+	doTransformItem(item.uid, 1945)
+	return true
+end
+
+player:sendCancelMessage("Sorry, not possible.")
+return true
+end
+===== FILE_END =====

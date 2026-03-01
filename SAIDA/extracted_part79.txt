@@ -1,0 +1,127 @@
+===== FILE_START: TOTAL/movements/scripts/lighthouse/tile.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/lighthouse/tile.lua</ABSOLUTE_PATH>
+function onStepOut(cid, item, frompos, item2, topos)
+	wall1 = {x = 32225, y = 32283, 	z = 9}
+	getwall1 = getThingfromPos(wall1)
+	if item.actionid == 4444 and getwall1.itemid == 432 then
+		doRemoveItem(getwall1.uid, 1)
+		doCreateItem(424, 1, wall1)
+		doTransformItem(item.uid, item.itemid + 1)
+	end
+end
+
+function onStepIn(cid, item, frompos, item2, topos)
+	wall1 = {x = 32225, y = 32283, z = 9}
+	getwall1 = getThingfromPos(wall1)
+	if item.actionid == 4444 and getwall1.itemid == 424 then
+		doRemoveItem(getwall1.uid, 1)
+		doCreateItem(432, 1, wall1)
+		doTransformItem(item.uid, item.itemid - 1)
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/lighthouse/tpin.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/lighthouse/tpin.lua</ABSOLUTE_PATH>
+--Script by Nottinghster
+function onStepIn(cid, item, pos)
+	newpos = {x = 32225, y = 32275 , z = 10}
+	newpos1 = {x = 32232, y = 32276 , z = 9}
+	if item.actionid == 4445 then
+		doTeleportThing(cid, {x = 32225, y = 32275, z = 10})
+		doSendMagicEffect(newpos, 14)
+	end
+
+	if item.actionid == 4446 then
+		doTeleportThing(cid, {x = 32232, y = 32276 , z = 9})
+		doSendMagicEffect(newpos1, 14)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/paradox/Paradox_Entrance.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/paradox/Paradox_Entrance.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	skull1 = {x = 32563, y = 31957, z = 1, stackpos = 255}
+	skull2 = {x = 32565, y = 31957, z = 1, stackpos = 255}
+	skull3 = {x = 32567, y = 31957, z = 1, stackpos = 255}
+	skull4 = {x = 32569, y = 31957, z = 1, stackpos = 255}
+	entrance = {x = 32481, y = 31926, z = 7, stackpos = 255}
+	getskull1 = getThingfromPos(skull1)
+	getskull2 = getThingfromPos(skull2)
+	getskull3 = getThingfromPos(skull3)
+	getskull4 = getThingfromPos(skull4)
+	if item.actionid == 8006 and getskull1.itemid == 2229 and getskull2.itemid == 2229
+		and getskull3.itemid == 2229 and getskull4.itemid == 2229 then
+		doRemoveItem(getskull1.uid, 1)
+		doRemoveItem(getskull2.uid, 1)
+		doRemoveItem(getskull3.uid, 1)
+		doRemoveItem(getskull4.uid, 1)
+		doCreateItem(1496, 1, skull1)
+		doCreateItem(1496, 1, skull2)
+		doCreateItem(1496, 1, skull3)
+		doCreateItem(1496, 1, skull4)
+		doSendMagicEffect(skull1, 8)
+		doSendMagicEffect(skull2, 8)
+		doSendMagicEffect(skull3, 8)
+		doSendMagicEffect(skull4, 8)
+		doTeleportThing(cid, entrance)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/paradox/Paradox_Exit.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/paradox/Paradox_Exit.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	exit1 = {x = 32566, y = 31963, z = 1, stackpos = 255}
+	if item.actionid == 8015 then
+		doTeleportThing(cid, exit1)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/paradox/Paradox_Questroom.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/paradox/Paradox_Questroom.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	local phoenixegg = {x = 32477, y = 31900, z = 1, stackpos = 1}
+	local gold = {x = 32478, y = 31900, z = 1, stackpos = 1}
+	local talons = {x = 32479, y = 31900, z = 1, stackpos = 1}
+	local wand = {x = 32480, y = 31900, z = 1, stackpos = 1}
+	if item.actionid == 8011 then --Phoenix Egg
+		setPlayerStorageValue(cid, 8011, 1)
+		doSendMagicEffect(phoenixegg, 5)
+	elseif item.actionid == 8012 then --10k
+		setPlayerStorageValue(cid, 8012, 1)
+		doSendMagicEffect(gold, 5)
+	elseif item.actionid == 8013 then --32 Talons
+		setPlayerStorageValue(cid, 8013, 1)
+		doSendMagicEffect(talons, 5)
+	elseif item.actionid == 8014 then --Wand Of Cosmic
+		setPlayerStorageValue(cid, 8014, 1)
+		doSendMagicEffect(wand, 5)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/paradox/Paradox_deadtree.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/paradox/Paradox_deadtree.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	local trap = {x = 32497, y = 31888, z = 7, stackpos = 1}
+	if item.actionid == 8007 then
+		doCreatureAddHealth(cid, -200)
+		doSendMagicEffect(trap, 8)
+		doSendAnimatedText(trap, '200', TEXTCOLOR_RED)
+	end
+
+	return true
+end
+===== FILE_END =====
+

@@ -1,0 +1,188 @@
+===== FILE_START: TOTAL/movements/scripts/ankrahmun/stone tomb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/ankrahmun/stone tomb.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	coin = {x = 33293, y = 32741, z = 13, stackpos = 1}
+	newpos = {x = 33299, y = 32742, z = 13}
+	getcoin = getThingfromPos(coin)
+	if item.actionid == 50112 and getcoin.itemid == 2159 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getcoin.uid, 1)
+		doSendMagicEffect(coin, 15)
+		doSendMagicEffect(getCreaturePosition(cid), 10)	
+	end
+
+	if item.actionid == 50113 then
+		doTeleportThing(cid, {x = 33292, y = 32742, z = 13})
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/seal_1.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/seal_1.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, frompos, item2, topos) 
+	playerpos = getPlayerPosition(cid) 
+	novapos = {x = 32266, y = 31849, z = 15} 
+	novapos2 = {x = 32274, y = 31902, z = 13} 
+	novapos3 = {x = 32274, y = 31904, z = 13} 
+	novapos4 = {x = 32276, y = 31902, z = 13} 
+	if item.actionid == 9008 then 
+		queststatus = getPlayerStorageValue(cid, 9008)
+		if queststatus == -1 then
+			getThingfromPos(playerpos) 
+			doSendMagicEffect(playerpos, 2) 
+			doTeleportThing(cid, novapos) 
+			doSendMagicEffect(novapos, 10)
+			setPlayerStorageValue(cid, 9008, 1)
+			setPlayerStorageValue(cid, 9800, 1)
+			doSummonCreature("Ghost", novapos2)
+			doSummonCreature("Ghost", novapos3)
+			doSummonCreature("Demon skeleton", novapos4)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did the first seal.")
+		end
+		return false
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/seal_2.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/seal_2.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, frompos, item2, topos) 
+	playerpos = getPlayerPosition(cid) 
+	novapos = {x = 32261, y = 31856, z = 15} 
+	switch1pos = {x = 32310, y = 31975, z = 13, stackpos = 1}
+	switch2pos = {x = 32310, y = 31976, z = 13, stackpos = 1}
+	switch3pos = {x = 32312, y = 31975, z = 13, stackpos = 1}
+	switch4pos = {x = 32312, y = 31975, z = 13, stackpos = 1}
+	switch5pos = {x = 32314, y = 31975, z = 13, stackpos = 1}
+	switch6pos = {x = 32314, y = 31975, z = 13, stackpos = 1}
+	getswitch1 = getThingfromPos(switch1pos)
+	getswitch2 = getThingfromPos(switch2pos)
+	getswitch3 = getThingfromPos(switch3pos)
+	getswitch4 = getThingfromPos(switch4pos)
+	getswitch5 = getThingfromPos(switch5pos)
+	getswitch6 = getThingfromPos(switch6pos)
+	if item.actionid == 9009 and
+		getswitch1.itemid == 1946 and
+		getswitch2.itemid == 1946 and
+		getswitch3.itemid == 1946 and
+		getswitch4.itemid == 1946 and
+		getswitch5.itemid == 1945 and
+		getswitch6.itemid == 1945 then
+		queststatus = getPlayerStorageValue(cid, 9009)
+		if queststatus == -1 then
+			getThingfromPos(playerpos) 
+			doSendMagicEffect(playerpos, 2) 
+			doTeleportThing(cid, novapos) 
+			doSendMagicEffect(novapos, 10)
+			setPlayerStorageValue(cid, 9009, 1)
+			setPlayerStorageValue(cid, 9900, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
+		end
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/seal_3.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/seal_3.lua</ABSOLUTE_PATH>
+local cfg = {
+	flame_pos = {x = 32268, y = 31856, z = 15}, -- Pos to get teleported when you step on the blue flame
+	fail_pos = {x = 32184, y = 31940, z = 14}, -- Pos to get teleported to when you step on the wrong tile
+	fail_effect = CONST_ME_MAGIC_RED, -- Effect when you step on the wrong tile
+	pass_effect = CONST_ME_MAGIC_GREEN, -- Effect when you step on the correct tile
+	flame_effect = CONST_ME_TELEPORT, -- Effect when you step on the flame
+	action_pass = 9013, -- Action id on the correct tiles
+	action_fail = 9014, -- Action id on the fail tiles
+	action_flame = 9010, -- Action id on the flame
+}
+
+function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	if isPlayer(cid) and item.actionid == cfg.action_fail then
+		doTeleportThing(cid, cfg.fail_pos)
+		doSendMagicEffect(getCreaturePosition(cid), cfg.fail_effect)
+	end
+
+	if isPlayer(cid) and item.actionid == cfg.action_pass then
+		doSendMagicEffect(getCreaturePosition(cid), cfg.pass_effect)
+	end
+
+	if isPlayer(cid) and item.actionid == cfg.action_flame then
+		queststatus = getPlayerStorageValue(cid, 9010)
+		if queststatus == -1 then
+			doTeleportThing(cid, cfg.flame_pos)
+			setPlayerStorageValue(cid, 9010, 1)
+			setPlayerStorageValue(cid, 9100, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
+		end
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/seal_4.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/seal_4.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	splash = {x = 32243, y = 31892, z = 14, stackpos = 1}
+	newpos = {x = 32261, y = 31849, z = 15}
+	getsplash = getThingfromPos(splash)
+	if item.actionid == 9011 and getsplash.itemid == 2025 then
+		queststatus = getPlayerStorageValue(cid, 9009)
+		if queststatus == -1 then
+			doTeleportThing(cid, newpos)
+			setPlayerStorageValue(cid, 9011, 1)
+			setPlayerStorageValue(cid, 9110, 1)
+			doRemoveItem(getsplash.uid, 1)
+			doSendMagicEffect(splash, CONST_ME_MAGIC_RED)
+			doSendMagicEffect(getCreaturePosition(cid), 10)
+		else
+			pos.x = pos.x-2
+			doTeleportThing(cid, pos)
+			doSendMagicEffect(pos, 10)
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
+		end
+
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/seal_5.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/seal_5.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, frompos, item2, topos) 
+	playerpos = getPlayerPosition(cid) 
+	novapos2 = {x = 32216, y = 31833, z = 15} 
+	novapos3 = {x = 32217, y = 31840, z = 15}
+	if item.actionid == 9012 then
+		queststatus = getPlayerStorageValue(cid, 9012)
+		if queststatus == -1 then
+			getThingfromPos(playerpos) 
+			setPlayerStorageValue(cid, 9012, 1)
+			setPlayerStorageValue(cid, 9120, 1)
+			doSummonCreature("Warlock", novapos2)
+			doSummonCreature("Warlock", novapos3)
+		end
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

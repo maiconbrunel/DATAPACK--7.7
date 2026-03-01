@@ -1,0 +1,42 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Lever opens/closes stone gate
+-- Notes: melhorias, atualizações da API, otimizações
+-- Changes: English messages, added item comment, logic clean
+
+local GATE_POS = Position(32790, 31594, 7)
+local GATE_ITEMID = 1285 -- stone gate
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    -- Validate actionid
+    if item:getActionId() ~= 9508 then
+        return true
+    end
+
+    local tile = Tile(GATE_POS)
+    if not tile then
+        return true
+    end
+
+    local gateItem = tile:getItemById(GATE_ITEMID)
+
+    -- Lever ON
+    if item.itemid == 1945 then
+        if gateItem then
+            gateItem:remove()
+        end
+        item:transform(1946)
+        return true
+    end
+
+    -- Lever OFF
+    if item.itemid == 1946 then
+        if not gateItem then
+            Game.createItem(GATE_ITEMID, 1, GATE_POS)
+        end
+        item:transform(1945)
+        return true
+    end
+
+    return true
+end
+

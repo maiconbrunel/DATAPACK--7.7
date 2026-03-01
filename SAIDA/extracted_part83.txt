@@ -1,0 +1,102 @@
+===== FILE_START: TOTAL/movements/scripts/town/venore.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/venore.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50105 then
+		newpos = {x = 32957, y = 32076, z = 7}
+		doPlayerSetTown(cid, 4)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Venore.")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/venoretp.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/venoretp.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+
+if getPlayerLevel(cid) < 20000 then
+ pos.z = pos.z+1
+ doTeleportThing(cid, pos)
+ doSendMagicEffect(pos, 12)
+ else
+ doPlayerSendCancel(cid, "")
+end
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/trap.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/trap.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if(item.itemid == 2579) then
+		if(not isPlayer(cid)) then
+			doTargetCombatHealth(0, cid, COMBAT_PHYSICALDAMAGE, -15, -30, CONST_ME_NONE)
+			doTransformItem(item.uid, item.itemid - 1)
+		end
+	else
+		if(isPlayer(cid)) then
+			doTargetCombatHealth(0, cid, COMBAT_PHYSICALDAMAGE, -50, -100, CONST_ME_NONE)
+			doTransformItem(item.uid, item.itemid + 1)
+		end
+	end
+	return true
+end
+
+function onStepOut(cid, item, pos)
+	doTransformItem(item.uid, item.itemid - 1)
+	return true
+end
+
+function onRemoveItem(item, tile, pos)
+	local thingPos = getThingPos(item.uid)
+	if(getDistanceBetween(thingPos, pos) > 0) then
+		doTransformItem(item.uid, item.itemid - 1)
+		doSendMagicEffect(thingPos, CONST_ME_POFF)
+	end
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/walkback.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/walkback.lua</ABSOLUTE_PATH>
+local SPECIAL_QUESTS = {2001}
+
+function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	local container = isContainer(item.uid)
+	if((container and not isInArray(SPECIAL_QUESTS, item.actionid) and
+		item.uid > 65535) or (fromPosition.x ~= 0 and getTileInfo(fromPosition).floorChange[9])
+		or (not container and getTileInfo(position).creatures <= 1)) then
+		return true
+	end
+
+	if(lastPosition.x == 0) then -- player just logged in
+		lastPosition = getTownTemplePosition(getPlayerTown(cid))
+		doSendMagicEffect(lastPosition, CONST_ME_TELEPORT)
+	end
+
+	doTeleportThing(cid, lastPosition, true)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/yellowpillow.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/yellowpillow.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
+	doCreatureSay(cid, "Faaart!", TALKTYPE_MONSTER)
+	doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/raids/lib/raids.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/raids/lib/raids.lua</ABSOLUTE_PATH>
+-- Nothing --
+
+===== FILE_END =====
+

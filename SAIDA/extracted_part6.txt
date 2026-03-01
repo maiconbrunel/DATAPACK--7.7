@@ -1,0 +1,151 @@
+===== FILE_START: TOTAL/actions/scripts/Darashia/Plate Armor Quest/plate_armor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Darashia/Plate Armor Quest/plate_armor.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English messages, improved storage check, item ID comments, safety cleanup
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10100 then
+  return false
+end
+
+local storage = 10100
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a plate armor.")
+  player:addItem(2463, 1) -- Plate Armor (2463)
+  player:setStorageValue(storage, 1)
+else
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "The wooden coffin is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+===== FILE_START: TOTAL/actions/scripts/Edron/Barbarian Axe Quest/reward.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/Barbarian Axe Quest/reward.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English translation, API cleanup, item ID comments, storage sanity
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10000 then
+  return false
+end
+
+local storage = 10000
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a barbarian axe and a scimitar.")
+  player:addItem(2429, 1) -- Barbarian Axe (2429)
+  player:addItem(2419, 1) -- Scimitar (2419)
+  player:setStorageValue(storage, 1)
+else
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+===== FILE_START: TOTAL/actions/scripts/Edron/Barbarian Axe Quest/switch.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/Barbarian Axe Quest/switch.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English translation, gate safety checks, fixed tile reference, ID comments
+
+function onUse(player, item, fromPosition, target, toPosition)
+local gatePos = Position(33171, 31897, 8)
+local tile = Tile(gatePos)
+local gateItem = tile and tile:getItemById(1355) -- Stone gate (1355)
+
+-- Open
+if item.uid == 10001 and item.itemid == 1945 then
+  if gateItem then gateItem:remove() end
+  item:transform(1946)
+  return true
+end
+
+-- Close
+if item.uid == 10001 and item.itemid == 1946 then
+  if not gateItem then
+    Game.createItem(1355, 1, gatePos)
+  end
+  item:transform(1945)
+  return true
+end
+
+player:sendCancelMessage("Sorry, not possible.")
+return true
+end
+===== FILE_END =====
+
+
+===== FILE_START: TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_demonhelmet.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_demonhelmet.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: unified reward logic, English text, item ID comments, safety improved
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10003 then
+  return false
+end
+
+local storage = 10003
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a demon helmet.")
+  player:addItem(2493, 1) -- Demon Helmet (2493)
+  player:setStorageValue(storage, 1)
+else
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+===== FILE_START: TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_demonshield.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_demonshield.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English fix, normalized storage, item ID comment, updated reward logic
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10004 then
+  return false
+end
+
+local storage = 10004
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a demon shield.")
+  player:addItem(2520, 1) -- Demon Shield (2520)
+  player:setStorageValue(storage, 1)
+else
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====
+
+
+===== FILE_START: TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_steelboots.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/Demon Helmet Quest/dh_steelboots.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: item ID comment, English message, optimized layout, storage logic aligned
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10005 then
+  return false
+end
+
+local storage = 10005
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a pair of steel boots.")
+  player:addItem(2645, 1) -- Steel Boots (2645)
+  player:setStorageValue(storage, 1)
+else
+  player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+===== FILE_END =====

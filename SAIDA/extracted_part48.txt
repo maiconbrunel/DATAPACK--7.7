@@ -1,0 +1,121 @@
+===== FILE_START: TOTAL/actions/scripts/doors/window_close.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/doors/window_close.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Door/Window interaction
+-- Notes: Auto-converted
+
+-- By Ricky Mesny
+-- http://otfans.net/showthread.php?t=96955
+
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate house tile
+local house = House.getHouseByPosition(fromPosition)
+if not house then
+	return false
+	end
+
+	-- Transform window
+	item:transform(item.itemid - 2)
+	return true
+	end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/doors/window_close_ex.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/doors/window_close_ex.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Window close (house check)
+-- Notes: Fixed syntax, API, and fromPosition usage
+
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate house position
+local house = House.getHouseByPos(fromPosition)
+if not house then
+	return false
+	end
+
+	-- Transform window to closed state
+	item:transform(item.itemid - 1145)
+
+	return true
+	end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/doors/window_open.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/doors/window_open.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Window interaction
+-- Notes: Fixed transform call + modern API
+
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate house tile
+local house = House.getHouseByPos(fromPosition)
+if not house then
+	return false
+	end
+
+	-- Transform window
+	item:transform(item.itemid + 2)
+
+	return true
+	end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/doors/window_open_ex.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/doors/window_open_ex.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Window interaction (house check)
+-- Notes: Auto-converted & fixed
+
+function onUse(player, item, fromPosition, target, toPosition)
+-- Validate house tile
+if not House.getHouseByPos(fromPosition) then
+	return false
+	end
+
+	-- Transform window
+	item:transform(item.itemid + 1145)
+
+	return true
+	end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/foods/banana_chocolate_shake.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/foods/banana_chocolate_shake.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+function onUse(player, item, fromPosition, target, toPosition)
+	doRemoveItem(item.uid, 1)
+	doCreatureSay(player, "You don't really know what this did to you, but suddenly you feel very happy.", TALKTYPE_MONSTER)
+	doSendMagicEffect(getThingPos(player), CONST_ME_HEARTS)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/foods/blessed_steak.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/foods/blessed_steak.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Food script
+-- Notes: Auto
+
+function onUse(player, item, fromPosition, target, toPosition)
+	local food = SPECIAL_FOODS[item.itemid]
+	if(food == nil) then
+		return false
+	end
+
+	doCreatureAddMana(player, getCreatureMaxMana(player) - getCreatureMana(player))
+	doRemoveItem(item.uid, 1)
+
+	doCreatureSay(player, food, TALKTYPE_MONSTER)
+	return true
+end
+
+===== FILE_END =====
+

@@ -1,0 +1,324 @@
+===== FILE_START: TOTAL/talkactions/scripts/configinfo.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/configinfo.lua</ABSOLUTE_PATH>
+local HIDDEN = {"adminPassword", "managerPassword", "encryptionType", "^sql"}
+
+function onSay(cid, words, param, channel)
+	for _, str in ipairs(HIDDEN) do
+		if(param:find(str) ~= nil) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Config value \"" .. param .. "\" does not exists.")
+			return true
+		end
+	end
+
+	local value = getConfigValue(param)
+	if(value) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, param .. " = " .. value)
+		return true
+	end
+
+	doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Config value \"" .. param .. "\" does not exists.")
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/createitem.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/createitem.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	if(param == '') then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Command param required.")
+		return true
+	end
+
+	local t = string.explode(param, ",")
+	local ret = RETURNVALUE_NOERROR
+	local pos = getCreaturePosition(cid)
+
+	local id = tonumber(t[1])
+	if(not id) then
+		errors(false)
+		id = getItemIdByName(t[1])
+		errors(true)
+
+		if(not id) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Item with such name does not exists.")
+			return true
+		end
+	end
+
+	local amount = 100
+	if(t[2]) then
+		amount = t[2]
+	end
+
+	local item = doCreateItemEx(id, amount)
+	if(t[3] and getBooleanFromString(t[3])) then
+		if(t[4] and getBooleanFromString(t[4])) then
+			pos = getCreatureLookPosition(cid)
+		end
+
+		ret = doTileAddItemEx(pos, item)
+	else
+		ret = doPlayerAddItemEx(cid, item, true)
+	end
+
+	if(ret ~= RETURNVALUE_NOERROR) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Couldn't add item: " .. t[1])
+		return true
+	end
+
+	doDecayItem(item)
+	if(not isPlayerGhost(cid)) then
+		doSendMagicEffect(pos, CONST_ME_MAGIC_RED)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/creature.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/creature.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	local func = doCreateMonster
+	if(words:sub(2, 2) == "n") then
+		func = doCreateNpc
+	end
+
+	local pid, t = cid, string.explode(param, ",")
+	if(t[2]) then
+		pid = getPlayerByNameWildcard(t[2])
+		if(not pid) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Player " .. t[2] .. " not found.")
+			return true
+		end
+	end
+
+	local position, effect = getCreaturePosition(pid), CONST_ME_MAGIC_RED
+	errors(false)
+	local ret = func(t[1], position)
+	errors(true)
+
+	if(tonumber(ret) == nil) then
+		effect = CONST_ME_POFF
+		doPlayerSendDefaultCancel(cid, (not ret and RETURNVALUE_NOTPOSSIBLE or RETURNVALUE_NOTENOUGHROOM))
+	end
+
+	doSendMagicEffect(position, effect)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/deathlist.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/deathlist.lua</ABSOLUTE_PATH>
+local config = {
+	deathAssistCount = getConfigValue('deathAssistCount') + 1,
+	maxDeathRecords = getConfigValue('maxDeathRecords'),
+	limit = ""
+}
+if(config.deathAssistCount > 0) then
+	config.limit = " LIMIT 0, " .. config.deathAssistCount
+end
+
+function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
+	local target = db.getResult("SELECT `name`, `id` FROM `players` WHERE `name` = " .. db.escapeString(param) .. ";")
+	if(target:getID() == -1) then
+		doPlayerSendCancel(cid, "A player with that name does not exist.")
+		return true
+	end
+
+	local targetName, targetId = target:getDataString("name"), target:getDataInt("id")
+	target:free()
+
+	local str, deaths = "", db.getResult("SELECT `id`, `date`, `level` FROM `player_deaths` WHERE `player_id` = " .. targetId .." ORDER BY `date` DESC LIMIT 0, " .. config.maxDeathRecords)
+	if(deaths:getID() ~= -1) then
+		repeat
+			local killers = db.getResult("SELECT environment_killers.name AS monster_name, players.name AS player_name FROM killers LEFT JOIN environment_killers ON killers.id = environment_killers.kill_id LEFT JOIN player_killers ON killers.id = player_killers.kill_id LEFT JOIN players ON players.id = player_killers.player_id WHERE killers.death_id = " .. deaths:getDataInt("id") .. " ORDER BY killers.final_hit DESC, killers.id ASC" .. config.limit)
+			if(killers:getID() ~= -1) then
+				if(str ~= "") then
+					str = str .. "\n" .. os.date("%d %B %Y %X ", deaths:getDataLong("date"))
+				else
+					str = os.date("%d %B %Y %X ", deaths:getDataLong("date"))
+				end
+
+				local count, i = killers:getRows(false), 0
+				repeat
+					local monster = killers:getDataString("monster_name")
+					if(i == 0 or i == (count - 1)) then
+						monster = string.gsub(monster:gsub("an ", ""), "a ", "")
+					end
+
+					if(killers:getDataString("player_name") ~= "") then
+						if(i == 0) then
+							str = str .. "Killed at level " .. deaths:getDataInt("level") .. " by:\n  "
+						elseif(i == count) then
+							str = str .. " and by "
+						elseif(i % 4 == 0) then
+							str = str .. ",\n  "
+						else
+							str = str .. ", "
+						end
+
+						if(monster ~= "") then
+							str = str .. monster .. " summoned by "
+						end
+
+						str = str .. killers:getDataString("player_name")
+					else
+						if(i == 0) then
+							str = str .. "Died at level " .. deaths:getDataInt("level") .. " by:\n  "
+						elseif(i == count) then
+							str = str .. " and by "
+						elseif(i % 4 == 0) then
+							str = str .. ",\n  "
+						else
+							str = str .. ", "
+						end
+
+						str = str .. monster
+					end
+
+					i = i + 1
+					if(i == count) then
+						str = str .. "."
+					end
+				until not(killers:next())
+				killers:free()
+			end
+		until not(deaths:next())
+		deaths:free()
+	else
+		str = "No deaths recorded."
+	end
+
+	doPlayerPopupFYI(cid, "Deathlist for player: " .. targetName .. ".\n\n" .. str)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/frags.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/frags.lua</ABSOLUTE_PATH>
+function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
+	if(not getBooleanFromString(getConfigValue('useFragHandler'))) then
+		return false
+	end
+
+	local time = os.time()
+	local times = {today = (time - 86400), week = (time - (7 * 86400))}
+
+	local contents, result = {day = {}, week = {}, month = {}}, db.getResult("SELECT `pd`.`date`, `pd`.`level`, `p`.`name` FROM `player_killers` pk LEFT JOIN `killers` k ON `pk`.`kill_id` = `k`.`id` LEFT JOIN `player_deaths` pd ON `k`.`death_id` = `pd`.`id` LEFT JOIN `players` p ON `pd`.`player_id` = `p`.`id` WHERE `pk`.`player_id` = " .. getPlayerGUID(cid) .. " AND `k`.`unjustified` = 1 AND `k`.`war` = 0 AND `pd`.`date` >= " .. (time - (30 * 86400)) .. " ORDER BY `pd`.`date` DESC")
+	if(result:getID() ~= -1) then
+		repeat
+			local content = {
+				name = result:getDataString("name"),
+				level = result:getDataInt("level"),
+				date = result:getDataInt("date")
+			}
+			if(content.date > times.today) then
+				table.insert(contents.day, content)
+			elseif(content.date > times.week) then
+				table.insert(contents.week, content)
+			else
+				table.insert(contents.month, content)
+			end
+		until not result:next()
+		result:free()
+	end
+
+	local size = {
+		day = table.maxn(contents.day),
+		week = table.maxn(contents.week),
+		month = table.maxn(contents.month)
+	}
+
+	if(getBooleanFromString(getConfigValue('advancedFragList'))) then
+		local result = "Frags gained today: " .. size.day .. "."
+		if(size.day > 0) then
+			for _, content in ipairs(contents.day) do
+				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
+			end
+
+			result = result .. "\n"
+		end
+
+		result = result .. "\nFrags gained this week: " .. (size.day + size.week) .. "."
+		if(size.week > 0) then
+			for _, content in ipairs(contents.week) do
+				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
+			end
+
+			result = result .. "\n"
+		end
+
+		result = result .. "\nFrags gained this month: " .. (size.day + size.week + size.month) .. "."
+		if(size.month > 0) then
+			for _, content in ipairs(contents.month) do
+				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
+			end
+
+			result = result .. "\n"
+		end
+
+		local skullEnd = getPlayerSkullEnd(cid)
+		if(skullEnd > 0) then
+			result = result .. "\nYour " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull will expire at " .. os.date("%d %B %Y %X", skullEnd)
+		end
+
+		doPlayerPopupFYI(cid, result)
+	else
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You currently have " .. size.day .. " frags today, " .. (size.day + size.week) .. " this week and " .. (size.day + size.week + size.month) .. " this month.")
+		if(size.day > 0) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Last frag at " .. os.date("%d %B %Y %X", contents.day[1].date) .. " on level " .. contents.day[1].level .. " (" .. contents.day[1].name .. ").")
+		end
+
+		local skullEnd = getPlayerSkullEnd(cid)
+		if(skullEnd > 0) then
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull will expire at " .. os.date("%d %B %Y %X", skullEnd))
+		end
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/talkactions/scripts/gamemaster.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/talkactions/scripts/gamemaster.lua</ABSOLUTE_PATH>
+local ignore = createConditionObject(CONDITION_GAMEMASTER, -1, false, GAMEMASTER_IGNORE, CONDITIONID_DEFAULT)
+local teleport = createConditionObject(CONDITION_GAMEMASTER, -1, false, GAMEMASTER_TELEPORT, CONDITIONID_DEFAULT)
+local light = createConditionObject(CONDITION_LIGHT, -1, false, 0, CONDITIONID_DEFAULT)
+	setConditionParam(light, CONDITION_PARAM_LIGHT_LEVEL, 255)
+	setConditionParam(light, CONDITION_PARAM_LIGHT_COLOR, 215)
+
+function onSay(cid, words, param, channel)
+	local condition, type, subId, name = ignore, CONDITION_GAMEMASTER, GAMEMASTER_IGNORE, "private messages ignoring"
+	if(words:sub(2, 2) == "c") then
+		condition, subId, name = teleport, GAMEMASTER_TELEPORT, "map click teleport"
+	elseif(words:sub(2, 2) == "l") then
+		condition, type, subId, name = light, CONDITION_LIGHT, 215, "full light"
+	end
+
+	local action = "off"
+	if(not getCreatureCondition(cid, type, subId, CONDITIONID_DEFAULT)) then
+		doAddCondition(cid, condition)
+		action = "on"
+	else
+		doRemoveCondition(cid, type, subId, CONDITIONID_DEFAULT)
+	end
+
+	doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have turned " .. action .. " " .. name .. ".")
+	return true
+end
+
+===== FILE_END =====
+

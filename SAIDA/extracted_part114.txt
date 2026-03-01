@@ -1,0 +1,470 @@
+===== FILE_START: lib/011-string.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/011-string.lua</ABSOLUTE_PATH>
+string.split = function (str)
+	local t = {}
+	return not str:gsub("%w+", function(s) table.insert(t, s) return "" end):find("%S") and t or {}
+end
+
+string.trim = function (str)
+	return str:gsub("^%s*(.-)%s*$", "%1")
+end
+
+string.explode = function (str, sep, limit)
+	if(type(sep) ~= 'string' or isInArray({tostring(str):len(), sep:len()}, 0)) then
+		return {}
+	end
+
+	local i, pos, tmp, t = 0, 1, "", {}
+	for s, e in function() return string.find(str, sep, pos) end do
+		tmp = str:sub(pos, s - 1):trim()
+		table.insert(t, tmp)
+		pos = e + 1
+
+		i = i + 1
+		if(limit ~= nil and i == limit) then
+			break
+		end
+	end
+
+	tmp = str:sub(pos):trim()
+	table.insert(t, tmp)
+	return t
+end
+
+string.expand = function (str)
+	return string.gsub(str, "$(%w+)", function(n) return _G[n] end)
+end
+
+string.diff = function (diff)
+	local format = {
+		{"week", diff / 60 / 60 / 24 / 7},
+		{"day", diff / 60 / 60 / 24 % 7},
+		{"hour", diff / 60 / 60 % 24},
+		{"minute", diff / 60 % 60},
+		{"second", diff % 60}
+	}
+
+	local t = {}
+	for k, v in ipairs(format) do
+		local d, tmp = math.floor(v[2]), ""
+		if(d > 0) then
+			tmp = (k < table.maxn(format) and (table.maxn(t) > 0 and ", " or "") or " and ") .. d .. " " .. v[1] .. (d ~= 1 and "s" or "")
+			table.insert(t, tmp)
+		end
+	end
+
+	return t
+end
+string.timediff = string.diff
+
+string.boolean = function (input)
+	local tmp = type(input)
+	if(tmp == 'boolean') then
+		return input
+	end
+
+	if(tmp == 'number') then
+		return input > 0
+	end
+
+	local str = string.lower(tostring(input))
+	return (str == "yes" or str == "true" or (tonumber(str) ~= nil and tonumber(str) > 0))
+end
+getBooleanFromString = string.boolean
+===== FILE_END =====
+
+===== FILE_START: lib/012-table.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/012-table.lua</ABSOLUTE_PATH>
+table.append = table.insert
+table.empty = function (t)
+	return next(t) == nil
+end
+
+table.size = function (t)
+	local size = 0
+	for i, n in pairs(table) do
+		size = size + 1
+	end
+
+	return size
+end
+
+table.find = function (table, value, sensitive)
+	local sensitive = sensitive or true
+	if(not sensitive and type(value) == "string") then
+		for i, v in pairs(table) do
+			if(type(v) == "string") then
+				if(v:lower() == value:lower()) then
+					return i
+				end
+			end
+		end
+
+		return nil
+	end
+
+	for i, v in pairs(table) do
+		if(v == value) then
+			return i
+		end
+	end
+
+	return nil
+end
+table.getPos = table.find
+
+table.contains = function (txt, str)
+	for i, v in pairs(str) do
+		if(txt:find(v) and not txt:find('(%w+)' .. v) and not txt:find(v .. '(%w+)')) then
+			return true
+		end
+	end
+
+	return false
+end
+table.isStrIn = table.contains
+
+table.count = function (table, item)
+	local count = 0
+	for i, n in pairs(table) do
+		if(item == n) then
+			count = count + 1
+		end
+	end
+
+	return count
+end
+table.countElements = table.count
+
+table.getCombinations = function (table, num)
+	local a, number, select, newList = {}, table.size(table), num, {}
+	for i = 1, select do
+		table.insert(a, i)
+	end
+
+	local newThing = {}
+	while(true) do
+		local newRow = {}
+		for i = 1, select do
+			table.insert(newRow, table[a[i]])
+		end
+
+		table.insert(newList, newRow)
+		i = select
+		while(a[i] == (number - select + i)) do
+			i = i - 1
+		end
+
+		if(i < 1) then
+			break
+		end
+
+		a[i] = a[i] + 1
+		for j = i, select do
+			a[j] = a[i] + j - i
+		end
+	end
+
+	return newList
+end
+
+function table.serialize(x, recur)
+	local t = type(x)
+	recur = recur or {}
+
+	if(t == nil) then
+		return "nil"
+	elseif(t == "string") then
+		return string.format("%q", x)
+	elseif(t == "number") then
+		return tostring(x)
+	elseif(t == "boolean") then
+		return x and "true" or "false"
+	elseif(getmetatable(x)) then
+		error("Can not serialize a table that has a metatable associated with it.")
+	elseif(t == "table") then
+		if(table.find(recur, x)) then
+			error("Can not serialize recursive tables.")
+		end
+		table.append(recur, x)
+
+		local s = "{"
+		for k, v in pairs(x) do
+			s = s .. "[" .. table.serialize(k, recur) .. "]" .. " = " .. table.serialize(v, recur) .. ", "
+		end
+
+		return s:sub(0, s:len() - 2) .. "}"
+	end
+
+	error("Can not serialize value of type '" .. t .. "'.")
+end
+
+function table.unserialize(str)
+	if(type(str) ~= 'string' or str:len() == 0) then
+		return {}
+	end
+
+	return loadstring("return " .. str)()
+end
+
+===== FILE_END =====
+
+===== FILE_START: lib/013-math.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/013-math.lua</ABSOLUTE_PATH>
+math.round = function(num, idp)
+	return tonumber(string.format("%." .. (idp or 0) .. "f", num))
+end
+===== FILE_END =====
+
+===== FILE_START: lib/031-vocations.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/031-vocations.lua</ABSOLUTE_PATH>
+function isSorcerer(cid)
+	return isInArray({1, 5}, getPlayerVocation(cid))
+end
+
+function isDruid(cid)
+	return isInArray({2, 6}, getPlayerVocation(cid))
+end
+
+function isPaladin(cid)
+	return isInArray({3, 7}, getPlayerVocation(cid))
+end
+
+function isKnight(cid)
+	return isInArray({4, 8}, getPlayerVocation(cid))
+end
+
+function isRookie(cid)
+	return isInArray({0}, getPlayerVocation(cid))
+end
+
+===== FILE_END =====
+
+===== FILE_START: lib/032-position.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/032-position.lua</ABSOLUTE_PATH>
+function isInRange(position, fromPosition, toPosition)
+	return (position.x >= fromPosition.x and position.y >= fromPosition.y and position.z >= fromPosition.z
+		and position.x <= toPosition.x and position.y <= toPosition.y and position.z <= toPosition.z)
+end
+
+function getDistanceBetween(fromPosition, toPosition)
+	local x, y = math.abs(fromPosition.x - toPosition.x), math.abs(fromPosition.y - toPosition.y)
+	local diff = math.max(x, y)
+	if(fromPosition.z ~= toPosition.z) then
+		diff = diff + 9 + 6
+	end
+
+	return diff
+end
+
+function getDirectionTo(pos1, pos2)
+	local dir = SOUTH
+	if(pos1.x > pos2.x) then
+		dir = WEST
+		if(pos1.y > pos2.y) then
+			dir = NORTHWEST
+		elseif(pos1.y < pos2.y) then
+			dir = SOUTHWEST
+		end
+	elseif(pos1.x < pos2.x) then
+		dir = EAST
+		if(pos1.y > pos2.y) then
+			dir = NORTHEAST
+		elseif(pos1.y < pos2.y) then
+			dir = SOUTHEAST
+		end
+	elseif(pos1.y > pos2.y) then
+		dir = NORTH
+	elseif(pos1.y < pos2.y) then
+		dir = SOUTH
+	end
+
+	return dir
+end
+
+function getCreatureLookPosition(cid)
+	return getPositionByDirection(getThingPosition(cid), getCreatureLookDirection(cid))
+end
+
+function getPositionByDirection(position, direction, size)
+	local n = size or 1
+	if(direction == NORTH) then
+		position.y = position.y - n
+	elseif(direction == SOUTH) then
+		position.y = position.y + n
+	elseif(direction == WEST) then
+		position.x = position.x - n
+	elseif(direction == EAST) then
+		position.x = position.x + n
+	elseif(direction == NORTHWEST) then
+		position.y = position.y - n
+		position.x = position.x - n
+	elseif(direction == NORTHEAST) then
+		position.y = position.y - n
+		position.x = position.x + n
+	elseif(direction == SOUTHWEST) then
+		position.y = position.y + n
+		position.x = position.x - n
+	elseif(direction == SOUTHEAST) then
+		position.y = position.y + n
+		position.x = position.x + n
+	end
+
+	return position
+end
+
+function doComparePositions(position, positionEx)
+	return position.x == positionEx.x and position.y == positionEx.y and position.z == positionEx.z
+end
+
+function getArea(position, x, y)
+	local t = {}
+	for i = (position.x - x), (position.x + x) do
+		for j = (position.y - y), (position.y + y) do
+			table.insert(t, {x = i, y = j, z = position.z})
+		end
+	end
+
+	return t
+end
+
+function Position(x, y, z, stackpos)
+	local position = {x = 0, y = 0, z = 0}
+	if(isNumeric(x .. y .. z)) then
+		position = {x = x, y = y, z = z}
+		if(isNumeric(stackpos)) then
+			position.stackpos = stackpos
+		end
+	end
+
+	return position
+end
+
+function isValidPosition(position)
+	return (isNumeric(position.x .. position.y .. position.z) and position.x > 0
+		and position.y > 0 and position.z >= 0 and position.z <= 15)
+end
+
+===== FILE_END =====
+
+===== FILE_START: lib/033-ip.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/lib/033-ip.lua</ABSOLUTE_PATH>
+function doConvertIntegerToIp(int, mask)
+	local b = {
+		bit.urshift(bit.uband(int, 4278190080), 24),
+		bit.urshift(bit.uband(int, 16711680), 16),
+		bit.urshift(bit.uband(int, 65280), 8),
+		bit.urshift(bit.uband(int, 255), 0)
+	}
+	if(mask ~= nil) then
+		local m = {
+			bit.urshift(bit.uband(mask,  4278190080), 24),
+			bit.urshift(bit.uband(mask,  16711680), 16),
+			bit.urshift(bit.uband(mask,  65280), 8),
+			bit.urshift(bit.uband(mask,  255), 0)
+		}
+		if((m[1] == 255 or m[1] == 0) and (m[2] == 255 or m[2] == 0) and (m[3] == 255 or m[3] == 0) and (m[4] == 255 or m[4] == 0)) then
+			for i = 1, 4 do
+				if(m[i] == 0) then
+					b[i] = "*"
+				end
+			end
+		elseif(m[1] ~= 255 or m[2] ~= 255 or m[3] ~= 255 or m[4] ~= 255) then
+			return b[4] .. "." .. b[3] .. "." .. b[2] .. "." .. b[1] .. ":" .. m[4] .. "." .. m[3] .. "." .. m[2] .. "." .. m[1]
+		end
+	end
+
+	return b[4] .. "." .. b[3] .. "." .. b[2] .. "." .. b[1]
+end
+
+function doConvertIpToInteger(str)
+	local maskIndex = str:find(":")
+	if(maskIndex == nil) then
+		local ip, mask, index = 0, 0, 24
+		for b in str:gmatch("([x%d]+)%.?") do
+			if(b ~= "x") then
+				if(b:find("x") ~= nil) then
+					return 0, 0
+				end
+
+				local t = tonumber(b)
+				if(t == nil or t > 255 or t < 0) then
+					return 0, 0
+				end
+
+				mask = bit.ubor(mask, bit.ulshift(255, index))
+				ip = bit.ubor(ip, bit.ulshift(b, index))
+			end
+
+			index = index - 8
+			if(index < 0) then
+				break
+			end
+		end
+
+		if(index ~= -8) then
+			return 0, 0
+		end
+
+		return ip, mask
+	end
+
+	if(maskIndex <= 1) then
+		return 0, 0
+	end
+
+	local ipString, maskString, ip, mask, index = str:sub(1, maskIndex - 1), str:sub(maskIndex), 0, 0, 0
+	for b in ipString:gmatch("(%d+).?") do
+		local t = tonumber(b)
+		if(t == nil or t > 255 or t < 0) then
+			return 0, 0
+		end
+
+		ip = bit.ubor(ip, bit.ulshift(b, index))
+		index = index + 8
+		if(index > 24) then
+			break
+		end
+	end
+
+	if(index ~= 32) then
+		return 0, 0
+	end
+
+	index = 0
+	for b in maskString:gmatch("(%d+)%.?") do
+		local t = tonumber(b)
+		if(t == nil or t > 255 or t < 0) then
+			return 0, 0
+		end
+
+		mask = bit.ubor(mask, bit.ulshift(b, index))
+		index = index + 8
+		if(index > 24) then
+			break
+		end
+	end
+
+	if(index ~= 32) then
+		return 0, 0
+	end
+
+	return ip, mask
+end
+
+function doRevertIp(str)
+	local i, ip = 4, {}
+	for b in str:gmatch("(%d+).?") do
+		ip[i] = b
+		i = i - 1
+	end
+
+	if(not ip[1] or not ip[2] or not ip[3] or not ip[4]) then
+		return nil
+	end
+
+	return table.concat(ip, ".")
+end
+
+===== FILE_END =====
+

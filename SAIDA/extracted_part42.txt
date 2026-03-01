@@ -1,0 +1,130 @@
+===== FILE_START: TOTAL/actions/scripts/Quests 3/plate-armor-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/plate-armor-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15077 then
+  queststatus = getPlayerStorageValue(cid,15077)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a plate armor.")
+   item_uid = doPlayerAddItem(cid,2463,1)
+   setPlayerStorageValue(cid,15077,1)
+
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/poison-dagger-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/poison-dagger-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15067 then
+  queststatus = getPlayerStorageValue(cid,15067)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found poison daggers and arrows..")
+   item_uid = doPlayerAddItem(cid,2411,1)
+   item_uid = doPlayerAddItem(cid,2411,1)
+   item_uid = doPlayerAddItem(cid,2544,30)
+   setPlayerStorageValue(cid,15067,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/power-bolt-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/power-bolt-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15066 then
+  queststatus = getPlayerStorageValue(cid,15066)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a some crap.")
+   item_uid = doPlayerAddItem(cid,2377,1)
+   item_uid = doPlayerAddItem(cid,2547,5)
+   item_uid = doPlayerAddItem(cid,2546,12)
+   item_uid = doPlayerAddItem(cid,2217,1)
+   setPlayerStorageValue(cid,15066,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/power-ring-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/power-ring-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15065 then
+  queststatus = getPlayerStorageValue(cid,15065)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a power ring.")
+   item_uid = doPlayerAddItem(cid,2166,1)
+   setPlayerStorageValue(cid,15065,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/promote quest final-druid.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/promote quest final-druid.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	if item.uid==26005 then
+		newpos = {x=32957, y=32076, z=7}
+doPlayerSetVocation(cid,6)
+		doPlayerSendTextMessage(cid,22,"Congratulations! You are now an Elder Druid!")
+		doTeleportThing(cid,newpos)
+		doSendMagicEffect(newpos,12)
+		return 1
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/promote quest final-knight.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/promote quest final-knight.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	if item.uid==26007 then
+		newpos = {x=32957, y=32076, z=7}
+doPlayerSetVocation(cid,8)
+		doPlayerSendTextMessage(cid,22,"Congratulations! You are now an Elite Knight!")
+		doTeleportThing(cid,newpos)
+		doSendMagicEffect(newpos,12)
+		return 1
+	end
+end
+===== FILE_END =====
+

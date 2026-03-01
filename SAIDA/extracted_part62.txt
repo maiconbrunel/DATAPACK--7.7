@@ -1,0 +1,134 @@
+===== FILE_START: TOTAL/actions/scripts/rook/black book.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/black book.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3023 then
+  queststatus = getPlayerStorageValue(cid,3023)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found black book.")
+   item_uid = doPlayerAddItem(cid,1955,1)
+   doSetItemText(item_uid, "Hardek *Bozo * Sam **** Oswald Partos *** Quentin * Tark *** Harsky *** Stutch * Ferumbras * Frodo ** Noodles ****")
+   setPlayerStorageValue(cid,3023,1)
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/captain iglues treasure/captain iglues treasure letter.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/captain iglues treasure/captain iglues treasure letter.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3006 then
+  queststatus = getPlayerStorageValue(cid,3006)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a letter.")
+   item_uid = doPlayerAddItem(cid,2597,2)
+   setPlayerStorageValue(cid,3006,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/captain iglues treasure/captain iglues treasure salmon.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/captain iglues treasure/captain iglues treasure salmon.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3005 then
+  queststatus = getPlayerStorageValue(cid,3005)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found 2 salmon's.")
+   item_uid = doPlayerAddItem(cid,2668,2)
+   setPlayerStorageValue(cid,3005,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/combat knife quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/combat knife quest.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3007 then
+  queststatus = getPlayerStorageValue(cid,3007)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a combat knife.")
+   item_uid = doPlayerAddItem(cid,2404,1)
+   setPlayerStorageValue(cid,3007,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/doublet quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/doublet quest.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3008 then
+  queststatus = getPlayerStorageValue(cid,3008)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a doublet.")
+   item_uid = doPlayerAddItem(cid,2485,1)
+   setPlayerStorageValue(cid,3008,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/rook/dragon corpse quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/rook/dragon corpse quest.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 3009 then
+  queststatus = getPlayerStorageValue(cid,3009)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a bag.")
+   container = doPlayerAddItem(cid, 1987, 1)
+   doAddContainerItem(container,2530,1)
+   doAddContainerItem(container,2480,1)
+   setPlayerStorageValue(cid,3009,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+

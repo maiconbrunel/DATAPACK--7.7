@@ -1,0 +1,134 @@
+===== FILE_START: TOTAL/movements/scripts/banshee/third_seal_levers.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/third_seal_levers.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	switch1pos = {x = 32220, y = 31842, z = 15, stackpos = 1}
+	switch2pos = {x = 32220, y = 31843, z = 15, stackpos = 1}
+	switch3pos = {x = 32220, y = 31844, z = 15, stackpos = 1}
+	switch4pos = {x = 32220, y = 31845, z = 15, stackpos = 1}
+	switch5pos = {x = 32220, y = 31846, z = 15, stackpos = 1}
+	flamepos = {x = 32273, y = 31856, z = 15}
+	getswitch1 = getThingfromPos(switch1pos)
+	getswitch2 = getThingfromPos(switch2pos)
+	getswitch3 = getThingfromPos(switch3pos)
+	getswitch4 = getThingfromPos(switch4pos)
+	getswitch5 = getThingfromPos(switch5pos)
+	if item.actionid == 9018 and getswitch1.itemid == 1946 and getswitch2.itemid == 1946
+		and getswitch3.itemid == 1946 and getswitch4.itemid == 1946 and getswitch5.itemid == 1946 then
+		queststatus = getPlayerStorageValue(cid, 9018)
+		if queststatus == -1 then
+			doTeleportThing(cid, flamepos)
+			setPlayerStorageValue(cid, 9018, 1)
+			setPlayerStorageValue(cid, 9180, 1)
+			doSendMagicEffect(getCreaturePosition(cid), 10)
+		else
+			pos.y = pos.y-2
+			doTeleportThing(cid, pos)
+			doSendMagicEffect(pos, 10)
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
+		end
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/tpnorth.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/tpnorth.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if getPlayerLevel(cid) < 20000 then
+		pos.y = pos.y-1
+		doTeleportThing(cid, pos)
+	else
+		doPlayerSendCancel(cid, "")
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/tpsouth.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/tpsouth.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if getPlayerLevel(cid) < 20000 then
+		pos.y = pos.y+1
+		doTeleportThing(cid, pos)
+	else
+		doPlayerSendCancel(cid, "")
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/white_black_flame.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/white_black_flame.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	newpos = {x = 32273, y = 31849, z = 15}
+	if item.actionid == 9017 then
+		doTeleportThing(cid, newpos)
+		setPlayerStorageValue(cid, 9017, 1)
+		setPlayerStorageValue(cid, 9170, 1)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/white_black_pearl 1.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/white_black_pearl 1.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	white = {x = 32173, y = 31871, z = 15, stackpos = 255}
+	black = {x = 32180, y = 31871, z = 15, stackpos = 255}
+	newpos = {x = 32176, y = 31863, z = 15}
+	getwhite = getThingfromPos(white)
+	getblack = getThingfromPos(black)
+	if item.actionid == 9015 and getwhite.itemid == 2143 and getblack.itemid == 2144 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getwhite.uid, 1)
+		doRemoveItem(getblack.uid, 1)
+		doSendMagicEffect(white, CONST_ME_POFF)
+		doSendMagicEffect(black, CONST_ME_POFF)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	else
+		pos.y = pos.y+2
+		doTeleportThing(cid, pos)
+		doSendMagicEffect(pos, 10)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/banshee/white_black_pearl 2.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/banshee/white_black_pearl 2.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	white = {x = 32173, y = 31871, z = 15, stackpos = 255}
+	black = {x = 32180, y = 31871, z = 15, stackpos = 255}
+	newpos = {x = 32177, y = 31863, z = 15}
+	getwhite = getThingfromPos(white)
+	getblack = getThingfromPos(black)
+	if item.actionid == 9016 and getwhite.itemid == 2143 and getblack.itemid == 2144 then
+		doTeleportThing(cid, newpos)
+		doRemoveItem(getwhite.uid, 1)
+		doRemoveItem(getblack.uid, 1)
+		doSendMagicEffect(white, CONST_ME_POFF)
+		doSendMagicEffect(black, CONST_ME_POFF)
+		doSendMagicEffect(getCreaturePosition(cid), 10)
+	else
+		pos.y = pos.y+2
+		doTeleportThing(cid, pos)
+		doSendMagicEffect(pos, 10)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

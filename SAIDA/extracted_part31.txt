@@ -1,0 +1,185 @@
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl2.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl2.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	switch1pos = {x=32476, y=31900, z=6, stackpos=1}
+	switch2pos = {x=32477, y=31900, z=6, stackpos=1}
+	switch3pos = {x=32478, y=31900, z=6, stackpos=1}
+	switch4pos = {x=32479, y=31900, z=6, stackpos=1}
+	switch5pos = {x=32480, y=31900, z=6, stackpos=1}
+	switch6pos = {x=32481, y=31900, z=6, stackpos=1}
+	ladderpos = {x=32477, y=31905, z=6, stackpos=1}
+	getswitch1 = getThingfromPos(switch1pos)
+	getswitch2 = getThingfromPos(switch2pos)
+	getswitch3 = getThingfromPos(switch3pos)
+	getswitch4 = getThingfromPos(switch4pos)
+	getswitch5 = getThingfromPos(switch5pos)
+	getswitch6 = getThingfromPos(switch6pos)
+	ladder = getThingfromPos(ladderpos)
+	if item.actionid == 8002 and item.itemid == 1945 and
+		getswitch1.itemid == 1946 and
+		getswitch2.itemid == 1946 and
+		getswitch3.itemid == 1945 and
+		getswitch4.itemid == 1945 and
+		getswitch5.itemid == 1946 and
+		getswitch6.itemid == 1945 then
+		doCreateItem(1386, 1, ladderpos)
+		doTransformItem(item.uid, item.itemid+1)
+	elseif item.actionid == 125 and item.itemid == 1946 then
+		doRemoveItem(getThingfromPos({x=32477, y=31905, z=6, stackpos=1}).uid, 1386)
+		doTransformItem(item.uid, item.itemid-1)
+	else
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl4.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl4.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	food1 = {x=32476, y=31900, z=4, stackpos=255}
+	food2 = {x=32477, y=31900, z=4, stackpos=255}
+	food3 = {x=32478, y=31900, z=4, stackpos=255}
+	food4 = {x=32479, y=31900, z=4, stackpos=255}
+	food5 = {x=32480, y=31900, z=4, stackpos=255}
+	food6 = {x=32481, y=31900, z=4, stackpos=255}
+	getfood1 = getThingfromPos(food1)
+	getfood2 = getThingfromPos(food2)
+	getfood3 = getThingfromPos(food3)
+	getfood4 = getThingfromPos(food4)
+	getfood5 = getThingfromPos(food5)
+	getfood6 = getThingfromPos(food6)
+	ladderpos = {x=32478, y=31904, z=4, stackpos=255}
+	getladder = getThingfromPos(ladderpos)
+	if item.actionid == 8004 and item.itemid == 1945 and getfood1.itemid == 2682 and getfood2.itemid == 2676
+		and getfood3.itemid == 2679 and getfood4.itemid == 2674 and getfood5.itemid == 2681 and getfood6.itemid == 2678 then
+		doCreateItem(1386, 1, ladderpos)
+		doRemoveItem(getfood1.uid, 1)
+		doRemoveItem(getfood2.uid, 1)
+		doRemoveItem(getfood3.uid, 1)
+		doRemoveItem(getfood4.uid, 1)
+		doRemoveItem(getfood5.uid, 1)
+		doRemoveItem(getfood6.uid, 1)
+		doSendMagicEffect(food1, 12)
+		doSendMagicEffect(food2, 12)
+		doSendMagicEffect(food3, 12)
+		doSendMagicEffect(food4, 12)
+		doSendMagicEffect(food5, 12)
+		doSendMagicEffect(food6, 12)
+		doTransformItem(item.uid, item.itemid+1)
+	elseif item.actionid == 8004 and item.itemid == 1946 then
+		doRemoveItem(getThingfromPos({x=32478, y=31904, z=4, stackpos=1}).uid, 1386)
+		doTransformItem(item.uid, item.itemid-1)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl5.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Kazordoon/Paradox Tower Quest/paradox_lvl5.lua</ABSOLUTE_PATH>
+function ChangeBack(cid)
+	doRemoveItem(getThingfromPos({x=32479, y=31904, z=3, stackpos=1}).uid, 1386)
+end
+
+function onUse(cid, item, frompos, item2, topos)
+	food1 = {x=32478, y=31903, z=3, stackpos=1}
+	food2 = {x=32479, y=31903, z=3, stackpos=1}
+	getfood1 = getThingfromPos(food1)
+	getfood2 = getThingfromPos(food2)	
+	ladderpos = {x=32479, y=31904, z=3, stackpos=1}
+	getladder = getThingfromPos(ladderpos)
+	if item.actionid == 8005 and item.itemid == 1945 and getfood1.itemid == 2628 and getfood2.itemid == 2634 then
+		addEvent(ChangeBack, 45000, cid)
+		doCreateItem(1386, 1, ladderpos)
+		doRemoveItem(getfood1.uid, 1)
+		doRemoveItem(getfood2.uid, 1)
+		doSendMagicEffect(food1, 2)
+		doSendMagicEffect(food2, 2)
+		doTransformItem(item.uid, item.itemid+1)
+	elseif item.actionid == 8005 and item.itemid == 1946 then
+		doTransformItem(item.uid, item.itemid-1)
+	end
+
+	return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Kazordoon/elevator1.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Kazordoon/elevator1.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromposition, itemEx, toPosition)
+	if(hasCondition(cid, CONDITION_EXHAUSTED) == true) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
+		return true
+	end
+
+	switch1pos = {x=32637, y=31881, z=2, stackpos=1}
+	telepos = {x=32636, y=31881, z=7}
+	tilepos1 = {x=32636, y=31881, z=2}
+	getswitch1 = getThingfromPos(switch1pos)
+	gettilepos1 = getThingfromPos(tilepos1)
+	if item.actionid == 8023 and getswitch1.itemid == 1945 and gettilepos1.itemid == 425 then
+		doAddCondition(cid, exhaust)
+		doTeleportThing(cid, telepos)
+		doSendMagicEffect(telepos, 2)
+	else
+		pos.x = pos.x-2
+		doTeleportThing(cid, pos)
+		doSendMagicEffect(pos, 10)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Kazordoon/elevator2.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Kazordoon/elevator2.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromposition, itemEx, toPosition)
+	if(hasCondition(cid, CONDITION_EXHAUSTED) == true) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
+		return true
+	end
+
+	switch2pos = {x=32637, y=31881, z=7, stackpos=1}
+	telepos = {x=32636, y=31881, z=2}
+	tilepos1 = {x=32636, y=31881, z=7}
+	getswitch2 = getThingfromPos(switch2pos)
+	gettilepos1 = getThingfromPos(tilepos1)
+	if item.actionid == 8024 and getswitch2.itemid == 1945 and gettilepos1.itemid == 425 then
+		doAddCondition(cid, exhaust)
+		doTeleportThing(cid, telepos)
+		doSendMagicEffect(telepos, 2)
+	else
+		pos.x = pos.x-2
+		doTeleportThing(cid, pos)
+		doPlayerSendTextMessage(cid, 18, "You are not standing on the tile!")
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/Venore/Blood Herb Quest/blood_herb.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/Venore/Blood Herb Quest/blood_herb.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if item.uid == 4500 then
+		queststatus = getPlayerStorageValue(cid, 4500)
+		if queststatus == -1 then
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a blood herb.")
+			doPlayerAddItem(cid, 2798, 10)
+			setPlayerStorageValue(cid, 4500, 1)
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

@@ -1,0 +1,156 @@
+===== FILE_START: TOTAL/actions/scripts/Quests 3/mad-mage-room-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/mad-mage-room-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15086 then
+  queststatus = getPlayerStorageValue(cid,15086)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a hat of mad.")
+   item_uid = doPlayerAddItem(cid,2323,1)
+   item_uid = doPlayerAddItem(cid,2006,7)
+   item_uid = doPlayerAddItem(cid,2197,10)
+   item_uid = doPlayerAddItem(cid,2131,1)
+   item_uid = doPlayerAddItem(cid,2402,1)
+   setPlayerStorageValue(cid,15086,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/naginata-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/naginata-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15082 then
+  queststatus = getPlayerStorageValue(cid,15082)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a Naginata.")
+   item_uid = doPlayerAddItem(cid,2426,1)
+   setPlayerStorageValue(cid,15082,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/old-city-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/old-city-quest.lua</ABSOLUTE_PATH>
+-- Old city Quest Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15081 then
+  queststatus = getPlayerStorageValue(cid,15081)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a Brass armor.")
+   item_uid = doPlayerAddItem(cid,2465,1)
+   item_uid = doPlayerAddItem(cid,2460,1)
+   item_uid = doPlayerAddItem(cid,2388,1)
+   item_uid = doPlayerAddItem(cid,2399,13)
+   setPlayerStorageValue(cid,15081,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/orc-fortress-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/orc-fortress-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15080 then
+  queststatus = getPlayerStorageValue(cid,15080)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a Knight axe.")
+   item_uid = doPlayerAddItem(cid,2430,1)
+   setPlayerStorageValue(cid,15080,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/orc-shaman-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/orc-shaman-quest.lua</ABSOLUTE_PATH>
+-- Orc Shaman Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15079 then
+  queststatus = getPlayerStorageValue(cid,15079)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a magic light wand.")
+   item_uid = doPlayerAddItem(cid,2162,1)
+   item_uid = doPlayerAddItem(cid,2208,1)
+   item_uid = doPlayerAddItem(cid,2260,1)
+   setPlayerStorageValue(cid,15079,1)
+
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Quests 3/paradox-quest.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Quests 3/paradox-quest.lua</ABSOLUTE_PATH>
+-- Fire axe Dragon Cave Quest --
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 15044 then
+  queststatus = getPlayerStorageValue(cid,15044)
+  if queststatus == -1 or queststatus == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found Paradox Quest Loot.")
+   item_uid = doPlayerAddItem(cid,2152,100)
+   item_uid = doPlayerAddItem(cid,2189,1)
+   item_uid = doPlayerAddItem(cid,2151,32)
+   setPlayerStorageValue(cid,15044,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"it\'s empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+
+===== FILE_END =====
+

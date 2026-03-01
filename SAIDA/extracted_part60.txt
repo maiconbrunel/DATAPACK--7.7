@@ -1,0 +1,199 @@
+===== FILE_START: TOTAL/actions/scripts/poiwall5.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/poiwall5.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: English messages, API cleanup, event logic preserved
+
+local function appear(pos)
+if getThingFromPos(pos).itemid ~= 1304 then
+doCreateItem(1304,1,pos)
+doSendMagicEffect(pos,56)
+end
+end
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+local posiciones = {
+{x = 32849, y = 32282, z = 10, stackpos = 1}
+}
+
+doPlayerSendTextMessage(cid,22, "Wall removed for 2 minutes!")
+local seg = 120
+
+for i = 1,#posiciones do
+if getThingFromPos(posiciones[i]).itemid == 1304 then
+doSendMagicEffect(posiciones[i],55)
+doRemoveItem(getThingFromPos(posiciones[i]).uid)
+addEvent(appear,seg * 1000,posiciones[i])
+end
+end
+
+return TRUE
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/poquest1.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/poquest1.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: fixed English text, added item comment, improved storage check.
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 2129 then
+  queststatus = getPlayerStorageValue(cid,2129)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found a great shield.")
+   doPlayerAddItem(cid, 2522, 1) -- great shield
+   setPlayerStorageValue(cid,2129,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/poquest2.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/poquest2.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: fixed English text, added item comment, improved storage check.
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 2130 then
+  queststatus = getPlayerStorageValue(cid,2129)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found an arcane staff.")
+   doPlayerAddItem(cid, 2453, 1) -- arcane staff
+   setPlayerStorageValue(cid,2129,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/poquest3.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/poquest3.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Changes: fixed English text, added item comment, improved storage check.
+
+function onUse(cid, item, frompos, item2, topos)
+if item.uid == 2131 then
+  queststatus = getPlayerStorageValue(cid,2129)
+  if queststatus == -1 and getPlayerAccess(cid) == 0 then
+   doPlayerSendTextMessage(cid,22,"You have found 100 crystal coins.")
+   doPlayerAddItem(cid, 2160, 100) -- crystal coin
+   setPlayerStorageValue(cid,2129,1)
+
+  else
+   doPlayerSendTextMessage(cid,22,"The chest is empty.")
+  end
+else
+  return 0
+end
+return 1
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/quests/annihilator.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/quests/annihilator.lua</ABSOLUTE_PATH>
+local config = {
+	daily = "no", -- allow only one enter per day? (like in global Tibia)
+	level = 100,
+	storage = 30015,
+	entry =
+	{
+		{x = 247, y = 659, z = 13},
+		{x = 247, y = 660, z = 13},
+		{x = 247, y = 661, z = 13},
+		{x = 247, y = 662, z = 13}
+	},
+	destination =
+	{
+		{x = 189, y = 650, z = 13},
+		{x = 189, y = 651, z = 13},
+		{x = 189, y = 652, z = 13},
+		{x = 189, y = 653, z = 13}
+	}
+}
+
+config.daily = getBooleanFromString(config.daily)
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(item.itemid == 1946) then
+		if(config.daily) then
+			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		else
+			doTransformItem(item.uid, item.itemid - 1)
+		end
+
+		return true
+	end
+
+	if(item.itemid ~= 1945) then
+		return true
+	end
+
+	local players = {}
+	for _, position in ipairs(config.entry) do
+		local pid = getTopCreature(position).uid
+		if(pid == 0 or not isPlayer(pid) or getCreatureStorage(pid, config.storage) > 0 or getPlayerLevel(pid) < config.level) then
+			doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+			return true
+		end
+
+		table.insert(players, pid)
+	end
+
+	for i, pid in ipairs(players) do
+		doSendMagicEffect(config.entry[i], CONST_ME_POFF)
+		doTeleportThing(pid, config.destination[i], false)
+		doSendMagicEffect(config.destination[i], CONST_ME_ENERGYAREA)
+	end
+
+	doTransformItem(item.uid, item.itemid + 1)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/quests/quests.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/quests/quests.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(getBooleanFromString(getConfigValue('enableProtectionQuestForGM'))) then
+		if(getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
+			doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
+			return true
+		end
+	end
+
+	if item.uid > 1000 and item.uid < 11395 then
+		local itemWeight = getItemWeightById(item.uid, 1)
+		local playerCap = getPlayerFreeCap(cid)
+		if getPlayerStorageValue(cid, item.uid) == -1 then
+			if playerCap >= itemWeight then
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. '.')
+				doPlayerAddItem(cid, item.uid , 1)
+				setPlayerStorageValue(cid, item.uid, 1)
+			else
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. ' weighing ' .. itemWeight .. ' oz it\'s too heavy.')
+			end
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	else
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

@@ -1,0 +1,303 @@
+===== FILE_START: TOTAL/actions/scripts/Edron/The Annihilator Quest/annihilator_lever.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Annihilator Quest/annihilator_lever.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Annihilator Switch (party check + summon + teleport)
+-- Notes: API fixes, message normalization, logic cleanup
+-- Changes: English messages, safety checks, structure preserved, improved loop logic
+
+local room = {
+    fromX = 33219, fromY = 31657, fromZ = 13,
+    toX   = 33222, toY   = 31661, toZ   = 13
+}
+
+local monsterPositions = {
+    {pos = Position(33219,31657,13), monster = "Demon"},
+    {pos = Position(33221,31657,13), monster = "Demon"},
+    {pos = Position(33220,31661,13), monster = "Demon"},
+    {pos = Position(33222,31661,13), monster = "Demon"},
+    {pos = Position(33223,31659,13), monster = "Demon"},
+    {pos = Position(33224,31659,13), monster = "Demon"}
+}
+
+local playersPositions = {
+    Position(33222,31671,13),
+    Position(33223,31671,13),
+    Position(33224,31671,13),
+    Position(33225,31671,13)
+}
+
+local newPositions = {
+    Position(33219,31659,13),
+    Position(33220,31659,13),
+    Position(33221,31659,13),
+    Position(33222,31659,13)
+}
+
+local requiredLevel = 100
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10009 then
+    return true
+end
+
+-- LEVER FORWARD (1945)
+if item.itemid == 1945 then
+    local party = {}
+
+    for i = 1, #playersPositions do
+        local tile = Tile(playersPositions[i])
+        local creature = tile and tile:getTopCreature()
+        if creature and creature:isPlayer() then
+            table.insert(party, creature)
+        end
+    end
+
+    if #party < #playersPositions then
+        player:sendCancelMessage("You need 4 players to start the quest.")
+        return true
+    end
+
+    for _, p in ipairs(party) do
+        if p:getLevel() < requiredLevel then
+            player:sendCancelMessage("All players must be level " .. requiredLevel .. " or higher.")
+            return true
+        end
+    end
+
+    for _, entry in ipairs(monsterPositions) do
+        Game.createMonster(entry.monster, entry.pos)
+    end
+
+    for i = 1, #party do
+        party[i]:getPosition():sendMagicEffect(CONST_ME_POFF)
+        party[i]:teleportTo(newPositions[i], true)
+        newPositions[i]:sendMagicEffect(CONST_ME_ENERGYAREA)
+    end
+
+    item:transform(1946)
+    return true
+end
+
+-- LEVER BACKWARD (1946)
+if item.itemid == 1946 then
+    local hasPlayersInside = false
+
+    for x = room.fromX, room.toX do
+        for y = room.fromY, room.toY do
+            for z = room.fromZ, room.toZ do
+                local tile = Tile(Position(x,y,z))
+                if tile then
+                    local creature = tile:getTopCreature()
+                    if creature and creature:isPlayer() then
+                        hasPlayersInside = true
+                        break
+                    end
+                end
+            end
+            if hasPlayersInside then break end
+        end
+        if hasPlayersInside then break end
+    end
+
+    if hasPlayersInside then
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "There is already a team in the quest room.")
+        return true
+    end
+
+    for x = room.fromX, room.toX do
+        for y = room.fromY, room.toY do
+            for z = room.fromZ, room.toZ do
+                local tile = Tile(Position(x,y,z))
+                if tile then
+                    local creature = tile:getTopCreature()
+                    if creature and creature:isMonster() then
+                        creature:remove()
+                    end
+                end
+            end
+        end
+    end
+
+    item:transform(1945)
+    return true
+end
+
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Edron/The Behemoth Quest/behemoth_lever.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Behemoth Quest/behemoth_lever.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Lever opens/closes 5 gates
+-- Notes: Fully validated + API cleaned
+-- Changes: English messages, logic normalization, safety checks
+
+function onUse(player, item, fromPosition, target, toPosition)
+local gatePositions = {
+    Position(33295, 31677, 15),
+    Position(33296, 31677, 15),
+    Position(33297, 31677, 15),
+    Position(33298, 31677, 15),
+    Position(33299, 31677, 15)
+}
+
+local gates = {}
+for i = 1, #gatePositions do
+    gates[i] = Tile(gatePositions[i]):getItemById(1304)
+end
+
+-- OPEN
+if item.uid == 10014 and item.itemid == 1945 then
+    local allPresent = true
+    for i = 1, #gates do
+        if not gates[i] then allPresent = false break end
+    end
+
+    if allPresent then
+        for i = 1, #gates do
+            gates[i]:remove()
+        end
+        item:transform(1946)
+        return true
+    end
+end
+
+-- CLOSE
+if item.uid == 10014 and item.itemid == 1946 then
+    local allEmpty = true
+    for i = 1, #gatePositions do
+        if Tile(gatePositions[i]):getItemById(1304) then
+            allEmpty = false
+            break
+        end
+    end
+
+    if allEmpty then
+        for i = 1, #gatePositions do
+            Game.createItem(1304, 1, gatePositions[i])
+        end
+        item:transform(1945)
+        return true
+    end
+end
+
+player:sendCancelMessage("It is not possible.")
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Edron/The Behemoth Quest/demon shield.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Behemoth Quest/demon shield.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Demon Shield reward chest
+-- Notes: Standardized storage + messages
+-- Changes: English messages, cleaned if-block, safety check
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10015 then
+    return false
+end
+
+local storage = 10015
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a demon shield.")
+    player:addItem(2520, 1)
+    player:setStorageValue(storage, 1)
+else
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Edron/The Behemoth Quest/golden armor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Behemoth Quest/golden armor.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Golden Armor chest
+-- Notes: Minimal cleanup, standardized messages
+-- Changes: English texts, logic normalized
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10016 then
+    return false
+end
+
+local storage = 10016
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a golden armor.")
+    player:addItem(2466, 1)
+    player:setStorageValue(storage, 1)
+else
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Edron/The Behemoth Quest/guardian halberd.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Behemoth Quest/guardian halberd.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Guardian Halberd reward
+-- Notes: Simple conversion
+-- Changes: English messages, cleaned structure
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10017 then
+    return false
+end
+
+local storage = 10017
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a guardian halberd.")
+    player:addItem(2427, 1)
+    player:setStorageValue(storage, 1)
+else
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Edron/The Behemoth Quest/platinum amulet.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Edron/The Behemoth Quest/platinum amulet.lua</ABSOLUTE_PATH>
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Bag reward chest
+-- Notes: Full cleanup + modern API
+-- Changes: English messages, safety checks, bag item comments
+
+function onUse(player, item, fromPosition, target, toPosition)
+if item.uid ~= 10018 then
+    return false
+end
+
+local storage = 10018
+if player:getStorageValue(storage) < 1 and not player:getGroup():getAccess() then
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found a bag.")
+
+    local bag = player:addItem(1987, 1)
+    if not bag then return true end
+
+    bag:addItem(2171, 1)
+    bag:addItem(2168, 1)
+    bag:addItem(2124, 1)
+    bag:addItem(2145, 3)
+    bag:addItem(2146, 4)
+
+    player:setStorageValue(storage, 1)
+else
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "The chest is empty.")
+end
+
+return true
+end
+
+===== FILE_END =====

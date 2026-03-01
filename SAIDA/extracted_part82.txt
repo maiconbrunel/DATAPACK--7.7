@@ -1,0 +1,85 @@
+===== FILE_START: TOTAL/movements/scripts/town/Edron.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/Edron.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50106 then
+		newpos = {x = 33217, y = 31814, z = 8}
+		doPlayerSetTown(cid, 9)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Edron.")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/Thais.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/Thais.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50101 then
+		newpos = {x = 32369, y = 32241, z = 7}
+		doPlayerSetTown(cid, 3)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Thais")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/ab.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/ab.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50103 then
+		newpos = {x = 32732, y = 31634, z = 7}
+		doPlayerSetTown(cid, 1)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Ab/'Dendriel")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/darashia.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/darashia.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50107 then
+		newpos = {x = 33213, y = 32454, z = 1}
+		doPlayerSetTown(cid, 7)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Darashia.")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/kazordoon.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/kazordoon.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50104 then
+		newpos = {x = 32649, y = 31925, z = 11}
+		doPlayerSetTown(cid, 2)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Kazordoon")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/movements/scripts/town/port_hope.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/movements/scripts/town/port_hope.lua</ABSOLUTE_PATH>
+function onStepIn(cid, item, pos)
+	if item.actionid==50109 then
+		newpos = {x = 32595, y = 32745, z = 7}
+		doPlayerSetTown(cid, 8)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Port Hope.")
+		doTeleportThing(cid, newpos)
+		doSendMagicEffect(newpos, 12)
+		return true
+	end
+end
+===== FILE_END =====
+

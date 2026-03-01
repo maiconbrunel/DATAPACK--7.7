@@ -1,0 +1,349 @@
+===== FILE_START: npc/scripts/rashid.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/rashid.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid) npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+shopModule:addSellableItem({'dragon scale mail'}, 2492, 40000, 'dragon scale mail')
+shopModule:addSellableItem({'dwarven armor'}, 2503, 30000, 'dwarven armor')
+shopModule:addSellableItem({'golden armor'}, 2466, 20000, 'golden armor')
+shopModule:addSellableItem({'leopard armor'}, 3968, 1000, 'leopard armor')
+shopModule:addSellableItem({'magic plate armor'}, 2472, 90000, 'magic plate armor')
+
+shopModule:addSellableItem({'golden legs'}, 2470, 70000, 'golden legs')
+
+shopModule:addSellableItem({'bone shield'}, 2541, 80, 'bone shield')
+shopModule:addSellableItem({'dark shield'}, 2521, 400, 'dark shield')
+shopModule:addSellableItem({'demon shield'}, 2520, 30000, 'demon shield')
+shopModule:addSellableItem({'medusa shield'}, 2536, 9000, 'medusa shield')
+shopModule:addSellableItem({'scarab shield'}, 2540, 2000, 'scarab shield')
+shopModule:addSellableItem({'mastermind shield'}, 2514,50000, 'mastermind shield')
+
+shopModule:addSellableItem({'beholder helmet'}, 3972, 7500, 'beholder helmet')
+shopModule:addSellableItem({'devil helmet'}, 2462, 1000, 'devil helmet')
+
+shopModule:addSellableItem({'crocodile boots'}, 3892, 1000, 'crocodile boots')
+shopModule:addSellableItem({'patched boots'}, 2641, 1000, 'traper boots')
+shopModule:addSellableItem({'steel boots'}, 2645, 30000, 'steel boots')
+
+shopModule:addSellableItem({'daramanian mace'}, 2439, 110, 'daramanian mace')
+shopModule:addSellableItem({'daramanian waraxe'}, 2440, 1000, 'daramanian waraxe')
+shopModule:addSellableItem({'guardian halberd'}, 2427, 11000, 'guardian halberd')
+shopModule:addSellableItem({'heavy machete'}, 2442, 90, 'heavy machete')
+shopModule:addSellableItem({'silver dagger'}, 2402, 500, 'silver dagger')
+shopModule:addSellableItem({'war axe'}, 2454, 9000, 'war axe')
+
+shopModule:addSellableItem({'ancient amulet'}, 2142, 200, 'ancient amulet')
+shopModule:addSellableItem({'crystal necklace'}, 2125, 400, 'crystal necklace')
+shopModule:addSellableItem({'crystal ring'}, 2124, 250, 'crystal ring')
+shopModule:addSellableItem({'demonbone amulet'}, 2136, 32000, 'demonbone amulet')
+shopModule:addSellableItem({'emerald bangle'}, 2127, 800, 'emerald bangle')
+shopModule:addSellableItem({'golden ring'}, 2179, 8000, 'golden ring')
+shopModule:addSellableItem({'bronze amulet'}, 2172, 500, 'platinum amulet')
+shopModule:addSellableItem({'ring of the sky'}, 2123, 30000, 'ring of the sky')
+shopModule:addSellableItem({'ruby necklace'}, 2133, 2000, 'ruby necklace')
+shopModule:addSellableItem({'scarab amulet'}, 2135, 200, 'scarab amulet')
+shopModule:addSellableItem({'silver brooch'}, 2134, 150,'silver brooch')
+
+shopModule:addSellableItem({'doll'},2100 , 200, 'doll')
+shopModule:addSellableItem({'voodoo doll'}, 3955, 400, 'voodoo doll')
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/romella.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/romella.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() 						npcHandler:onThink() end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Itens para vender
+shopModule:addSellableItem({'double axe'},2387,260,'battle axe')
+shopModule:addSellableItem({'battle axe'},2378,80,'battle axe')
+shopModule:addSellableItem({'battle hammer'},2417,120,'battle hammer')
+shopModule:addSellableItem({'morning star'},2394,90,'morning star')
+shopModule:addSellableItem({'short sword'},2406,10,'short sword')
+shopModule:addSellableItem({'hand axe'},2380,4,'hand axe')
+shopModule:addSellableItem({'axe'},2386,7,'axe')
+shopModule:addSellableItem({'dagger'},2379,2,'dagger')
+shopModule:addSellableItem({'halberd'},2381,400,'halberd')
+shopModule:addSellableItem({'mace'},2398,30,'mace')
+shopModule:addSellableItem({'rapier'},2384,5,'rapier')
+shopModule:addSellableItem({'sabre'},2385,12,'sabre')
+shopModule:addSellableItem({'spear'},2389,3,'spear')
+shopModule:addSellableItem({'sword'},2376,25,'sword')
+
+-- Itens para comprar
+shopModule:addBuyableItem({'hand axe'},2380,8,'hand axe')
+shopModule:addBuyableItem({'battle hammer'},2417,350,'battle hammer')
+shopModule:addBuyableItem({'throwing knife'},2410,25,'throwing knife')
+shopModule:addBuyableItem({'axe'},2386,20,'axe')
+shopModule:addBuyableItem({'dagger'},2379,5,'dager')
+shopModule:addBuyableItem({'mace'},2398,90,'mace')
+shopModule:addBuyableItem({'machete'},2420,35,'machete')
+shopModule:addBuyableItem({'rapier'},2384,15,'rapier')
+shopModule:addBuyableItem({'sabre'},2385,35,'sabre')
+shopModule:addBuyableItem({'spear'},2389,10,'spear')
+shopModule:addBuyableItem({'sword'},2376,85,'sword')
+
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/rook_items.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/rook_items.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() 						npcHandler:onThink() end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Items Rookgaard by Rodrigo (Nottinghster)
+
+-- Itens para vender
+shopModule:addSellableItem({'hand axe'},2380,4,'hand axe')
+shopModule:addSellableItem({'short sword'},2406,10,'short sword')
+shopModule:addSellableItem({'leather armor'},2467,5,'leather armor')
+shopModule:addSellableItem({'chain armor'},2464,40,'chain armor')
+shopModule:addSellableItem({'brass armor'},2465,150,'brass armor')
+shopModule:addSellableItem({'leather helmet'},2461,3,'leather helmet')
+shopModule:addSellableItem({'chain helmet'},2458,12,'chain helmet')
+shopModule:addSellableItem({'studded helmet'},2482,20,'studded helmet')
+shopModule:addSellableItem({'wooden shield'},2512,3,'wooden shield')
+shopModule:addSellableItem({'studded shield'},2526,16,'studded shield')
+shopModule:addSellableItem({'brass shield'},2511,25,'brass shield')
+shopModule:addSellableItem({'plate shield'},2510,40,'plate shield')
+shopModule:addSellableItem({'copper shield'},2530,50,'copper shield')
+shopModule:addSellableItem({'leather boots'},2643,10,'leather boots')
+shopModule:addSellableItem({'dagger'},2379,2,'dagger')
+shopModule:addSellableItem({'spear'},2389,3,'spear')
+shopModule:addSellableItem({'rapier'},2384,5,'rapier')
+shopModule:addSellableItem({'axe'},2380,7,'axe')
+shopModule:addSellableItem({'hatchet'},2388,25,'hatchet')
+shopModule:addSellableItem({'sabre'},2385,12,'sabre')
+shopModule:addSellableItem({'sword'},2376,25,'sword')
+shopModule:addSellableItem({'mace'},2398,30,'mace')
+shopModule:addSellableItem({'doublet'},2485,3,'doublet')
+shopModule:addSellableItem({'rope'},2120,8,'rope')
+
+-- Itens para comprar
+shopModule:addBuyableItem({'hand axe'},2380,8,'hand axe')
+shopModule:addBuyableItem({'short sword'},2406,30,'short sword')
+shopModule:addBuyableItem({'leather armor'},2467,25,'leather armor')
+shopModule:addBuyableItem({'leather legs'},2649,10,'leather legs')
+shopModule:addBuyableItem({'leather helmet'},2461,12,'leather helmet')
+shopModule:addBuyableItem({'studded helmet'},2482,63,'studded helmet')
+shopModule:addBuyableItem({'chain helmet'},2458,52,'chain helmet')
+shopModule:addBuyableItem({'wooden shield'},2512,15,'wooden shield')
+shopModule:addBuyableItem({'studded shield'},2526,50,'sttuded shield')
+shopModule:addBuyableItem({'fishing rod','rod'},2580,150,'fishing rod')
+shopModule:addBuyableItem({'leather boots'},2643,2,'leather boots')
+shopModule:addBuyableItem({'spear'},2389,10,'spear')
+shopModule:addBuyableItem({'rapier'},2384,15,'rapier')
+shopModule:addBuyableItem({'sabre'},2385,25,'sabre')
+shopModule:addBuyableItem({'dagger'},2379,5,'dagger')
+shopModule:addBuyableItem({'sickle'},2405,8,'sickle')
+shopModule:addBuyableItem({'axe'},2386,20,'axe')
+shopModule:addBuyableItem({'jacket'},2650,10,'jacket')
+shopModule:addBuyableItem({'coat'},2651,8,'coat')
+shopModule:addBuyableItem({'doublet'},2485,16,'doublet')
+shopModule:addBuyableItem({'torch'},2050,2,'torch')
+shopModule:addBuyableItem({'bag'},1987,4,'bag')
+shopModule:addBuyableItem({'scroll'},1949,5,'scroll')
+shopModule:addBuyableItem({'shovel'},2554,10,'shovel')
+shopModule:addBuyableItem({'backpack'},1988,10,'backpack')
+shopModule:addBuyableItem({'scythe'},2550,12,'scythe')
+shopModule:addBuyableItem({'rope'},2120,50,'rope')
+shopModule:addBuyableItem({'worm'},3976,1,'worm')
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/rook_rune.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/rook_rune.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+-- OTServ event handling functions start
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() 						npcHandler:onThink() end
+-- OTServ event handling functions end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+shopModule:addBuyableItem({'antidote rune'},2266, 40,'antidote rune')
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/rowenna.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/rowenna.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
+function onThink() 						npcHandler:onThink() end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Itens para vender
+shopModule:addSellableItem({'battle axe'},2378,75,'battle axe')
+shopModule:addSellableItem({'battle hammer'},2417,50,'battle hammer')
+shopModule:addSellableItem({'carlin sword'},2395,118,'carlin sword')
+shopModule:addSellableItem({'double axe'},2387,260,'double axe')
+shopModule:addSellableItem({'morning star'},2394,100,'morning star')
+shopModule:addSellableItem({'short sword'},2406,8,'short sword')
+shopModule:addSellableItem({'two handed sword'},2377,190,'two handed sword')
+shopModule:addSellableItem({'war hammer'},2391,470,'war hammer')
+shopModule:addSellableItem({'club'},2382,1,'club')
+shopModule:addSellableItem({'dagger'},2379,1,'dagger')
+shopModule:addSellableItem({'halberd'},2381,310,'halberd')
+shopModule:addSellableItem({'mace'},2398,23,'mace')
+shopModule:addSellableItem({'rapier'},2384,3,'rapier')
+shopModule:addSellableItem({'sabre'},2385,5,'sabre')
+shopModule:addSellableItem({'spear'},2389,1,'spear')
+shopModule:addSellableItem({'sword'},2376,15,'sword')
+
+-- Itens para comprar
+shopModule:addBuyableItem({'battle axe'},2378,235,'battle axe')
+shopModule:addBuyableItem({'battle hammer'},2417,350,'battle hammer')
+shopModule:addBuyableItem({'carlin sword'},2395,473,'carlin sword')
+shopModule:addBuyableItem({'morning star'},2394,430,'morning star')
+shopModule:addBuyableItem({'throwing knife'},2410,25,'throwing knight')
+shopModule:addBuyableItem({'two handed sword'},2377,950,'two handed sword')
+shopModule:addBuyableItem({'club'},2382,5,'club')
+shopModule:addBuyableItem({'dagger'},2379,5,'dagger')
+shopModule:addBuyableItem({'mace'},2398,90,'mace')
+shopModule:addBuyableItem({'rapier'},2384,15,'rapier')
+shopModule:addBuyableItem({'sabre'},2385,25,'sabre')
+shopModule:addBuyableItem({'spear'},2389,10,'spear')
+shopModule:addBuyableItem({'sword'},2376,85,'sword')
+
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+
+===== FILE_START: npc/scripts/runes.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/npc/scripts/runes.lua</ABSOLUTE_PATH>
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)		npcHandler:onCreatureAppear(cid)		end
+function onCreatureDisappear(cid)	npcHandler:onCreatureDisappear(cid)		end
+function onCreatureSay(cid, type, msg)	npcHandler:onCreatureSay(cid, type, msg)	end
+function onThink()			npcHandler:onThink()				end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+shopModule:addBuyableItem({'light wand', 'lightwand'}, 		2163, 500, 		'magic light wand')
+shopModule:addBuyableItem({'mana fluid', 'manafluid'}, 		2006, 55, 	7, 	'mana fluid')
+shopModule:addBuyableItem({'life fluid', 'lifefluid'}, 		2006, 50, 	10,	'life fluid')
+shopModule:addBuyableItem({'blank'}, 				2260, 10, 		'blank rune')
+
+shopModule:addBuyableItem({'wand of inferno', 'inferno'}, 				2187, 15000, 	'wand of inferno')
+shopModule:addBuyableItem({'wand of plague', 'plague'}, 				2188, 5000, 	'wand of plague')
+shopModule:addBuyableItem({'wand of cosmic energy', 'cosmic energy'}, 			2189, 10000,	'wand of cosmic energy')
+shopModule:addBuyableItem({'wand of vortex', 'vortex'}, 				2190, 500, 	'wand of vortex')
+shopModule:addBuyableItem({'wand of dragonbreath', 'dragonbreath'}, 			2191, 1000, 	'wand of dragonbreath')
+
+shopModule:addBuyableItem({'quagmire rod', 'quagmire'}, 				2181, 10000, 	'quagmire rod')
+shopModule:addBuyableItem({'snakebite rod', 'snakebite'}, 				2182, 500, 	'snakebite rod')
+shopModule:addBuyableItem({'tempest rod', 'tempest'}, 					2183, 15000, 	'tempest rod')
+shopModule:addBuyableItem({'volcanic rod', 'volcanic'}, 				2185, 5000, 	'volcanic rod')
+shopModule:addBuyableItem({'moonlight rod', 'moonlight'}, 				2186, 1000,   	'moonlight rod')
+
+function creatureSayCallback(cid, type, msg)
+	if(npcHandler.focus ~= cid) then
+		return FALSE
+	end
+	if msgcontains(msg, 'runes') then
+		selfSay("I sell heavy magic missiles runes, explosion runes, great fireball runes, ultimate healing runes, sudden death runes, mana runes and blank runes.")
+		talk_state = 0
+	elseif msgcontains(msg, 'heavy magic missile') or msgcontains(msg, 'hmm') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 15*charges
+		selfSay('Do you want a heavy magic missile rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2311
+	elseif msgcontains(msg, 'great fireball') or msgcontains(msg, 'gfb') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 25*charges
+		selfSay('Do you want a great fireball rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2304
+	elseif msgcontains(msg, 'explosion') or msgcontains(msg, 'xpl') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 40*charges
+		selfSay('Do you want an explosion rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2313
+	elseif msgcontains(msg, 'ultimate healing') or msgcontains(msg, 'uh') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 35*charges
+		selfSay('Do you want an ultimate healing rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2273
+	elseif msgcontains(msg, 'sudden death') or msgcontains(msg, 'sd') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 50*charges
+		selfSay('Do you want a sudden death rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2268
+	elseif msgcontains(msg, 'mana') and ShopModule:getCount(msg) <= 100 then
+		charges = ShopModule:getCount(msg)
+		price = 50*charges
+		selfSay('Do you want a mana rune with '..charges..' charges for '..price..' gold coins?')
+		talk_state = 1
+		itemid = 2284
+	elseif msgcontains(msg, 'yes') and talk_state == 1 then
+		if doPlayerRemoveMoney(cid, price) == TRUE then
+			doPlayerGiveItem(cid, itemid, 1, charges)
+			selfSay("You have bought this rune.")
+			talk_state = 0
+		else
+			selfSay("You don't have enough money.")
+			talk_state = 0
+		end
+	elseif msgcontains(msg, 'no') and talk_state == 1 then
+		selfSay("Then not.")
+		talk_state = 0
+	end
+	return TRUE
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+===== FILE_END =====
+

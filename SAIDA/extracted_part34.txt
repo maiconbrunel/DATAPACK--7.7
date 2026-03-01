@@ -1,0 +1,220 @@
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/quests/quests.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/quests/quests.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(getBooleanFromString(getConfigValue('enableProtectionQuestForGM'))) then
+		if(getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
+			doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
+			return true
+		end
+	end
+
+	if item.uid > 1000 and item.uid < 11395 then
+		local itemWeight = getItemWeightById(item.uid, 1)
+		local playerCap = getPlayerFreeCap(cid)
+		if getPlayerStorageValue(cid, item.uid) == -1 then
+			if playerCap >= itemWeight then
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. '.')
+				doPlayerAddItem(cid, item.uid , 1)
+				setPlayerStorageValue(cid, item.uid, 1)
+			else
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. ' weighing ' .. itemWeight .. ' oz it\'s too heavy.')
+			end
+		else
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		end
+	else
+		return false
+	end
+
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/quests/system.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/quests/system.lua</ABSOLUTE_PATH>
+local specialQuests = {
+	[2001] = 10010, -- Annihilator
+}
+
+local questsExperience = {
+	[30015] = 10000
+}
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if(getBooleanFromString(getConfigValue('enableProtectionQuestForGM'))) then
+		if(getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
+			doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
+			return true
+		end
+	end
+
+	local storage = specialQuests[item.actionid]
+	if(not storage) then
+		storage = item.uid
+		if(storage > 65535) then
+			return false
+		end
+	end
+
+	if(getPlayerStorageValue(cid, storage) > 0) then
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+		return true
+	end
+
+	local items = {}
+	local reward = 0
+
+	local size = isContainer(item.uid) and getContainerSize(item.uid) or 0
+	if(size == 0) then
+		reward = doCopyItem(item, false)
+	else
+		for i = 0, size do
+			local tmp = getContainerItem(item.uid, i)
+			if(tmp.itemid > 0) then
+				table.insert(items, tmp)
+			end
+		end
+	end
+
+	size = table.maxn(items)
+	if(size == 1) then
+		reward = doCopyItem(items[1], true)
+	end
+
+	local result = ""
+	if(reward ~= 0) then
+		local ret = getItemDescriptions(reward.uid)
+		if(reward.type > 0 and isItemRune(reward.itemid)) then
+			result = reward.type .. " charges " .. ret.name
+		elseif(reward.type > 0 and isItemStackable(reward.itemid)) then
+			result = reward.type .. " " .. ret.plural
+		else
+			result = ret.article .. " " .. ret.name
+		end
+	else
+		if(size > 20) then
+			reward = doCopyItem(item, false)
+		elseif(size > 8) then
+			reward = getThing(doCreateItemEx(1988, 1))
+		else
+			reward = getThing(doCreateItemEx(1987, 1))
+		end
+
+		for i = 1, size do
+			local tmp = doCopyItem(items[i], true)
+			if(doAddContainerItemEx(reward.uid, tmp.uid) ~= RETURNVALUE_NOERROR) then
+				print("[Warning] QuestSystem:", "Could not add quest reward")
+			else
+				local ret = ", "
+				if(i == 2) then
+					ret = " and "
+				elseif(i == 1) then
+					ret = ""
+				end
+
+				result = result .. ret
+				ret = getItemDescriptions(tmp.uid)
+				if(tmp.type > 0 and isItemRune(tmp.itemid)) then
+					result = result .. tmp.type .. " charges " .. ret.name
+				elseif(tmp.type > 0 and isItemStackable(tmp.itemid)) then
+					result = result .. tmp.type .. " " .. ret.plural
+				else
+					result = result .. ret.article .. " " .. ret.name
+				end
+			end
+		end
+	end
+
+	if(doPlayerAddItemEx(cid, reward.uid, false) ~= RETURNVALUE_NOERROR) then
+		result = "You have found a reward weighing " .. getItemWeight(reward.uid) .. " oz. It is too heavy or you have not enough space."
+	else
+		result = "You have found " .. result .. "."
+		setPlayerStorageValue(cid, storage, 1)
+		if(questsExperience[storage] ~= nil) then
+			doPlayerAddExp(cid, questsExperience[storage])
+			doSendAnimatedText(getCreaturePosition(cid), questsExperience[storage], TEXTCOLOR_WHITE)
+		end
+	end
+
+	doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, result)
+	return true
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest arrows.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest arrows.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+
+   if item.uid == 3001 then
+     queststatus = getPlayerStorageValue(cid, 3001)
+     if queststatus == -1 then
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a 12 arrows and 40 gold coins.")
+      doPlayerAddItem(cid, 2544, 12)
+      doPlayerAddItem(cid, 2148, 40)
+      setPlayerStorageValue(cid, 3001, 1)
+     else
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+     end
+  end
+   return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest brass helmet.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest brass helmet.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+
+   if item.uid == 3001 then
+     queststatus = getPlayerStorageValue(cid, 3001)
+     if queststatus == -1 then
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a brass helmet.")
+      doPlayerAddItem(cid, 2460, 1)
+      setPlayerStorageValue(cid, 3001, 1)
+     else
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+     end
+  end
+   return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest chain armor.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest chain armor.lua</ABSOLUTE_PATH>
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+
+   if item.uid == 3000 then
+     queststatus = getPlayerStorageValue(cid, 3000)
+     if queststatus == -1 then
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have found a chain armor.")
+      doPlayerAddItem(cid, 2464, 1)
+      setPlayerStorageValue(cid, 3000, 1)
+     else
+      doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+     end
+  end
+   return true
+end
+===== FILE_END =====
+
+===== FILE_START: TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest switch.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/actions/scripts/Nova carpeta/rook/bear room/bear room quest switch.lua</ABSOLUTE_PATH>
+function onUse(cid, item, frompos, item2, topos)
+	gatepos = {x=32145, y=32101, z=11, stackpos=1}
+	getgate = getThingfromPos(gatepos)
+	if item.uid == 3003 and item.itemid == 1945 and getgate.itemid == 1304 then
+		doRemoveItem(getgate.uid, 1)
+		doTransformItem(item.uid, item.itemid+1)
+	elseif item.uid == 3003 and item.itemid == 1946 and getgate.itemid == 0 then
+		doCreateItem(1304, 1, gatepos)
+		doTransformItem(item.uid, item.itemid-1)
+	else
+		doPlayerSendCancel(cid, "Sorry not possible.")
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

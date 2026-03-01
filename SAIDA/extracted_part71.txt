@@ -1,0 +1,247 @@
+===== FILE_START: TOTAL/creaturescripts/scripts/mail.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/mail.lua</ABSOLUTE_PATH>
+-- mail.lua (TFS 1.5 - Downgrade 7.72)
+function onMailReceive(player, fromPlayer, item, openBox)
+if not player then
+	return true
+	end
+
+	-- Safety check: ensure the mail item exists
+	if not item then
+		print("[Mail] Warning: Mail event triggered without valid item.")
+		return true
+		end
+
+		-- Only send message if the mailbox is opened
+		if openBox then
+			player:sendTextMessage(MESSAGE_INFO_DESCR, "You have received new mail.")
+			end
+
+			return true
+			end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/creaturescripts/scripts/obsidianknife.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/obsidianknife.lua</ABSOLUTE_PATH>
+local AID_MONSTER_TAG = 91347
+
+-- Player Login (registers needed events)
+function onLogin(player)
+if not player then
+	return true
+	end
+
+	player:registerEvent("SummonKill")
+	return true
+	end
+
+	-- Monster Kill Event
+	function onKill(creature, target)
+	-- Safety checks
+	if not creature or not target then
+		return true
+		end
+
+		if not target:isMonster() then
+			return true
+			end
+
+			-- If monster is a summon of a player, track it
+			local master = target:getMaster()
+			if master and master:isPlayer() then
+				-- Register custom event for tracking summoned monster behavior
+				target:registerEvent("ObMonsterCheck")
+				end
+
+				return true
+				end
+
+				-- Monster Death Event
+				function onDeath(creature, corpse, killer, mostDamageKiller)
+				if not corpse or not corpse:isItem() then
+					return true
+					end
+
+					-- Mark corpse with ActionID for later processing
+					corpse:setAttribute(ITEM_ATTRIBUTE_ACTIONID, AID_MONSTER_TAG)
+					return true
+					end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/creaturescripts/scripts/partyAndGuildProtection.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/partyAndGuildProtection.lua</ABSOLUTE_PATH>
+-- partyAndGuildProtection.lua
+function onCombat(creature, target)
+-- Ensure both are players
+local player = creature and creature:getPlayer()
+if not player then
+	return RETURNVALUE_NOERROR
+	end
+
+	local enemy = target and target:getPlayer()
+	if not enemy then
+		return RETURNVALUE_NOERROR
+		end
+
+		----------------------------------------------------------------
+		-- Guild Protection
+		----------------------------------------------------------------
+		if configManager.getBoolean(configKeys.NO_DAMAGE_TO_GUILD_MATES) then
+			local guildA = player:getGuildId()
+			if guildA > 0 and guildA == enemy:getGuildId() then
+				return RETURNVALUE_NOTPOSSIBLE
+				end
+				end
+
+				----------------------------------------------------------------
+				-- Party Protection
+				----------------------------------------------------------------
+				if configManager.getBoolean(configKeys.NO_DAMAGE_TO_PARTY_MEMBERS) then
+					local partyA = player:getParty()
+					local partyB = enemy:getParty()
+					if partyA and partyB and partyA == partyB then
+						return RETURNVALUE_NOTPOSSIBLE
+						end
+						end
+
+						return RETURNVALUE_NOERROR
+						end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/creaturescripts/scripts/playerdeath.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/playerdeath.lua</ABSOLUTE_PATH>
+-- Player Death: Amulet of Loss Removal (TFS 1.5 Downgrade 7.72)
+
+local AOLSLOT = CONST_SLOT_NECKLACE
+local AOL_ID = 2173
+
+function onDeath(player, corpse, killer, mostDamageKiller, unjustified, mostDamageUnjustified)
+-- Safety: ensure valid player object
+if not player or not player:isPlayer() then
+	return true
+	end
+
+	-- Get item from necklace slot
+	local amulet = player:getSlotItem(AOLSLOT)
+	if amulet and amulet.itemid == AOL_ID then
+		amulet:remove(1)
+		end
+
+		return true
+		end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/creaturescripts/scripts/recordIp.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/recordIp.lua</ABSOLUTE_PATH>
+-- recordIp.lua (TFS 1.5 - Downgrade 7.72 + LuaJIT 2.1)
+function onLogin(player)
+if not player then
+	return false
+	end
+
+	-- Raw IP (may be 0 or negative depending on OS/network state)
+	local rawIp = player:getIp()
+	if not rawIp or rawIp == 0 then
+		return true
+		end
+
+		-- Handle possible negative values (CachyOS / Arch bug)
+		if rawIp < 0 then
+			rawIp = rawIp + 4294967296 -- convert to unsigned 32-bit
+			end
+
+			-- Convert to readable x.x.x.x format
+			local ipString = Game.convertIpToString(rawIp)
+			if not ipString or ipString == "" then
+				return true
+				end
+
+				-- GUID (safer than name for DB updates)
+				local guid = player:getGuid()
+				if not guid or guid == 0 then
+					return true
+					end
+
+					-- Safe SQL update
+					local query = string.format(
+						"UPDATE `players` SET `ip` = '%s' WHERE `id` = %d;",
+						ipString,
+						guid
+					)
+
+					-- Correct DB API: always use db:query()
+					if not db:query(query) then
+						-- Optional debug (remove if you want 0 noise)
+						-- logger.error(string.format("[RecordIP] SQL update failed for GUID %d", guid))
+						end
+
+						return true
+						end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/creaturescripts/scripts/reportbug.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/creaturescripts/scripts/reportbug.lua</ABSOLUTE_PATH>
+-- reportbug.lua (TFS 1.5 - Downgrade 7.72)
+function onReportBug(player, comment)
+if not player then
+	return false
+	end
+
+	-- Comment sanitization
+	if not comment or comment == "" then
+		player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Your report cannot be empty.")
+		return true
+		end
+
+		local cleanComment = db.escapeString(comment)
+
+		-- Player GUID is the only safe identifier
+		local guid = player:getGuid()
+		if not guid or guid == 0 then
+			player:sendTextMessage(MESSAGE_EVENT_DEFAULT, "Invalid player identifier.")
+			return true
+			end
+
+			local pos = player:getPosition()
+
+			-- World ID from config (correct source for 7.7)
+			local worldId = configManager.getNumber(configKeys.WORLD_ID) or 0
+
+			-- Server name for messages
+			local serverName = configManager.getString(configKeys.SERVER_NAME)
+
+			-- Safe SQL INSERT (no LIMIT on INSERT in MySQL/MariaDB)
+			local query = string.format(
+				"INSERT INTO `server_reports` (`world_id`, `player_id`, `posx`, `posy`, `posz`, `timestamp`, `report`) " ..
+				"VALUES (%d, %d, %d, %d, %d, %d, '%s');",
+										worldId,
+							   guid,
+							   pos.x, pos.y, pos.z,
+							   os.time(),
+										cleanComment
+			)
+
+			local success = db:query(query)
+
+			if success then
+				player:sendTextMessage(
+					MESSAGE_EVENT_DEFAULT,
+					string.format("Your report has been sent to %s.", serverName)
+				)
+				else
+					player:sendTextMessage(
+						MESSAGE_EVENT_DEFAULT,
+						string.format("%s could not save your report. Please contact a gamemaster.", serverName)
+					)
+					end
+
+					return true
+					end
+
+===== FILE_END =====
+

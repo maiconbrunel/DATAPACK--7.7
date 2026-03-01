@@ -1,0 +1,167 @@
+===== FILE_START: TOTAL/spells/scripts/healing/recovery.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/recovery.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_REGENERATION)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 1)
+setConditionParam(condition, CONDITION_PARAM_BUFF, true)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 1 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_HEALTHGAIN, 20)
+setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 3000)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/salvation.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/salvation.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+setHealingFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 5, 5, 27.5, 35)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/ultimate healing rune.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/ultimate healing rune.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, 1)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+function onGetFormulaValues(cid, level, maglevel)
+	min = (level * 4.08 + maglevel * 6.24)
+	max = (level * 5.40 + maglevel * 8.10)
+	
+if min < 250 then
+min = 250
+end		
+
+	return min, max
+end
+
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/ultimate healing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/ultimate healing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+
+function onGetFormulaValues(cid, level, maglevel)
+	min = (level * 2 + maglevel * 3) * 2.2
+	max = (level * 2 + maglevel * 3) * 2.6	
+
+	return min, max
+end
+
+setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/healing/wound cleansing.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/healing/wound cleansing.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+setHealingFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 5, 5, 11, 15)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/party/enchant.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/party/enchant.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+local area = createCombatArea(AREA_CROSS5X5)
+setCombatArea(combat, area)
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_ATTRIBUTES)
+setConditionParam(condition, CONDITION_PARAM_SUBID, 3)
+setConditionParam(condition, CONDITION_PARAM_BUFF, true)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 2 * 60 * 1000)
+setConditionParam(condition, CONDITION_PARAM_STAT_MAGICLEVEL, 1)
+
+local config = {
+	baseMana = 120,
+	hardcoreManaSpent = getConfigValue("addManaSpentInPvPZone")
+}
+
+function onCastSpell(cid, var)
+	local pos, membersList = getCreaturePosition(cid), getPartyMembers(cid)
+	if(membersList == nil or type(membersList) ~= 'table' or table.maxn(membersList) <= 1) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOPARTYMEMBERSINRANGE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
+		return false
+	end
+
+	local affectedList = {}
+	for _, pid in ipairs(membersList) do
+		if(getDistanceBetween(getCreaturePosition(pid), pos) <= 36) then
+			table.insert(affectedList, pid)
+		end
+	end
+
+	local tmp = table.maxn(affectedList)
+	if(tmp <= 1) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOPARTYMEMBERSINRANGE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
+		return false
+	end
+
+	local mana = math.ceil((0.9 ^ (tmp - 1) * config.baseMana) * tmp)
+	if(getCreatureMana(cid) < mana) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTENOUGHMANA)
+		doSendMagicEffect(pos, CONST_ME_POFF)
+		return false
+	end
+
+	if(not doCombat(cid, combat, var)) then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		doSendMagicEffect(pos, CONST_ME_POFF)
+		return false
+	end
+
+	doCreatureAddMana(cid, -(mana - config.baseMana), false)
+	if(not getPlayerFlagValue(cid, PlayerFlag_NotGainMana) and (not getTileInfo(getThingPosition(cid)).hardcore or config.hardcoreManaSpent)) then
+		doPlayerAddSpentMana(cid, (mana - config.baseMana))
+	end
+
+	for _, pid in ipairs(affectedList) do
+		doAddCondition(pid, condition)
+	end
+
+	return true
+end
+
+===== FILE_END =====
+

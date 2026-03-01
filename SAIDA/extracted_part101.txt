@@ -1,0 +1,106 @@
+===== FILE_START: TOTAL/spells/scripts/support/haste.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/haste.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_GREEN)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_HASTE)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 33000)
+setConditionFormula(condition, 0.3, -24, 0.3, -24)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/support/invisible.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/invisible.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_INVISIBLE)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 200000)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/support/light.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/light.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_LIGHT)
+setConditionParam(condition, CONDITION_PARAM_LIGHT_LEVEL, 6)
+setConditionParam(condition, CONDITION_PARAM_LIGHT_COLOR, 215)
+setConditionParam(condition, CONDITION_PARAM_TICKS, (6 * 60 + 10) * 1000)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/support/magic rope.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/magic rope.lua</ABSOLUTE_PATH>
+local SPOTS = {384, 418, 8278, 8592}
+
+function onCastSpell(cid, var)
+	local position = getThingPosition(cid)
+	position.stackpos = 0
+
+	local ground = getThingFromPos(position)
+	if(isInArray(SPOTS, ground.itemid)) then
+		local newPosition = position
+		newPosition.y = newPosition.y + 1
+		newPosition.z = newPosition.z - 1
+
+		doTeleportThing(cid, newPosition, false)
+		doSendMagicEffect(position, CONST_ME_TELEPORT)
+		return true
+	else
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_NOTPOSSIBLE)
+		doSendMagicEffect(position, CONST_ME_POFF)
+		return false
+	end
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/support/magic shield.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/magic shield.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+local condition = createConditionObject(CONDITION_MANASHIELD)
+setConditionParam(condition, CONDITION_PARAM_TICKS, 200000)
+setCombatCondition(combat, condition)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+
+===== FILE_START: TOTAL/spells/scripts/support/magic wall rune.lua =====
+#<ABSOLUTE_PATH>/home/maicon/Documentos/GitHub/DATAPACK--7.7/TOTAL/spells/scripts/support/magic wall rune.lua</ABSOLUTE_PATH>
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
+setCombatParam(combat, COMBAT_PARAM_CREATEITEM, ITEM_MAGIC_WALL)
+setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
+
+function onCastSpell(cid, var)
+	return doCombat(cid, combat, var)
+end
+
+===== FILE_END =====
+

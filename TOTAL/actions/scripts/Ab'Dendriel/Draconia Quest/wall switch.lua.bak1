@@ -1,0 +1,39 @@
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Draconia wall switch
+-- Notes: melhorias, atualizações da API, otimizações
+
+local GATE_POS = Position(32792, 31581, 7)
+local GATE_ITEMID = 1037 -- gate
+
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+if item.actionid ~= 9507 then
+    return true
+end
+
+local tile = Tile(GATE_POS)
+if not tile then
+    return true
+end
+
+local gateItem = tile:getItemById(GATE_ITEMID)
+
+if item.itemid == 1945 then
+    -- Remove gate
+    if gateItem then
+        gateItem:remove()
+        item:transform(1946)
+    end
+    return true
+end
+
+if item.itemid == 1946 then
+    -- Create gate
+    if not gateItem then
+        Game.createItem(GATE_ITEMID, 1, GATE_POS)
+        item:transform(1945)
+    end
+    return true
+end
+
+return true
+end
