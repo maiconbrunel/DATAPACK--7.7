@@ -1,19 +1,38 @@
-function onStepIn(cid, item, pos)
-	coin = {x = 33234, y = 32692, z = 13, stackpos = 1}
-	newpos = {x = 33234, y = 32687 , z = 13}
-	getcoin = getThingfromPos(coin)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Teleport on step-in with coin consumption
+-- Notes: Modern API, safety checks, optimized logic
 
-	if item.actionid == 50122 and getcoin.itemid == 2159 then
-		doTeleportThing(cid, newpos)
-		doRemoveItem(getcoin.uid, 1)
-		doSendMagicEffect(coin, 15)
-		doSendMagicEffect(getCreaturePosition(cid), 10)
-	end
+local COIN_POS = Position(33234, 32692, 13)
+local TELEPORT_POS_1 = Position(33234, 32687, 13)
+local TELEPORT_POS_2 = Position(33234, 32693, 13)
 
-	if item.actionid == 50123 then
-		doTeleportThing(cid, {x = 33234, y = 32693, z = 13})
-		doSendMagicEffect(getCreaturePosition(cid), 10)
-	end
-
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
 	return true
-end
+	end
+
+	-- Action 50122: Requires crystal coin (2159)
+	if item.actionid == 50122 then
+		local tile = Tile(COIN_POS)
+		if tile then
+			local coinItem = tile:getItemById(2159) -- Crystal Coin
+			if coinItem then
+				player:teleportTo(TELEPORT_POS_1)
+				COIN_POS:sendMagicEffect(CONST_ME_MAGIC_RED)
+				player:getPosition():sendMagicEffect(CONST_ME_POFF)
+				coinItem:remove(1)
+				end
+				end
+				return true
+				end
+
+				-- Action 50123: Simple teleport back
+				if item.actionid == 50123 then
+					player:teleportTo(TELEPORT_POS_2)
+					player:getPosition():sendMagicEffect(CONST_ME_POFF)
+					return true
+					end
+
+					return true
+					end
