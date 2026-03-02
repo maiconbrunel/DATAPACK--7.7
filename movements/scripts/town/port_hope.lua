@@ -1,10 +1,22 @@
-function onStepIn(cid, item, pos)
-	if item.actionid==50109 then
-		newpos = {x = 32595, y = 32745, z = 7}
-		doPlayerSetTown(cid, 8)
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You have changed your residence to Port Hope.")
-		doTeleportThing(cid, newpos)
-		doSendMagicEffect(newpos, 12)
-		return true
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Change player residence when stepping in
+-- Notes: melhorias, atualizações da API, otimizações
+
+function onStepIn(creature, item, position, fromPosition)
+if item.actionid ~= 50109 then
+	return true
 	end
-end
+
+	local player = creature:getPlayer()
+	if not player then
+		return true
+		end
+
+		local newPos = Position(32595, 32745, 7)
+		player:setTown(8)
+		player:sendTextMessage(MESSAGE_INFO_DESCR, "You have changed your residence to Port Hope.")
+		player:teleportTo(newPos)
+		newPos:sendMagicEffect(CONST_ME_TELEPORT)
+
+		return true
+		end

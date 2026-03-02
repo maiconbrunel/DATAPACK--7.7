@@ -1,21 +1,30 @@
-function onStepIn(cid, item, pos)
-	local phoenixegg = {x = 32477, y = 31900, z = 1, stackpos = 1}
-	local gold = {x = 32478, y = 31900, z = 1, stackpos = 1}
-	local talons = {x = 32479, y = 31900, z = 1, stackpos = 1}
-	local wand = {x = 32480, y = 31900, z = 1, stackpos = 1}
-	if item.actionid == 8011 then --Phoenix Egg
-		setPlayerStorageValue(cid, 8011, 1)
-		doSendMagicEffect(phoenixegg, 5)
-	elseif item.actionid == 8012 then --10k
-		setPlayerStorageValue(cid, 8012, 1)
-		doSendMagicEffect(gold, 5)
-	elseif item.actionid == 8013 then --32 Talons
-		setPlayerStorageValue(cid, 8013, 1)
-		doSendMagicEffect(talons, 5)
-	elseif item.actionid == 8014 then --Wand Of Cosmic
-		setPlayerStorageValue(cid, 8014, 1)
-		doSendMagicEffect(wand, 5)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Step-in quest progression triggers
+-- Notes: melhorias, atualizações da API, otimizações
+
+local EFFECT_ID = 5 -- magic effect sparkle
+
+local POS = {
+	[8011] = Position(32477, 31900, 1), -- Phoenix Egg
+	[8012] = Position(32478, 31900, 1), -- 10k gold
+	[8013] = Position(32479, 31900, 1), -- 32 Talons
+	[8014] = Position(32480, 31900, 1), -- Wand of Cosmic
+}
+
+function onStepIn(creature, item, position, fromPosition)
+local action = item.actionid
+local pos = POS[action]
+if not pos then
+	return true
 	end
 
-	return true
-end
+	local player = creature:getPlayer()
+	if not player then
+		return true
+		end
+
+		player:setStorageValue(action, 1)
+		pos:sendMagicEffect(EFFECT_ID)
+
+		return true
+		end

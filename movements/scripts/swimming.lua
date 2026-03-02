@@ -1,35 +1,53 @@
-local outfit = {lookType = 267, lookHead = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookTypeEx = 0, lookAddons = 0}
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Trash holder outfit trigger
+-- Notes: melhorias, atualizações da API, otimizações
 
-function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
-	if(hasCondition(cid, CONDITION_OUTFIT, 0, CONDITIONID_COMBAT) and getCreatureOutfit(cid).lookType == outfit.lookType) then
-		doRemoveCondition(cid, CONDITION_OUTFIT)
-		if(not isPlayerGhost(cid)) then
-			doSendMagicEffect(position, CONST_ME_POFF)
-		end
+local outfit = {
+	lookType = 267,
+	lookHead = 0,
+	lookBody = 0,
+	lookLegs = 0,
+	lookFeet = 0,
+	lookTypeEx = 0,
+	lookAddons = 0
+}
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
-
-function onStepOut(cid, item, position, lastPosition, fromPosition, toPosition, actor)
-	if(not isPlayer(cid)) then
+	if player:hasCondition(CONDITION_OUTFIT) and player:getOutfit().lookType == outfit.lookType then
+		player:removeCondition(CONDITION_OUTFIT)
+		position:sendMagicEffect(CONST_ME_POFF)
+		end
 		return true
-	end
-
-	local tmp = getTileInfo(toPosition)
-	if(tmp.trashHolder) then
-		if(doTileQueryAdd(cid, toPosition, 4) ~= RETURNVALUE_NOERROR) then
-			return false
 		end
 
-		if(not isPlayerGhost(cid)) then
-			doSendMagicEffect(fromPosition, CONST_ME_POFF)
-			doSendMagicEffect(toPosition, CONST_ME_WATERSPLASH)
-		end
+		function onStepOut(creature, item, position, fromPosition)
+		local player = creature:getPlayer()
+		if not player then
+			return true
+			end
 
-		doRemoveConditions(cid, true)
-		doSetCreatureOutfit(cid, outfit, -1)
-	end
+			local tile = Tile(fromPosition)
+			if not tile then
+				return true
+				end
 
-	return true
-end
+				local info = tile:getInfo()
+				if info and info.trashHolder then
+					if Tile(fromPosition):queryAdd(player) ~= RETURNVALUE_NOERROR then
+						return false
+						end
+
+						fromPosition:sendMagicEffect(CONST_ME_POFF)
+						fromPosition:sendMagicEffect(CONST_ME_WATERSPLASH)
+
+						player:removeConditions(true)
+						player:setOutfit(outfit)
+						end
+
+						return true
+						end

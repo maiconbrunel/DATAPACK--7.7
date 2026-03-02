@@ -1,22 +1,35 @@
-function onStepIn(cid, item, pos)
-	switch1pos = {x = 32802, y = 31584, z = 1, stackpos = 1}
-	switch2pos = {x = 32803, y = 31584, z = 1, stackpos = 1}
-	switch3pos = {x = 32804, y = 31584, z = 1, stackpos = 1}
-	switch4pos = {x = 32805, y = 31584, z = 1, stackpos = 1}
-	telepos = {x = 32701, y = 31639, z = 6}
-	getswitch1 = getThingfromPos(switch1pos)
-	getswitch2 = getThingfromPos(switch2pos)
-	getswitch3 = getThingfromPos(switch3pos)
-	getswitch4 = getThingfromPos(switch4pos)
-	if item.actionid == 9602 and getswitch1.itemid == 1945 and getswitch2.itemid == 1946
-		and getswitch3.itemid == 1945 and getswitch4.itemid == 1946 then
-		doTeleportThing(cid, telepos)
-		doSendMagicEffect(getCreaturePosition(cid), 10)
-	else
-		pos.x = pos.x-2
-		doTeleportThing(cid, pos)
-		doSendMagicEffect(pos, 10)
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Switch puzzle teleporter
+-- Notes: melhorias, atualizações da API, otimizações
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
+	-- switch positions
+	local s1 = Tile({x = 32802, y = 31584, z = 1})
+	local s2 = Tile({x = 32803, y = 31584, z = 1})
+	local s3 = Tile({x = 32804, y = 31584, z = 1})
+	local s4 = Tile({x = 32805, y = 31584, z = 1})
+
+	local telePos = Position(32701, 31639, 6)
+
+	-- check switches (item ids: 1945/1946)
+	local c1 = s1 and s1:getItemById(1945)
+	local c2 = s2 and s2:getItemById(1946)
+	local c3 = s3 and s3:getItemById(1945)
+	local c4 = s4 and s4:getItemById(1946)
+
+	if item.actionid == 9602 and c1 and c2 and c3 and c4 then
+		player:teleportTo(telePos)
+		telePos:sendMagicEffect(CONST_ME_TELEPORT)
+		else
+			local backPos = Position(position.x - 2, position.y, position.z)
+			player:teleportTo(backPos)
+			backPos:sendMagicEffect(CONST_ME_TELEPORT)
+			end
+
+			return true
+			end

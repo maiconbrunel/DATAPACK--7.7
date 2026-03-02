@@ -1,25 +1,44 @@
-function onStepIn(cid, item, pos)
-	splash = {x = 32243, y = 31892, z = 14, stackpos = 1}
-	newpos = {x = 32261, y = 31849, z = 15}
-	getsplash = getThingfromPos(splash)
-	if item.actionid == 9011 and getsplash.itemid == 2025 then
-		queststatus = getPlayerStorageValue(cid, 9009)
-		if queststatus == -1 then
-			doTeleportThing(cid, newpos)
-			setPlayerStorageValue(cid, 9011, 1)
-			setPlayerStorageValue(cid, 9110, 1)
-			doRemoveItem(getsplash.uid, 1)
-			doSendMagicEffect(splash, CONST_ME_MAGIC_RED)
-			doSendMagicEffect(getCreaturePosition(cid), 10)
-		else
-			pos.x = pos.x-2
-			doTeleportThing(cid, pos)
-			doSendMagicEffect(pos, 10)
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
-		end
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Seal teleport with splash check
+-- Notes: Modern API, fixed storage logic, safe tile checks
 
-		return false
+local SPLASH_POS = Position(32243, 31892, 14)
+local TELEPORT_POS = Position(32261, 31849, 15)
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
+	-- Check Seal AID 9011
+	if item.actionid == 9011 then
+		local tile = Tile(SPLASH_POS)
+		if tile then
+			local splashItem = tile:getItemById(2025) -- splash vials
+			if splashItem then
+				local questStatus = player:getStorageValue(9009)
+
+				-- First time doing the seal
+				if questStatus <= 0 then
+					player:teleportTo(TELEPORT_POS)
+					player:setStorageValue(9011, 1)
+					player:setStorageValue(9110, 1)
+					splashItem:remove(1)
+					SPLASH_POS:sendMagicEffect(CONST_ME_MAGIC_RED)
+					player:getPosition():sendMagicEffect(CONST_ME_POFF)
+					else
+						-- Already completed
+						local backPos = Position(position.x - 2, position.y, position.z)
+						player:teleportTo(backPos)
+						backPos:sendMagicEffect(CONST_ME_POFF)
+						player:sendTextMessage(MESSAGE_STATUS_WARNING, "You already did this seal.")
+						end
+
+						return false
+						end
+						end
+						end
+
+						return true
+						end

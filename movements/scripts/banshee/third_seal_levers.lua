@@ -1,31 +1,56 @@
-function onStepIn(cid, item, pos)
-	switch1pos = {x = 32220, y = 31842, z = 15, stackpos = 1}
-	switch2pos = {x = 32220, y = 31843, z = 15, stackpos = 1}
-	switch3pos = {x = 32220, y = 31844, z = 15, stackpos = 1}
-	switch4pos = {x = 32220, y = 31845, z = 15, stackpos = 1}
-	switch5pos = {x = 32220, y = 31846, z = 15, stackpos = 1}
-	flamepos = {x = 32273, y = 31856, z = 15}
-	getswitch1 = getThingfromPos(switch1pos)
-	getswitch2 = getThingfromPos(switch2pos)
-	getswitch3 = getThingfromPos(switch3pos)
-	getswitch4 = getThingfromPos(switch4pos)
-	getswitch5 = getThingfromPos(switch5pos)
-	if item.actionid == 9018 and getswitch1.itemid == 1946 and getswitch2.itemid == 1946
-		and getswitch3.itemid == 1946 and getswitch4.itemid == 1946 and getswitch5.itemid == 1946 then
-		queststatus = getPlayerStorageValue(cid, 9018)
-		if queststatus == -1 then
-			doTeleportThing(cid, flamepos)
-			setPlayerStorageValue(cid, 9018, 1)
-			setPlayerStorageValue(cid, 9180, 1)
-			doSendMagicEffect(getCreaturePosition(cid), 10)
-		else
-			pos.y = pos.y-2
-			doTeleportThing(cid, pos)
-			doSendMagicEffect(pos, 10)
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You already did this seal.")
-		end
-		return false
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Demon Seal step-in teleport with switch validation
+-- Notes: Modern API, safe tile checks, real Tibia behavior
+
+local SWITCH_POSITIONS = {
+	Position(32220, 31842, 15),
+	Position(32220, 31843, 15),
+	Position(32220, 31844, 15),
+	Position(32220, 31845, 15),
+	Position(32220, 31846, 15)
+}
+
+local FLAME_POS = Position(32273, 31856, 15)
+
+local SEAL_STORAGE = 9018
+local ACCESS_STORAGE = 9180
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
+	if item.actionid ~= 9018 then
+		return true
+		end
+
+		-- Validate all switches (1946 = lever ON)
+		for i = 1, #SWITCH_POSITIONS do
+			local tile = Tile(SWITCH_POSITIONS[i])
+			if not tile then
+				return true
+				end
+
+				local lever = tile:getItemById(1946) -- Lever (ON state)
+				if not lever then
+					return true
+					end
+					end
+
+					-- First-time reward check
+					if player:getStorageValue(SEAL_STORAGE) < 1 then
+						player:teleportTo(FLAME_POS)
+						player:setStorageValue(SEAL_STORAGE, 1)
+						player:setStorageValue(ACCESS_STORAGE, 1)
+						player:getPosition():sendMagicEffect(CONST_ME_POFF)
+						return false
+						end
+
+						-- Already completed
+						local backPosition = Position(position.x, position.y - 2, position.z)
+						player:teleportTo(backPosition)
+						backPosition:sendMagicEffect(CONST_ME_POFF)
+						player:sendTextMessage(MESSAGE_STATUS_WARNING, "You already did this seal.")
+						return false
+						end

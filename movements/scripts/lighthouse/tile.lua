@@ -1,19 +1,33 @@
-function onStepOut(cid, item, frompos, item2, topos)
-	wall1 = {x = 32225, y = 32283, 	z = 9}
-	getwall1 = getThingfromPos(wall1)
-	if item.actionid == 4444 and getwall1.itemid == 432 then
-		doRemoveItem(getwall1.uid, 1)
-		doCreateItem(424, 1, wall1)
-		doTransformItem(item.uid, item.itemid + 1)
-	end
-end
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Step tiles toggling a wall
+-- Notes: melhorias, atualizações da API, otimizações
 
-function onStepIn(cid, item, frompos, item2, topos)
-	wall1 = {x = 32225, y = 32283, z = 9}
-	getwall1 = getThingfromPos(wall1)
-	if item.actionid == 4444 and getwall1.itemid == 424 then
-		doRemoveItem(getwall1.uid, 1)
-		doCreateItem(432, 1, wall1)
-		doTransformItem(item.uid, item.itemid - 1)
-	end
-end
+local WALL_POS = Position(32225, 32283, 9)
+local WALL_ID_A = 432 -- stone wall (closed)
+local WALL_ID_B = 424 -- stone wall (open)
+
+function onStepOut(creature, item, position, fromPosition)
+if item.actionid == 4444 then
+	local tile = Tile(WALL_POS)
+	local wall = tile and tile:getItemById(WALL_ID_A)
+
+	if wall then
+		wall:remove()
+		Game.createItem(WALL_ID_B, 1, WALL_POS)
+		item:transform(item:getId() + 1)
+		end
+		end
+		end
+
+		function onStepIn(creature, item, position, fromPosition)
+		if item.actionid == 4444 then
+			local tile = Tile(WALL_POS)
+			local wall = tile and tile:getItemById(WALL_ID_B)
+
+			if wall then
+				wall:remove()
+				Game.createItem(WALL_ID_A, 1, WALL_POS)
+				item:transform(item:getId() - 1)
+				end
+				end
+				end

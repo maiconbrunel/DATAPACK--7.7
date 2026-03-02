@@ -1,12 +1,22 @@
-function onStepIn(cid, item, pos)
-	if isPremium(cid) == false then
-		doSendMagicEffect(pos, 2)
-		pos.x = pos.x+2
-		doTeleportThing(cid, pos)
-		doSendMagicEffect(pos, 13)
-	else
-		doPlayerSendCancel(cid, "Only premium players can enter.")
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Premium-only step-in restriction
+-- Notes: melhorias, atualizações da API, otimizações
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
+	if not player:isPremium() then
+		position:sendMagicEffect(CONST_ME_HITAREA)
+
+		local newPos = Position(position.x + 2, position.y, position.z)
+		player:teleportTo(newPos)
+		newPos:sendMagicEffect(CONST_ME_MAGIC_GREEN)
+		else
+			player:sendCancelMessage("Only premium players can enter.")
+			end
+
+			return true
+			end

@@ -1,13 +1,41 @@
-function ChangeBack(cid)
-	doTransformItem(getThingfromPos({x = 32478, y = 31902, z = 7, stackpos = 1}).uid, 1304)
-end
-function onStepIn(cid, item, pos)
-	if item.actionid == 8008 and getThingfromPos({x = 32478, y = 31906, z = 7, stackpos = 1}).itemid == 2782 and getThingfromPos({x = 32478, y = 31902, z = 7, stackpos = 1}).itemid == 1304 then
-		addEvent(ChangeBack, 45000, cid)
-		doTransformItem(getThingfromPos({x = 32478, y = 31902, z = 7, stackpos = 1}).uid, 1385)
-	else
-		doPlayerSendCancel(cid, " ")
-	end
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Timed transform of a lever/stone
+-- Notes: melhorias, atualizações da API, otimizações
 
-	return true
-end
+local POS_MAIN   = Position(32478, 31902, 7)
+local POS_CHECK  = Position(32478, 31906, 7)
+
+local ITEM_MAIN_DEFAULT = 1304 -- item padrão
+local ITEM_MAIN_ACTIVE  = 1385 -- item ativado
+local ITEM_CHECK_ID     = 2782 -- item de validação
+
+local function changeBack()
+local tile = Tile(POS_MAIN)
+if tile then
+	local item = tile:getItemById(ITEM_MAIN_ACTIVE)
+	if item then
+		item:transform(ITEM_MAIN_DEFAULT)
+		end
+		end
+		end
+
+		function onStepIn(creature, item, position, fromPosition)
+		if item.actionid == 8008 then
+			local tileCheck = Tile(POS_CHECK)
+			local tileMain = Tile(POS_MAIN)
+
+			if tileCheck and tileMain then
+				local checkItem = tileCheck:getItemById(ITEM_CHECK_ID)
+				local mainItem  = tileMain:getItemById(ITEM_MAIN_DEFAULT)
+
+				if checkItem and mainItem then
+					addEvent(changeBack, 45000)
+					mainItem:transform(ITEM_MAIN_ACTIVE)
+					return true
+					end
+					end
+					end
+
+					creature:sendCancelMessage(" ")
+					return true
+					end

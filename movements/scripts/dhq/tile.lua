@@ -1,26 +1,50 @@
-function onStepIn(cid, item, frompos, item2, topos) 
-	local wallpos = {x = 33210, y = 31630, z = 13, stackpos = 1}
-	local wall1pos = {x = 33211, y = 31630, z = 13, stackpos = 1}
-	local wall2pos = {x = 33212, y = 31630, z = 13, stackpos = 1}
-	local tilepos = {x = 33190, y = 31629, z = 13, stackpos = 1}
-	local tile2pos = {x = 33191, y = 31629, z = 13, stackpos = 1}
-	local getwall = getThingfromPos(wallpos)
-	local getwall1 = getThingfromPos(wall1pos)
-	local getwall2 = getThingfromPos(wall2pos)
-	local gettile = getThingfromPos(tilepos)
-	local gettile2 = getThingfromPos(tile2pos)
-	if gettile.itemid == 425 and gettile.itemid == 425 then
-		doRemoveItem(getwall.uid, 1)
-		doRemoveItem(getwall1.uid, 1)
-		doRemoveItem(getwall2.uid, 1)
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "You moved the wall.")
-	elseif gettile.itemid == 426 and gettile.itemid == 426 and getwall.itemid == 0  and getwall1.itemid == 0  and getwall2.itemid == 0  then
-		doCreateItem(1050, 1, wallpos)
-		doCreateItem(1050, 1, wall1pos)
-		doCreateItem(1050, 1, wall2pos)
-	else
-		doPlayerSendCancel(cid, "Sorry, not possible.")
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: StepIn wall toggle
+-- Notes: melhorias, atualizações da API, otimizações
+
+function onStepIn(creature, item, position, fromPosition)
+local player = creature:getPlayer()
+if not player then
+	return true
 	end
 
-	return true
-end
+	-- Wall positions
+	local wallPos  = Position(33210, 31630, 13)
+	local wallPos1 = Position(33211, 31630, 13)
+	local wallPos2 = Position(33212, 31630, 13)
+
+	-- Tile positions
+	local tilePos  = Position(33190, 31629, 13)
+	local tilePos2 = Position(33191, 31629, 13)
+
+	-- Get items (real Tibia 7.7 method)
+	local tileItem  = Tile(tilePos):getItemById(425)  -- 425 = lever/tile?
+	local tileItem2 = Tile(tilePos2):getItemById(425)
+
+	local tileItemAlt  = Tile(tilePos):getItemById(426)
+	local tileItemAlt2 = Tile(tilePos2):getItemById(426)
+
+	local wall   = Tile(wallPos):getItemById(1050)   -- 1050 = stone wall?
+	local wall1  = Tile(wallPos1):getItemById(1050)
+	local wall2  = Tile(wallPos2):getItemById(1050)
+
+	-- Remove walls condition
+	if tileItem and tileItem2 then
+		if wall then wall:remove() end
+			if wall1 then wall1:remove() end
+				if wall2 then wall2:remove() end
+					player:sendTextMessage(MESSAGE_STATUS_WARNING, "You moved the wall.")
+					return true
+					end
+
+					-- Create walls condition
+					if tileItemAlt and tileItemAlt2 and not wall and not wall1 and not wall2 then
+						Game.createItem(1050, 1, wallPos)
+						Game.createItem(1050, 1, wallPos1)
+						Game.createItem(1050, 1, wallPos2)
+						return true
+						end
+
+						player:sendCancelMessage("Sorry, not possible.")
+						return true
+						end

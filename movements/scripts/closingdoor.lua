@@ -1,39 +1,62 @@
-function onStepOut(cid, item, position, lastPosition)
-	if(getTileInfo(position).creatures > 0) then
-		return true
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- Purpose: Tile relocation cleanup + transform
+-- Notes: melhorias, atualizações da API, otimizações
+
+local function cleanTile(position, ignoreUid)
+local tile = Tile(position)
+if not tile then
+	return
 	end
 
-	local newPosition = {x = position.x + 1, y = position.y, z = position.z}
-	local query = doTileQueryAdd(cid, newPosition)
-	if(query == RETURNVALUE_NOTENOUGHROOM) then
-		newPosition.x = newPosition.x - 1
-		newPosition.y = newPosition.y + 1
-		query = doTileQueryAdd(cid, newPosition) -- repeat until found
-	end
+	for _, item in ipairs(tile:getItems() or {}) do
+		if item.uid ~= ignoreUid and not item:isMovable() then
+			item:remove()
+			end
+			end
+			end
 
-	if(query == RETURNVALUE_NOERROR and query == RETURNVALUE_NOTENOUGHROOM) then
-		doRelocate(position, newPosition)
-	end
+			function onStepOut(creature, item, position, fromPosition)
+			local player = creature:getPlayer()
+			if not player then
+				return true
+				end
 
-	position.stackpos = -1
-	local i, tileItem, tileCount = 1, {uid = 1}, getTileThingByPos(position)
-	while(tileItem.uid ~= 0 and i < tileCount) do
-		position.stackpos = i
-		tileItem = getTileThingByPos(position)
-		if(tileItem.uid ~= 0 and tileItem.uid ~= item.uid and not isMovable(tileItem.uid)) then
-			doRemoveItem(tileItem.uid)
-		else
-			i = i + 1
-		end
-	end
+				-- Se ainda houver criaturas no tile, não faz nada
+				local tile = Tile(position)
+				if tile and #tile:getCreatures() > 0 then
+					return true
+					end
 
-	local itemInfo = getItemInfo(item.itemid)
-	doTransformItem(item.uid, itemInfo.transformUseTo)
-	return true
-end
+					-- Tenta posição para a direita
+					local newPosition = Position(position.x + 1, position.y, position.z)
+					if not Tile(newPosition) or Tile(newPosition):hasFlag(TILESTATE_BLOCKSOLID) then
+						-- Tenta posição abaixo
+						newPosition = Position(position.x, position.y + 1, position.z)
+						end
 
-function onStepOut(cid, item, position, lastPosition)
-	local itemInfo = getItemInfo(item.itemid)
-	doTransformItem(item.uid, itemInfo.transformUseTo)
-	return true
-end
+						-- Se posição válida, relocação
+						if Tile(newPosition) and not Tile(newPosition):hasFlag(TILESTATE_BLOCKSOLID) then
+							position = Position(position)
+							Game.relocate(position, newPosition)
+							end
+
+							-- Limpeza do tile após relocação
+							cleanTile(position, item.uid)
+
+							-- Transformação final
+							local itemType = ItemType(item:getId())
+							if itemType and itemType:hasTransformUseTo() then
+								item:transform(itemType:getTransformUseTo())
+								end
+
+								return true
+								end
+
+								function onStepIn(creature, item, position, fromPosition)
+								-- Script duplicado no original → mantido apenas transformação simples
+								local itemType = ItemType(item:getId())
+								if itemType and itemType:hasTransformUseTo() then
+									item:transform(itemType:getTransformUseTo())
+									end
+									return true
+									end

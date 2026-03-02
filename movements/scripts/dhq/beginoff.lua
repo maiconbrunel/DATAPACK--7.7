@@ -1,31 +1,61 @@
-function onStepOut(cid, item, frompos, item2, topos) 
-	wall1 = {x = 33210, y = 31630, z = 13, stackpos = 1}
-	wall2 = {x = 33211, y = 31630, z = 13, stackpos = 1}
-	wall3 = {x = 33212, y = 31630, z = 13, stackpos = 1}
-	getwall1 = getThingfromPos(wall1)
-	getwall2 = getThingfromPos(wall2)
-	getwall3 = getThingfromPos(wall3)
-	if item.uid == 9025 and getwall1.itemid == 0 and getwall2.itemid == 0 and getwall3.itemid == 0 then
-		doTransformItem(item.uid, item.itemid + 1)
-		doCreateItem(1050, 1, wall1)
-		doCreateItem(1050, 1, wall2)
-		doCreateItem(1050, 1, wall3)
-	end
-end
+-- [PROJECT 7.7 TFS 1.5] Converted script
+-- melhorias, atualizações da API, otimizações
 
-function onStepIn(cid, item, frompos, item2, topos)
-	wall1 = {x = 33210, y = 31630, z = 13, stackpos = 1}
-	wall2 = {x = 33211, y = 31630, z = 13, stackpos = 1}
-	wall3 = {x = 33212, y = 31630, z = 13, stackpos = 1}
-	tile1 = {x = 33191, y = 31629, z = 13}
-	getwall1 = getThingfromPos(wall1)
-	getwall2 = getThingfromPos(wall2)
-	getwall3 = getThingfromPos(wall3)
-	gettile1 = getThingfromPos(tile1)
-	if item.uid == 9025 and gettile1.itemid == 425 and getwall1.itemid == 1050 and getwall2.itemid == 1050 and getwall3.itemid == 1050 then
-		doTransformItem(item.uid, item.itemid - 1)
-		doRemoveItem(getwall1.uid, 1)
-		doRemoveItem(getwall2.uid, 1)
-		doRemoveItem(getwall3.uid, 1)
+local WALL_ID = 1050 -- stone wall
+local TILE_REQUIRED = 425 -- lava
+
+local walls = {
+	Position(33210, 31630, 13),
+	Position(33211, 31630, 13),
+	Position(33212, 31630, 13)
+}
+
+function onStepOut(creature, item, position, fromPosition)
+if item.uid ~= 9025 then
+	return true
 	end
-end
+
+	-- Check if all walls are missing
+	for _, pos in ipairs(walls) do
+		if Tile(pos):getItemById(WALL_ID) then
+			return true
+			end
+			end
+
+			item:transform(item.itemid + 1)
+
+			for _, pos in ipairs(walls) do
+				Game.createItem(WALL_ID, 1, pos)
+				end
+
+				return true
+				end
+
+				function onStepIn(creature, item, position, fromPosition)
+				if item.uid ~= 9025 then
+					return true
+					end
+
+					local tileCheck = Tile(Position(33191, 31629, 13)):getItemById(TILE_REQUIRED)
+					if not tileCheck then
+						return true
+						end
+
+						-- Check if all walls are present
+						for _, pos in ipairs(walls) do
+							if not Tile(pos):getItemById(WALL_ID) then
+								return true
+								end
+								end
+
+								item:transform(item.itemid - 1)
+
+								for _, pos in ipairs(walls) do
+									local wall = Tile(pos):getItemById(WALL_ID)
+									if wall then
+										wall:remove()
+										end
+										end
+
+										return true
+										end
